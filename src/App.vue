@@ -231,7 +231,7 @@
             </div>
             <div>
               <h5 class="mb-0 fw-bold text-dark">{{ currentUser.nama }}</h5>
-              <small class="text-muted">Login sebagai: <span class="badge bg-secondary text-uppercase">{{ currentUser?.nama || 'Memuat...' }}</span></small>
+              <small class="text-muted">Login sebagai: <span class="badge bg-secondary text-uppercase">{{ currentUser.role }}</span></small>
             </div>
           </div>
           <div class="text-end d-none d-md-block">
