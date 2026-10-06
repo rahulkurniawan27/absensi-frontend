@@ -717,8 +717,8 @@ const handleLogin = async () => {
         // Backend mengirim { message, user }
         const user = res.data.user;
 
-        console.log('DATA LOGIN:', res.data);
-        console.log('USER:', user);
+        //console.log('DATA LOGIN:', res.data);
+        //console.log('USER:', user);
 
         if (!user || !user.role) {
             throw new Error('Data user tidak ditemukan dari server.');
