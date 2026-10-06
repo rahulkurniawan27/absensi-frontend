@@ -709,22 +709,51 @@ onMounted(async () => {
 });
 
 const handleLogin = async () => {
-  isLoading.value = true;
-  try {
-    const res = await axios.post(`${apiBase}/login`, loginData.value);
-    currentUser.value = res.data;
-    currentView.value = 'dashboard';
-    localStorage.setItem('currentUser', JSON.stringify(res.data));
-    localStorage.setItem('currentView', 'dashboard');
-    if (currentUser.value.role === 'admin') {
-    await fetchUsers();
-    await fetchJadwal();
+    isLoading.value = true;
+
+    try {
+        const res = await axios.post(`${apiBase}/login`, loginData.value);
+
+        // Backend mengirim { message, user }
+        const user = res.data.user;
+
+        console.log('DATA LOGIN:', res.data);
+        console.log('USER:', user);
+
+        if (!user || !user.role) {
+            throw new Error('Data user tidak ditemukan dari server.');
+        }
+
+        currentUser.value = user;
+
+        localStorage.setItem(
+            'currentUser',
+            JSON.stringify(user)
+        );
+
+        currentView.value = 'dashboard';
+
+        // Jalankan data sesuai role
+        if (user.role === 'admin') {
+            await fetchUsers();
+            await fetchJadwal();
+        }
+
+        if (user.role === 'user') {
+            await fetchRiwayatUser();
+        }
+
+    } catch (err) {
+        console.error('LOGIN ERROR:', err);
+
+        alert(
+            err.response?.data?.error ||
+            err.message ||
+            'Username atau password salah!'
+        );
+    } finally {
+        isLoading.value = false;
     }
-  } catch (err) {
-    alert(err.response?.data?.error || 'Username atau password salah!');
-  } finally {
-    isLoading.value = false;
-  }
 };
 
 const logout = () => {
