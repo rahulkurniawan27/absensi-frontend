@@ -616,7 +616,7 @@ import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import Swal from 'sweetalert2';
 
-const apiBase = 'absensi-backend-production-7eda.up.railway.app/api'; 
+const apiBase = 'https://absensi-backend-production-7eda.up.railway.app/api'; 
 
 // State Global & UI
 const currentView = ref('landing');
