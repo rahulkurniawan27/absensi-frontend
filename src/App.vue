@@ -227,7 +227,28 @@
         <div class="bg-white rounded-4 shadow-sm p-4 mb-4 d-flex justify-content-between align-items-center border-start border-5 border-primary">
           <div class="d-flex align-items-center">
             <div class="bg-primary-subtle text-primary rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 50px; height: 50px;">
-              <i class="fas fa-user-tie fs-4"></i>
+              <img
+                v-if="currentUser.foto"
+                :src="currentUser.foto"
+                :alt="currentUser.nama"
+                class="rounded-circle border"
+                style="
+                    width: 45px;
+                    height: 50px;
+                    object-fit: fill;
+                "
+            >
+
+            <div
+                v-else
+                class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
+                style="
+                    width: 42px;
+                    height: 42px;
+                "
+            >
+                <i class="fas fa-user"></i>
+            </div>
             </div>
             <div>
               <h5 class="mb-0 fw-bold text-dark">{{ currentUser.nama }}</h5>
@@ -326,7 +347,21 @@
 
             <!-- ADMIN TAB 2: Kelola Jadwal -->
             <div v-if="adminTab === 'jadwal'">
-               <h5 class="fw-bold mb-4 text-dark">Pengaturan Jadwal Kerja</h5>
+              <div class="d-flex justify-content-between align-items-center mb-4">
+
+                <h5 class="fw-bold mb-0 text-dark">
+                    Pengaturan Jadwal Kerja
+                </h5>
+
+                <button
+                    class="btn btn-primary rounded-pill px-4 fw-bold"
+                    @click="bukaModalJadwalBaru"
+                >
+                    <i class="fas fa-plus me-2"></i>
+                    Tambah Jadwal
+                </button>
+
+            </div>
                <div class="table-responsive table-wrapper border p-2">
                  <table class="table table-bordered align-middle">
                    <thead class="table-light">
@@ -338,10 +373,13 @@
                        <td>{{ jadwal.masuk }}</td>
                        <td>{{ jadwal.batas }}</td>
                        <td>{{ jadwal.pulang }}</td>
-                       <td>
+                       <td class="d-flex gap-2">
                          <button class="btn btn-sm btn-outline-primary rounded-pill px-3" @click="bukaModalJadwal(jadwal)">
                            <i class="fas fa-edit me-1"></i> Edit Jadwal
                          </button>
+                         <button class="btn btn-sm btn-outline-danger rounded-pill px-3" @click="hapusJadwal(jadwal.id)">
+                              <i class="fas fa-trash me-1"></i> Hapus
+                          </button>
                        </td>
                      </tr>
                    </tbody>
@@ -363,9 +401,9 @@
                 </div>
               </div>
               <div class="table-responsive table-wrapper border p-2">
-                 <table class="table table-hover align-middle border">
+                 <table class="table table-hover align-middle table-bordered table-absensi">
                    <thead class="table-dark">
-                     <tr><th>Tanggal</th><th>Nama Guru</th><th>Jam Masuk</th><th>Jam Pulang</th><th>Status Kehadiran</th><th>Lokasi</th><th class="text-end">Aksi</th></tr>
+                     <tr><th>Tanggal</th><th>Nama Guru</th><th>Jam Masuk</th><th>Jam Pulang</th><th class="kolom-status">Status Kehadiran</th><th class="kolom-lokasi">Lokasi</th><th class="kolom-aksi">Aksi</th></tr>
                    </thead>
                    <tbody>
                      <tr v-for="absen in laporanAbsensi" :key="absen.id">
@@ -373,12 +411,12 @@
                        <td class="fw-bold">{{ absen.nama }}</td>
                        <td>{{ absen.jam_masuk }}</td>
                        <td>{{ absen.jam_keluar }}</td>
-                       <td>
+                       <td class="kolom-status">
                          <span :class="['badge', absen.status === 'Hadir' ? 'bg-success' : (absen.status === 'Terlambat' ? 'bg-warning text-dark' : 'bg-danger')]">
                            {{ absen.status }}
                          </span>
                        </td>
-                       <td class="text-muted" style="font-size: 0.9em; max-width: 200px; word-wrap: break-word;">
+                       <td class="kolom-lokasi" style="font-size: 0.9em; max-width: 200px; word-wrap: break-word;">
                           <!-- Jika sedang proses melacak alamat -->
                           <span v-if="absen.alamat === 'Melacak...'">
                             <i class="fas fa-spinner fa-spin me-1 text-primary"></i> Menerjemahkan GPS...
@@ -394,7 +432,7 @@
                           <!-- Jika absen tanpa GPS -->
                           <span v-else class="text-danger fst-italic">Tidak terdata</span>
                         </td>
-                       <td class="text-end">
+                       <td class="kolom-aksi">
                          <button class="btn btn-sm btn-outline-secondary rounded-pill" @click="bukaModalLaporan(absen)">
                            <i class="fas fa-edit"></i> Edit
                          </button>
@@ -532,7 +570,15 @@
           </div>
           <div class="modal-footer border-0 bg-light rounded-bottom-4">
             <button class="btn btn-secondary rounded-pill px-4" @click="showModalUser = false">Batal</button>
-            <button class="btn btn-primary rounded-pill px-4 fw-bold" @click="simpanUser">Simpan Data</button>
+            <button class="btn btn-primary rounded-pill px-4 fw-bold" @click="simpanUser" :disabled="isSavingUser">
+              <span
+                  v-if="isSavingUser"
+                  class="spinner-border spinner-border-sm me-2"
+                  role="status"
+              ></span>
+
+              {{ isSavingUser ? 'Menyimpan...' : 'Simpan Data' }}
+            </button>
           </div>
         </div>
       </div>
@@ -543,7 +589,12 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg rounded-4">
           <div class="modal-header bg-primary text-white border-0 rounded-top-4">
-            <h5 class="modal-title fw-bold">Edit Jadwal: {{ formJadwal.hari }}</h5>
+            <h5 class="modal-title fw-bold">
+                {{ formJadwal.id
+                    ? 'Edit Jadwal: ' + formJadwal.hari
+                    : 'Tambah Jadwal Baru'
+                }}
+            </h5>
             <button type="button" class="btn-close btn-close-white" @click="showModalJadwal = false"></button>
           </div>
           <div class="modal-body p-4">
@@ -566,7 +617,14 @@
           </div>
           <div class="modal-footer border-0 bg-light rounded-bottom-4">
             <button class="btn btn-secondary rounded-pill px-4" @click="showModalJadwal = false">Batal</button>
-            <button class="btn btn-primary rounded-pill px-4 fw-bold" @click="simpanJadwal">Simpan Jadwal</button>
+            <button class="btn btn-primary rounded-pill px-4 fw-bold" @click="simpanJadwal" :disabled="isSavingJadwal">
+              <span
+                  v-if="isSavingJadwal"
+                  class="spinner-border spinner-border-sm me-2"
+              ></span>
+
+              {{ isSavingJadwal ? 'Menyimpan...' : 'Simpan Jadwal' }}
+            </button>
           </div>
         </div>
       </div>
@@ -597,7 +655,14 @@
           </div>
           <div class="modal-footer border-0 bg-light rounded-bottom-4">
             <button class="btn btn-secondary rounded-pill px-4" @click="showModalLaporan = false">Batal</button>
-            <button class="btn btn-primary rounded-pill px-4 fw-bold" @click="simpanLaporan">Update Laporan</button>
+            <button class="btn btn-primary rounded-pill px-4 fw-bold" @click="simpanLaporan" :disabled="isSavingLaporan">
+              <span
+                  v-if="isSavingLaporan"
+                  class="spinner-border spinner-border-sm me-2"
+              ></span>
+
+              {{ isSavingLaporan ? 'Memperbarui...' : 'Update Laporan' }}
+            </button>
           </div>
         </div>
       </div>
@@ -625,6 +690,11 @@ const userTab = ref('absen');
 const isLoading = ref(false);
 const isProcessingPhoto = ref(false);
 const isCameraReady = ref(false);
+const isSavingUser = ref(false);
+const isSavingJadwal = ref(false);
+const isSavingLaporan = ref(false);
+const isDeletingUser = ref(false);
+const isDeletingLaporan = ref(false);
 const statusMessage = ref('Sistem siap digunakan.');
 const statusColor = ref('bg-primary-subtle text-primary-emphasis');
 const statusIcon = ref('fas fa-info-circle');
@@ -668,7 +738,7 @@ const muatModelAI = async () => {
     await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
     await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
     isModelLoaded.value = true;
-    statusMessage.value = 'AI Siap digunakan.';
+    statusMessage.value = 'Memuat Foto';
     return true;
   } catch (err) {
     statusMessage.value = 'Error AI Model. Pastikan koneksi internet stabil.';
@@ -717,8 +787,14 @@ const handleLogin = async () => {
         // Backend mengirim { message, user }
         const user = res.data.user;
 
-        //console.log('DATA LOGIN:', res.data);
-        //console.log('USER:', user);
+        currentUser.value = user;
+
+        localStorage.setItem(
+            'currentUser',
+            JSON.stringify(user)
+        );
+
+        currentView.value = 'dashboard';
 
         if (!user || !user.role) {
             throw new Error('Data user tidak ditemukan dari server.');
@@ -837,19 +913,39 @@ const fetchRiwayatUser = async () => {
   } catch (err) { console.error(err); }
 };
 const fetchJadwal = async () => {
-  try {
-    const res = await axios.get(`${apiBase}/jadwal`);
-    if (res.data) {
-      // Potong format detik (:00) agar rapi di input jam HTML
-      daftarJadwal.value = [{
-        id: res.data.id,
-        hari: res.data.hari,
-        masuk: res.data.masuk.slice(0, 5),
-        batas: res.data.batas.slice(0, 5),
-        pulang: res.data.pulang.slice(0, 5)
-      }];
+    try {
+        const res = await axios.get(`${apiBase}/jadwal`);
+
+        // Backend bisa mengembalikan array atau object
+        const data = Array.isArray(res.data)
+            ? res.data
+            : (res.data && Object.keys(res.data).length > 0
+                ? [res.data]
+                : []);
+
+        daftarJadwal.value = data.map(jadwal => ({
+            id: jadwal.id,
+            hari: jadwal.hari,
+            masuk: jadwal.masuk
+                ? jadwal.masuk.slice(0, 5)
+                : '',
+            batas: jadwal.batas
+                ? jadwal.batas.slice(0, 5)
+                : '',
+            pulang: jadwal.pulang
+                ? jadwal.pulang.slice(0, 5)
+                : ''
+        }));
+
+    } catch (err) {
+
+        console.error(
+            'Gagal mengambil jadwal:',
+            err
+        );
+
+        daftarJadwal.value = [];
     }
-  } catch (err) { console.error("Gagal mengambil jadwal:", err); }
 };
 
 // ================= FUNGSI JADWAL =================
@@ -867,26 +963,136 @@ const bukaModalJadwal = (jadwal) => {
   showModalJadwal.value = true;
 };
 
+const bukaModalJadwalBaru = () => {
+
+    formJadwal.value = {
+        id: null,
+        hari: '',
+        masuk: '',
+        batas: '',
+        pulang: ''
+    };
+
+    showModalJadwal.value = true;
+};
+
 const simpanJadwal = async () => {
-  try {
-    await axios.put(`${apiBase}/jadwal/${formJadwal.value.id}`, {
-      hari: formJadwal.value.hari,
-      masuk: formJadwal.value.masuk,
-      batas: formJadwal.value.batas,
-      pulang: formJadwal.value.pulang
+
+    if (isSavingJadwal.value) return;
+
+    isSavingJadwal.value = true;
+
+    const sedangEdit = !!formJadwal.value.id;
+
+    try {
+
+        if (sedangEdit) {
+
+            await axios.put(
+                `${apiBase}/jadwal/${formJadwal.value.id}`,
+                {
+                    hari: formJadwal.value.hari,
+                    masuk: formJadwal.value.masuk,
+                    batas: formJadwal.value.batas,
+                    pulang: formJadwal.value.pulang
+                }
+            );
+
+        } else {
+
+            await axios.post(
+                `${apiBase}/jadwal`,
+                {
+                    hari: formJadwal.value.hari,
+                    masuk: formJadwal.value.masuk,
+                    batas: formJadwal.value.batas,
+                    pulang: formJadwal.value.pulang
+                }
+            );
+        }
+
+        showModalJadwal.value = false;
+
+        await fetchJadwal();
+
+        showToast(
+            'success',
+            sedangEdit
+                ? 'Jadwal berhasil diperbarui!'
+                : 'Jadwal berhasil ditambahkan!'
+        );
+
+    } catch (err) {
+
+        Swal.fire(
+            'Gagal!',
+            err.response?.data?.error ||
+            'Terjadi kesalahan saat menyimpan jadwal.',
+            'error'
+        );
+
+    } finally {
+
+        isSavingJadwal.value = false;
+
+    }
+};
+
+const hapusJadwal = async (id) => {
+
+    const result = await Swal.fire({
+        title: 'Hapus Jadwal?',
+        text: 'Jadwal yang dihapus tidak dapat dikembalikan.',
+        icon: 'warning',
+
+        showCancelButton: true,
+
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal'
     });
+
+    if (!result.isConfirmed) return;
+
     Swal.fire({
-      icon: 'success',
-      title: 'Berhasil!',
-      text: 'Jadwal kerja berhasil diperbarui.',
-      timer: 2000,
-      showConfirmButton: false
+        title: 'Menghapus...',
+        text: 'Sedang menghapus jadwal.',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+
+        didOpen: () => {
+            Swal.showLoading();
+        }
     });
-    showModalJadwal.value = false;
-    fetchJadwal();
-  } catch (err) {
-    Swal.fire('Gagal!', 'Terjadi kesalahan saat memperbarui jadwal.', 'error');
-  }
+
+    try {
+
+        await axios.delete(
+            `${apiBase}/jadwal/${id}`
+        );
+
+        await fetchJadwal();
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: 'Jadwal berhasil dihapus.',
+            timer: 1800,
+            showConfirmButton: false
+        });
+
+    } catch (err) {
+
+        Swal.fire(
+            'Gagal!',
+            err.response?.data?.error ||
+            'Gagal menghapus jadwal.',
+            'error'
+        );
+    }
 };
 
 // ================= FUNGSI NOTIFIKASI MODERN (SWEETALERT2) =================
@@ -910,49 +1116,141 @@ const bukaModalUser = (guru) => {
 const handleFileBaru = (event) => formUser.value.fileFoto = event.target.files[0];
 
 const simpanUser = async () => {
+
+  if (isSavingUser.value) return;
+
+  isSavingUser.value = true;
+
   try {
+
     if (formUser.value.id_user) {
-      await axios.put(`${apiBase}/users/${formUser.value.id_user}`, {
-        nama: formUser.value.nama, username: formUser.value.username, password: formUser.value.password 
-      });
-      showToast('success', 'Data karyawan berhasil diperbarui!');
+
+      await axios.put(
+        `${apiBase}/users/${formUser.value.id_user}`,
+        {
+          nama: formUser.value.nama,
+          username: formUser.value.username,
+          password: formUser.value.password
+        }
+      );
+
+      showToast(
+        'success',
+        'Data karyawan berhasil diperbarui!'
+      );
+
     } else {
-      const res = await axios.post(`${apiBase}/users`, {
-        nama: formUser.value.nama, username: formUser.value.username, password: formUser.value.password, role: 'user'
-      });
+
+      const res = await axios.post(
+        `${apiBase}/users`,
+        {
+          nama: formUser.value.nama,
+          username: formUser.value.username,
+          password: formUser.value.password,
+          role: 'user'
+        }
+      );
+
       if (formUser.value.fileFoto) {
-        await prosesEkstrakDanUpload(formUser.value.fileFoto, res.data.id_user);
+
+        await prosesEkstrakDanUpload(
+          formUser.value.fileFoto,
+          res.data.id_user
+        );
+
       } else {
-        showToast('success', 'Karyawan ditambahkan (Tanpa sampel foto).');
+
+        showToast(
+          'success',
+          'Karyawan ditambahkan tanpa sampel foto.'
+        );
+
       }
     }
+
     showModalUser.value = false;
-    fetchUsers();
+
+    await fetchUsers();
+
   } catch (err) {
-    Swal.fire('Gagal!', err.response?.data?.error || err.message, 'error');
+
+    Swal.fire(
+      'Gagal!',
+      err.response?.data?.error || err.message,
+      'error'
+    );
+
+  } finally {
+
+    isSavingUser.value = false;
+
   }
 };
 
 const hapusUser = async (id) => {
+
+  if (isDeletingUser.value) return;
+
   const result = await Swal.fire({
     title: 'Hapus Karyawan?',
     text: 'Data karyawan beserta sampel biometrik wajahnya akan dihapus permanen dari sistem.',
     icon: 'warning',
+
     showCancelButton: true,
+
     confirmButtonColor: '#d33',
     cancelButtonColor: '#6c757d',
+
     confirmButtonText: 'Ya, Hapus!',
     cancelButtonText: 'Batal'
   });
 
-  if (result.isConfirmed) {
-    try {
-      await axios.delete(`${apiBase}/users/${id}`);
-      showToast('success', 'Karyawan berhasil dihapus.');
-      fetchUsers();
-    } catch (err) {
-      Swal.fire('Error!', 'Gagal menghapus data dari database.', 'error');
+  if (!result.isConfirmed) return;
+
+  isDeletingUser.value = true;
+
+  // Tampilkan loading
+  Swal.fire({
+    title: 'Menghapus...',
+    text: 'Sedang menghapus data karyawan.',
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    showConfirmButton: false,
+
+    didOpen: () => {
+      Swal.showLoading();
     }
+  });
+
+  try {
+
+    await axios.delete(
+      `${apiBase}/users/${id}`
+    );
+
+    await fetchUsers();
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Berhasil!',
+      text: 'Karyawan berhasil dihapus.',
+      timer: 1800,
+      showConfirmButton: false
+    });
+
+  } catch (err) {
+
+    Swal.fire(
+      'Gagal!',
+      err.response?.data?.error ||
+      'Gagal menghapus data karyawan.',
+      'error'
+    );
+
+  } finally {
+
+    isDeletingUser.value = false;
+
   }
 };
 
@@ -1159,40 +1457,110 @@ const bukaModalLaporan = (absen) => {
 };
 
 const simpanLaporan = async () => {
+
+  if (isSavingLaporan.value) return;
+
+  isSavingLaporan.value = true;
+
   try {
-    await axios.put(`${apiBase}/laporan/${formLaporan.value.id}`, {
-      jam_masuk: formLaporan.value.jam_masuk,
-      jam_keluar: formLaporan.value.jam_keluar,
-      status: formLaporan.value.status
-    });
-    showToast('success', 'Data absensi berhasil diperbarui.');
+
+    await axios.put(
+      `${apiBase}/laporan/${formLaporan.value.id}`,
+      {
+        jam_masuk: formLaporan.value.jam_masuk,
+        jam_keluar: formLaporan.value.jam_keluar,
+        status: formLaporan.value.status
+      }
+    );
+
     showModalLaporan.value = false;
-    fetchLaporan();
+
+    await fetchLaporan();
+
+    showToast(
+      'success',
+      'Data absensi berhasil diperbarui.'
+    );
+
   } catch (err) {
-    Swal.fire('Gagal!', err.response?.data?.error || err.message, 'error');
+
+    Swal.fire(
+      'Gagal!',
+      err.response?.data?.error || err.message,
+      'error'
+    );
+
+  } finally {
+
+    isSavingLaporan.value = false;
+
   }
 };
 
 const hapusLaporan = async (id) => {
+
+  if (isDeletingLaporan.value) return;
+
   const result = await Swal.fire({
     title: 'Hapus Riwayat Absensi?',
     text: 'Data kehadiran ini akan dihapus secara permanen.',
     icon: 'warning',
+
     showCancelButton: true,
+
     confirmButtonColor: '#d33',
     cancelButtonColor: '#6c757d',
+
     confirmButtonText: 'Ya, Hapus!',
     cancelButtonText: 'Batal'
   });
 
-  if (result.isConfirmed) {
-    try {
-      await axios.delete(`${apiBase}/laporan/${id}`);
-      showToast('success', 'Riwayat absensi dihapus.');
-      fetchLaporan();
-    } catch (err) {
-      Swal.fire('Error!', 'Gagal menghapus riwayat.', 'error');
+  if (!result.isConfirmed) return;
+
+  isDeletingLaporan.value = true;
+
+  // Tampilkan loading
+  Swal.fire({
+    title: 'Menghapus...',
+    text: 'Sedang menghapus riwayat absensi.',
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    showConfirmButton: false,
+
+    didOpen: () => {
+      Swal.showLoading();
     }
+  });
+
+  try {
+
+    await axios.delete(
+      `${apiBase}/laporan/${id}`
+    );
+
+    await fetchLaporan();
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Berhasil!',
+      text: 'Riwayat absensi berhasil dihapus.',
+      timer: 1800,
+      showConfirmButton: false
+    });
+
+  } catch (err) {
+
+    Swal.fire(
+      'Gagal!',
+      err.response?.data?.error ||
+      'Gagal menghapus riwayat absensi.',
+      'error'
+    );
+
+  } finally {
+
+    isDeletingLaporan.value = false;
+
   }
 };
 
@@ -1388,6 +1756,62 @@ body {
 /* Laporan membutuhkan tabel lebih lebar */
 .table-wrapper:has(th:nth-child(7)) table {
   min-width: 1000px;
+}
+
+.table-wrapper-absensi {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-absensi {
+    width: 100%;
+    min-width: 1100px;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+/* Header */
+.table-absensi th {
+    white-space: nowrap;
+    vertical-align: middle;
+    padding: 12px 10px;
+}
+
+/* Isi tabel */
+.table-absensi td {
+    vertical-align: middle;
+    padding: 10px;
+}
+
+/* Status */
+.table-absensi .kolom-status {
+    min-width: 130px;
+    white-space: nowrap;
+}
+
+/* Lokasi */
+.table-absensi .kolom-lokasi {
+    min-width: 280px;
+    max-width: 350px;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
+}
+
+/* Aksi */
+.table-absensi .kolom-aksi {
+    min-width: 170px;
+    width: 170px;
+    white-space: nowrap;
+    text-align: center;
+}
+
+/* Tombol */
+.table-absensi .kolom-aksi .btn {
+    white-space: nowrap;
+    margin: 2px;
 }
 
 /* =========================================
