@@ -7,7 +7,7 @@
           <img src="/src/assets/logo versi warna.png" class="rounded me-2 d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;" />
           <span class="text-dark fs-4">Sistem <span class="text-primary">Absensi</span></span>
         </a>
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center ms-auto">
           <button v-if="currentView === 'dashboard'" class="btn btn-outline-danger btn-sm rounded-pill px-4 fw-bold" @click="logout">
             <i class="fas fa-sign-out-alt me-1"></i> Keluar
           </button>
@@ -1301,58 +1301,619 @@ body { font-family: 'Nunito', sans-serif; background-color: #f8fdf9; color: #333
 .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
+
+/* =========================================
+   RESPONSIVE SISTEM ABSENSI
+   ========================================= */
+
+/* Dasar */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.app-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* =========================================
+   NAVBAR
+   ========================================= */
+
+.navbar {
+  width: 100%;
+}
+
+.navbar .container {
+  min-width: 0;
+}
+
+.navbar-brand {
+  min-width: 0;
+}
+
+.navbar-brand span {
+  white-space: nowrap;
+}
+
+.navbar-brand img {
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* =========================================
+   LANDING PAGE
+   ========================================= */
+
+.hero-section {
+  overflow: hidden;
+}
+
+.hero-section h1 {
+  word-break: normal;
+}
+
+.hero-image-wrapper {
+  width: 100%;
+}
+
+.floating-card {
+  z-index: 2;
+}
+
+/* =========================================
+   TABLE RESPONSIVE
+   ========================================= */
+
+.table-wrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrapper table {
+  min-width: 700px;
+  white-space: nowrap;
+}
+
+/* Laporan membutuhkan tabel lebih lebar */
+.table-wrapper:has(th:nth-child(7)) table {
+  min-width: 1000px;
+}
+
+/* =========================================
+   DASHBOARD
+   ========================================= */
+
+.dashboard-page {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.dashboard-page .container {
+  max-width: 1200px;
+}
+
+/* Header profil */
+.dashboard-page .border-start {
+  min-width: 0;
+}
+
+.dashboard-page .border-start > div {
+  min-width: 0;
+}
+
+/* =========================================
+   TAB NAVIGATION
+   ========================================= */
+
+.mobile-scroll-nav {
+  width: 100%;
+}
+
+.mobile-scroll-nav .nav-item {
+  min-width: 0;
+}
+
+.mobile-scroll-nav .nav-link {
+  white-space: nowrap;
+}
+
+/* =========================================
+   CAMERA ABSENSI
+   ========================================= */
+
 .camera-container {
   width: 100%;
   max-width: 500px;
-  margin: 0 auto;
-  border-radius: 15px;
-  overflow: hidden;
-  background-color: #000;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
+
 .camera-video {
   width: 100%;
-  height: auto;
-  aspect-ratio: 4/3;
+  height: 100%;
   object-fit: cover;
 }
 
-/* Responsive Tabel (Bisa di-swipe kiri-kanan di layar kecil) */
-.table-wrapper {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch; /* Halus di iOS */
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-.table {
-  min-width: 700px; /* Cegah kolom tergencet di HP */
-  margin-bottom: 0;
-}
+/* =========================================
+   MODAL
+   ========================================= */
 
-/* Responsive Menu Tabs (Menu melayang bisa digeser di HP) */
-.mobile-scroll-nav {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 10px;
-  scrollbar-width: none; /* Sembunyikan scrollbar di Firefox */
-}
-.mobile-scroll-nav::-webkit-scrollbar {
-  display: none; /* Sembunyikan scrollbar di Chrome/Safari */
-}
-.mobile-scroll-nav .nav-item {
-  flex: 0 0 auto;
-}
-
-/* Tampilan Modal Kustom ala Vue */
 .custom-modal-overlay {
-  display: block; 
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(3px);
+  position: fixed;
+  inset: 0;
+  z-index: 1055;
+  display: block;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.custom-modal-overlay .modal-dialog {
+  width: auto;
+  max-width: 500px;
+  margin: 1.75rem auto;
+  padding: 0 12px;
+}
+
+.custom-modal-overlay .modal-content {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* =========================================
+   FOOTER
+   ========================================= */
+
+footer {
+  width: 100%;
+  overflow: hidden;
+}
+
+footer ul {
+  padding-left: 0;
+}
+
+footer a {
+  word-break: break-word;
+}
+
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media (max-width: 991.98px) {
+
+  .hero-section {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+  }
+
+  .hero-section .display-4 {
+    font-size: 2.8rem;
+  }
+
+  .hero-image-wrapper {
+    max-width: 450px !important;
+  }
+
+  .dashboard-page .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .card-body {
+    padding: 1.25rem !important;
+  }
+
+  .nav-fill {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-fill .nav-item {
+    flex: 0 0 auto;
+  }
+
+  .nav-fill .nav-link {
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+  }
+}
+
+/* =========================================
+   HP
+   ========================================= */
+
+@media (max-width: 767.98px) {
+
+  /* ---------- NAVBAR ---------- */
+
+  .navbar {
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+
+  .navbar .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .navbar-brand {
+    font-size: 0.95rem;
+  }
+
+  .navbar-brand img {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .navbar-brand .fs-4 {
+    font-size: 1.05rem !important;
+  }
+
+  .navbar .btn {
+    font-size: 0.75rem;
+    padding: 0.45rem 0.8rem !important;
+  }
+
+  /* ---------- LANDING ---------- */
+
+  .hero-section .container {
+    padding-top: 2rem !important;
+    padding-bottom: 3rem !important;
+  }
+
+  .hero-section h1 {
+    font-size: 2.2rem !important;
+    line-height: 1.15 !important;
+  }
+
+  .hero-section .lead {
+    font-size: 0.95rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .hero-section .btn-lg {
+    width: 100%;
+    font-size: 0.95rem;
+    padding: 0.8rem 1rem !important;
+  }
+
+  .hero-image-wrapper {
+    max-width: 100% !important;
+  }
+
+  .hero-image-wrapper img {
+    height: 260px !important;
+  }
+
+  .floating-card {
+    position: relative !important;
+    bottom: auto !important;
+    left: auto !important;
+    margin-top: 15px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* ---------- FEATURE ---------- */
+
+  .features-section .container {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  .features-section h2 {
+    font-size: 1.6rem;
+  }
+
+  .feature-card {
+    padding: 1.25rem !important;
+  }
+
+  /* ---------- PANDUAN ---------- */
+
+  .landing-page .container.my-5 {
+    margin-top: 2rem !important;
+    margin-bottom: 2rem !important;
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  .landing-page .container.my-5 h3 {
+    font-size: 1.5rem;
+  }
+
+  /* ---------- FOOTER ---------- */
+
+  footer {
+    text-align: center;
+  }
+
+  footer .d-flex {
+    justify-content: center !important;
+  }
+
+  footer .col-lg-6,
+  footer .col-lg-3 {
+    text-align: center;
+  }
+
+  footer h5 {
+    justify-content: center;
+  }
+
+  footer .pe-lg-5 {
+    padding-right: 0 !important;
+  }
+
+  /* ---------- LOGIN ---------- */
+
+  .login-page {
+    min-height: calc(100vh - 65px) !important;
+  }
+
+  .login-page .container {
+    padding: 1.5rem 15px !important;
+  }
+
+  .login-page .card {
+    max-width: 100% !important;
+    border-radius: 16px !important;
+  }
+
+  .login-page .card-body {
+    padding: 1.5rem !important;
+  }
+
+  /* ---------- DASHBOARD ---------- */
+
+  .dashboard-page .container {
+    padding: 15px !important;
+  }
+
+  /* Header profile */
+  .dashboard-page .border-start {
+    display: flex !important;
+    align-items: center;
+    padding: 15px !important;
+  }
+
+  .dashboard-page .border-start > .d-flex {
+    width: 100%;
+  }
+
+  .dashboard-page .border-start h5 {
+    font-size: 1rem;
+  }
+
+  .dashboard-page .border-start small {
+    font-size: 0.72rem;
+  }
+
+  /* Sembunyikan tanggal di HP */
+  .dashboard-page .text-end.d-none.d-md-block {
+    display: none !important;
+  }
+
+  /* ---------- DASHBOARD CARD ---------- */
+
+  .dashboard-page .card {
+    border-radius: 15px !important;
+  }
+
+  .dashboard-page .card-header {
+    padding: 15px !important;
+  }
+
+  /* ---------- TAB ---------- */
+
+  .mobile-scroll-nav {
+    display: flex;
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    gap: 8px !important;
+    padding-bottom: 5px;
+    scrollbar-width: none;
+  }
+
+  .mobile-scroll-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-scroll-nav .nav-item {
+    flex: 0 0 auto;
+  }
+
+  .mobile-scroll-nav .nav-link {
+    font-size: 0.8rem;
+    padding: 0.55rem 0.9rem;
+  }
+
+  /* ---------- ADMIN SEARCH ---------- */
+
+  .dashboard-page .input-group {
+    width: 100%;
+  }
+
+  .dashboard-page .row.align-items-center {
+    margin-bottom: 1rem !important;
+  }
+
+  .dashboard-page .row.align-items-center > div {
+    width: 100%;
+  }
+
+  .dashboard-page .row.align-items-center .text-md-end {
+    text-align: left !important;
+  }
+
+  .dashboard-page .row.align-items-center .btn {
+    width: 100%;
+  }
+
+  /* ---------- TABLE ---------- */
+
+  .table-wrapper {
+    border-radius: 8px;
+  }
+
+  .table-wrapper table {
+    min-width: 750px;
+    font-size: 0.8rem;
+  }
+
+  .table-wrapper th,
+  .table-wrapper td {
+    padding: 0.7rem 0.6rem !important;
+  }
+
+  /* ---------- USER DASHBOARD ---------- */
+
+  .dashboard-page .bg-light-blue.text-center {
+    padding: 1.25rem !important;
+  }
+
+  .dashboard-page .bg-light-blue.text-center h5 {
+    font-size: 1rem;
+  }
+
+  /* ---------- CAMERA ---------- */
+
+  .camera-container {
+    width: 100%;
+    max-width: 100% !important;
+    border-width: 3px !important;
+    border-radius: 15px !important;
+  }
+
+  /* ---------- BUTTON ABSENSI ---------- */
+
+  .camera-container + .row {
+    width: 100% !important;
+  }
+
+  .camera-container + .row .btn {
+    font-size: 0.85rem;
+    padding: 0.75rem 0.3rem !important;
+  }
+
+  /* ---------- RIWAYAT ---------- */
+
+  .dashboard-page .table-responsive {
+    width: 100%;
+  }
+
+  /* ---------- MODAL ---------- */
+
+  .custom-modal-overlay {
+    padding: 10px;
+  }
+
+  .custom-modal-overlay .modal-dialog {
+    width: 100%;
+    max-width: 100%;
+    margin: 1rem auto;
+    padding: 0;
+  }
+
+  .custom-modal-overlay .modal-content {
+    border-radius: 15px !important;
+  }
+
+  .custom-modal-overlay .modal-body {
+    padding: 1.25rem !important;
+  }
+
+  .custom-modal-overlay .modal-footer {
+    padding: 1rem !important;
+    display: flex;
+    gap: 8px;
+  }
+
+  .custom-modal-overlay .modal-footer button {
+    flex: 1;
+  }
+}
+
+/* =========================================
+   HP KECIL
+   ========================================= */
+
+@media (max-width: 400px) {
+
+  .navbar-brand .fs-4 {
+    font-size: 0.95rem !important;
+  }
+
+  .navbar .btn {
+    font-size: 0.68rem;
+    padding: 0.4rem 0.65rem !important;
+  }
+
+  .hero-section h1 {
+    font-size: 1.9rem !important;
+  }
+
+  .hero-section .lead {
+    font-size: 0.88rem !important;
+  }
+
+  .hero-image-wrapper img {
+    height: 220px !important;
+  }
+
+  .dashboard-page .border-start {
+    padding: 12px !important;
+  }
+
+  .dashboard-page .border-start .rounded-circle {
+    width: 42px !important;
+    height: 42px !important;
+  }
+
+  .dashboard-page .border-start h5 {
+    font-size: 0.9rem;
+  }
+
+  .mobile-scroll-nav .nav-link {
+    font-size: 0.72rem;
+    padding: 0.5rem 0.7rem;
+  }
+
+  .camera-container {
+    border-radius: 12px !important;
+  }
+
+  .camera-container + .row .btn {
+    font-size: 0.75rem;
+  }
+}
+
+/* =========================================
+   LANDSCAPE HP
+   ========================================= */
+
+@media (max-width: 767.98px) and (orientation: landscape) {
+
+  .hero-image-wrapper img {
+    height: 220px !important;
+  }
+
+  .camera-container {
+    max-width: 450px !important;
+  }
 }
 
 .custom-link:hover {
