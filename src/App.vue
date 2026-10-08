@@ -706,6 +706,14 @@ const currentDate = computed(() => {
   return new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 });
 
+// ================= SESSION LOGIN =================
+const USER_KEY = 'currentUser';
+const VIEW_KEY = 'currentView';
+const SESSION_KEY = 'absensiSession';
+const BROWSER_SESSION_KEY = 'absensiBrowserSession';
+
+const isSessionChecking = ref(false);
+
 // State Data
 const listGuru = ref([]);
 const searchQuery = ref('');
@@ -747,98 +755,206 @@ const muatModelAI = async () => {
 };
 
 watch(currentView, (newView) => {
-  localStorage.setItem('currentView', newView);
+    localStorage.setItem(
+        VIEW_KEY,
+        newView
+    );
 });
 
 onMounted(async () => {
-  const savedUser = localStorage.getItem('currentUser');
-  const savedView = localStorage.getItem('currentView');
 
-  if (savedUser) {
-    // 1. JIKA SUDAH LOGIN: Arahkan otomatis ke dashboard
-    currentUser.value = JSON.parse(savedUser);
-    currentView.value = 'dashboard';
-    
-    // Panggil data dari database sesuai role
-    if (currentUser.value.role === 'admin') {
-      if (typeof fetchUsers === 'function') fetchUsers();
-      if (typeof fetchJadwal === 'function') fetchJadwal();
-    }
-  } else {
-    // 2. JIKA BELUM LOGIN: Izinkan hanya di halaman 'landing' atau 'login'
-    if (savedView === 'login') {
-      currentView.value = 'login';
+    const validSession = checkSession();
+
+    if (validSession) {
+
+        try {
+
+            const savedUser =
+                localStorage.getItem(USER_KEY);
+
+            const user = JSON.parse(savedUser);
+
+            currentUser.value = user;
+
+            currentView.value = 'dashboard';
+
+            if (user.role === 'admin') {
+                await fetchUsers();
+                await fetchJadwal();
+            }
+
+        } catch (err) {
+
+            logout();
+
+        }
+
     } else {
-      currentView.value = 'landing';
-      localStorage.setItem('currentView', 'landing');
-    }
-  }
 
-  // Load Model AI secara asinkron di latar belakang
-  await muatModelAI();
+        currentUser.value = {};
+        currentView.value = 'landing';
+
+    }
+
+    await muatModelAI();
 });
 
 const handleLogin = async () => {
+
+    if (isLoading.value) return;
+
     isLoading.value = true;
 
     try {
-        const res = await axios.post(`${apiBase}/login`, loginData.value);
 
-        // Backend mengirim { message, user }
+        const res = await axios.post(
+            `${apiBase}/login`,
+            loginData.value
+        );
+
+        // Ambil user dari response backend
         const user = res.data.user;
 
-        currentUser.value = user;
+        if (!user) {
 
-        localStorage.setItem(
-            'currentUser',
-            JSON.stringify(user)
-        );
-
-        currentView.value = 'dashboard';
-
-        if (!user || !user.role) {
-            throw new Error('Data user tidak ditemukan dari server.');
+            throw new Error(
+                'Data user tidak ditemukan dari server.'
+            );
         }
 
+        // Simpan user
         currentUser.value = user;
 
         localStorage.setItem(
-            'currentUser',
+            USER_KEY,
             JSON.stringify(user)
         );
 
+        // Buat session baru
+        createSession();
+
+        // Masuk dashboard
         currentView.value = 'dashboard';
 
-        // Jalankan data sesuai role
+        // Bersihkan form login
+        loginData.value = {
+            username: '',
+            password: ''
+        };
+
+        // Jika admin, ambil data admin
         if (user.role === 'admin') {
+
             await fetchUsers();
             await fetchJadwal();
-        }
 
-        if (user.role === 'user') {
-            await fetchRiwayatUser();
         }
 
     } catch (err) {
-        console.error('LOGIN ERROR:', err);
 
-        alert(
+        console.error(
+            'LOGIN ERROR:',
+            err
+        );
+
+        Swal.fire(
+            'Login Gagal!',
             err.response?.data?.error ||
             err.message ||
-            'Username atau password salah!'
+            'Username atau password salah.',
+            'error'
         );
+
     } finally {
+
         isLoading.value = false;
+
     }
 };
 
 const logout = () => {
-  if (typeof stopKamera === 'function') stopKamera();
-  currentUser.value = {};
-  loginData.value = { username: '', password: '' };
-  localStorage.removeItem('currentUser');
-  localStorage.removeItem('currentView');
-  currentView.value = 'landing';
+
+    // Hapus data login
+    localStorage.removeItem(USER_KEY);
+    localStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(VIEW_KEY);
+
+    // Hapus session browser
+    sessionStorage.removeItem(BROWSER_SESSION_KEY);
+
+    // Reset user
+    currentUser.value = {};
+
+    // Kembali ke landing
+    currentView.value = 'landing';
+};
+
+const createSession = () => {
+
+    sessionStorage.setItem(
+        BROWSER_SESSION_KEY,
+        'active'
+    );
+
+    localStorage.setItem(
+        SESSION_KEY,
+        JSON.stringify({
+            loginTime: Date.now()
+        })
+    );
+};
+
+const checkSession = () => {
+
+    const savedUser =
+        localStorage.getItem(USER_KEY);
+
+    const browserSession =
+        sessionStorage.getItem(
+            BROWSER_SESSION_KEY
+        );
+
+    const savedSession =
+        localStorage.getItem(SESSION_KEY);
+
+    // Tidak ada user
+    if (!savedUser) {
+        return false;
+    }
+
+    // Browser session sudah tidak ada
+    if (!browserSession) {
+
+        logout();
+
+        return false;
+    }
+
+    // Tidak ada session
+    if (!savedSession) {
+
+        logout();
+
+        return false;
+    }
+
+    try {
+
+        JSON.parse(savedSession);
+
+        return true;
+
+    } catch (err) {
+
+        console.error(
+            'Session tidak valid:',
+            err
+        );
+
+        logout();
+
+        return false;
+    }
 };
 
 // ================= FUNGSI FETCH DATA =================
