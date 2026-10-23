@@ -18,7 +18,7 @@
       </div>
     </nav>
 
-    <div style="margin-top: 80px;">
+    <div style="margin-top: 30px;">
     <!-- 1. LANDING PAGE -->
     <div v-if="currentView === 'landing'" class="landing-page">
       <!-- (Konten Landing Page Tetap Sama Seperti Sebelumnya) -->
@@ -184,8 +184,8 @@
     </div>
 
     <!-- 2. PORTAL LOGIN -->
-    <div v-else-if="currentView === 'login'" class="login-page bg-light-blue d-flex align-items-center" style="min-height: calc(100vh - 80px);">
-      <div class="container py-5">
+    <div v-else-if="currentView === 'login'" class="login-page bg-light-blue d-flex align-items-center w-100" style="min-height: 100vh; padding-top: 100px; padding-bottom: 60px;">
+      <div class="container">
         <div class="row justify-content-center fade-in-up">
           <div class="col-12 col-sm-10 col-md-8 col-lg-5">
             <div class="card border-0 shadow-lg rounded-4 overflow-hidden mx-auto" style="max-width: 400px; width: 100%; border-radius: 20px;">
@@ -221,7 +221,7 @@
     </div>
 
     <!-- 3. DASHBOARD -->
-    <div v-else-if="currentView === 'dashboard'" class="dashboard-page bg-light" style="min-height: calc(100vh - 80px);">
+    <div v-else-if="currentView === 'dashboard'" class="dashboard-page bg-light w-100" style="min-height: calc(100vh - 80px); padding-top: 30px;">
       <div class="container py-4 py-md-5 fade-in-up">
         
         <!-- Header Profil -->
