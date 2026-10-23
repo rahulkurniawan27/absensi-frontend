@@ -390,7 +390,7 @@
 
             <!-- ADMIN TAB 3: Laporan & Export -->
             <div v-if="adminTab === 'laporan'">
-              <div class="d-flex justify-content-between align-items-center mb-4">
+              <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3">
                 <h5 class="fw-bold mb-0 text-dark">Laporan Absensi</h5>
                 <div>
                   <button class="btn btn-outline-danger btn-sm rounded-pill fw-bold px-3 me-2" @click="exportPDF">
