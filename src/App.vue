@@ -1,7 +1,7 @@
 <template>
   <div class="app-wrapper">
     <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg bg-white sticky-top shadow-sm py-3">
+    <nav class="navbar navbar-expand-lg bg-white fixed-top shadow-sm py-3" style="z-index: 1050;">
       <div class="container">
         <a class="navbar-brand fw-bold d-flex align-items-center" href="#" @click.prevent="currentView = 'landing'">
           <img src="/src/assets/logo versi warna.png" class="rounded me-2 d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;" />
@@ -18,6 +18,7 @@
       </div>
     </nav>
 
+    <div style="margin-top: 80px;">
     <!-- 1. LANDING PAGE -->
     <div v-if="currentView === 'landing'" class="landing-page">
       <!-- (Konten Landing Page Tetap Sama Seperti Sebelumnya) -->
@@ -400,13 +401,55 @@
                   </button>
                 </div>
               </div>
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="mb-0 text-secondary">
+                  Menampilkan {{ laporanTersaring.length }} data riwayat
+                </h6>
+                
+                <div class="dropdown">
+                  <button class="btn btn-outline-success btn-sm dropdown-toggle rounded-pill px-3" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                    <i class="fas fa-filter me-1"></i>
+                  </button>
+                  
+                  <!-- Menu Dropdown (Berisi Checkbox) -->
+                  <div class="dropdown-menu dropdown-menu-end p-3 shadow-lg border-0" style="min-width: 280px; max-height: 400px; overflow-y: auto;">
+                    
+                    <!-- Filter Tanggal -->
+                    <h6 class="dropdown-header px-0 text-dark fw-bold border-bottom pb-1 mb-2">Pilih Tanggal</h6>
+                    <div v-for="tgl in uniqueTanggal" :key="'tgl-'+tgl" class="form-check">
+                      <input class="form-check-input" type="checkbox" :value="tgl" v-model="filterTanggal" :id="'tgl-'+tgl">
+                      <label class="form-check-label small" :for="'tgl-'+tgl">{{ tgl }}</label>
+                    </div>
+                    <div v-if="uniqueTanggal.length === 0" class="text-muted small">Belum ada data</div>
+
+                    <!-- Filter Hari -->
+                    <h6 class="dropdown-header px-0 text-dark fw-bold border-bottom pb-1 mb-2 mt-3">Pilih Hari</h6>
+                    <div v-for="hari in uniqueHari" :key="'hari-'+hari" class="form-check">
+                      <input class="form-check-input" type="checkbox" :value="hari" v-model="filterHari" :id="'hari-'+hari">
+                      <label class="form-check-label small" :for="'hari-'+hari">{{ hari }}</label>
+                    </div>
+
+                    <!-- Filter Jam -->
+                    <h6 class="dropdown-header px-0 text-dark fw-bold border-bottom pb-1 mb-2 mt-3">Pilih Jam (Rentang)</h6>
+                    <div v-for="jam in uniqueJam" :key="'jam-'+jam" class="form-check">
+                      <input class="form-check-input" type="checkbox" :value="jam" v-model="filterJam" :id="'jam-'+jam">
+                      <label class="form-check-label small" :for="'jam-'+jam">Pukul {{ jam }}:xx</label>
+                    </div>
+
+                    <!-- Tombol Reset -->
+                    <div class="mt-3 pt-2 border-top">
+                      <button class="btn btn-sm btn-danger w-100" @click="resetFilter">Batalkan Semua Filter</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="table-responsive table-wrapper border p-2">
                  <table class="table table-hover align-middle table-bordered table-absensi">
                    <thead class="table-dark">
                      <tr><th>Tanggal</th><th>Nama Guru</th><th>Jam Masuk</th><th>Jam Pulang</th><th class="kolom-status">Status Kehadiran</th><th class="kolom-lokasi">Lokasi</th><th class="kolom-aksi">Aksi</th></tr>
                    </thead>
                    <tbody>
-                     <tr v-for="absen in laporanAbsensi" :key="absen.id">
+                     <tr v-for="absen in laporanTersaring" :key="absen.id">
                        <td>{{ absen.tanggal }}</td>
                        <td class="fw-bold">{{ absen.nama }}</td>
                        <td>{{ absen.jam_masuk }}</td>
@@ -441,7 +484,7 @@
                          </button>
                        </td>
                      </tr>
-                     <tr v-if="laporanAbsensi.length === 0">
+                     <tr v-if="laporanTersaring.length === 0">
                         <td colspan="7" class="text-center text-muted py-4">Belum ada data laporan absensi.</td>
                       </tr>
                    </tbody>
@@ -666,6 +709,8 @@
           </div>
         </div>
       </div>
+    </div>
+
     </div>
 
   </div>
@@ -1756,6 +1801,42 @@ const exportExcel = () => {
   XLSX.utils.book_append_sheet(wb, ws, "Laporan Kehadiran");
   XLSX.writeFile(wb, "Laporan_Absensi.xlsx");
 };
+
+// ================= VARIABEL FILTER CHECKBOX =================
+const filterTanggal = ref([]);
+const filterHari = ref([]);
+const filterJam = ref([]); // Menyimpan awalan jam, misal: '07', '08'
+
+// Fungsi bantuan untuk mendapatkan nama hari
+const getNamaHari = (dateStr) => {
+  const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+  const d = new Date(dateStr);
+  return days[d.getDay()];
+};
+
+// Mengambil daftar unik (tidak duplikat) dari database untuk dijadikan pilihan checkbox
+const uniqueTanggal = computed(() => [...new Set(laporanAbsensi.value.map(i => i.tanggal).filter(Boolean))].sort());
+const uniqueHari = computed(() => [...new Set(laporanAbsensi.value.map(i => i.tanggal ? getNamaHari(i.tanggal) : null).filter(Boolean))]);
+const uniqueJam = computed(() => [...new Set(laporanAbsensi.value.map(i => i.jam_masuk ? i.jam_masuk.substring(0, 2) : null).filter(Boolean))].sort());
+
+// Fungsi reset checkbox
+const resetFilter = () => {
+  filterTanggal.value = [];
+  filterHari.value = [];
+  filterJam.value = [];
+};
+
+// Menyaring data berdasarkan checkbox yang dicentang
+const laporanTersaring = computed(() => {
+  return laporanAbsensi.value.filter(item => {
+    // Jika tidak ada yang dicentang, anggap true (tampilkan semua)
+    const matchTanggal = filterTanggal.value.length === 0 || filterTanggal.value.includes(item.tanggal);
+    const matchHari = filterHari.value.length === 0 || (item.tanggal && filterHari.value.includes(getNamaHari(item.tanggal)));
+    const matchJam = filterJam.value.length === 0 || (item.jam_masuk && filterJam.value.includes(item.jam_masuk.substring(0, 2)));
+
+    return matchTanggal && matchHari && matchJam;
+  });
+});
 </script>
 
 <style>
