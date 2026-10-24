@@ -6,7 +6,7 @@
           <div class="spinner-border text-success position-absolute" role="status" style="width: 100%; height: 100%; border-width: 4px; opacity: 0.7;">
             <span class="visually-hidden">Memuat...</span>
           </div>
-          <img src="/src/assets/logo versi warna.png" alt="Logo SLB Dharma Asih" class="loading-logo position-absolute" style="width: 70px; z-index: 2;">
+          <img src="/logo.png" alt="Logo SLB Dharma Asih" class="loading-logo position-absolute" style="width: 70px; z-index: 2;">
         </div>
         
         <h5 class="fw-bold text-dark mb-1">Sistem Absensi</h5>
@@ -757,6 +757,7 @@ import * as XLSX from 'xlsx';
 import Swal from 'sweetalert2';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import * as bootstrap from 'bootstrap';
 
 const apiBase = 'https://absensi-backend-production-7eda.up.railway.app/api'; 
 
@@ -837,6 +838,20 @@ watch(currentView, (newView) => {
         VIEW_KEY,
         newView
     );
+
+    if (newView === 'landing') {
+    nextTick(() => {
+      AOS.refresh();
+      const myCarousel = document.getElementById('heroCarousel');
+      if (myCarousel) {
+        const carouselInstance = bootstrap.Carousel.getInstance(myCarousel) || new bootstrap.Carousel(myCarousel, {
+          interval: 3000,
+          ride: 'carousel'
+        });
+        carouselInstance.cycle();
+      }
+    });
+  }
 });
 
 onMounted(async () => {
@@ -889,7 +904,7 @@ onMounted(async () => {
       });
       AOS.refresh();
     });
-  }, 1200);
+  }, 400);
 });
 
 const handleLogin = async () => {
