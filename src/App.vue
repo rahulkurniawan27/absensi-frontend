@@ -1,4 +1,21 @@
 <template>
+  <transition name="fade-loading">
+    <div v-if="isPageLoading" class="loading-screen bg-white">
+      <div class="text-center d-flex flex-column align-items-center">
+        <div class="position-relative d-flex justify-content-center align-items-center mb-4" style="width: 120px; height: 120px;">
+          <div class="spinner-border text-success position-absolute" role="status" style="width: 100%; height: 100%; border-width: 4px; opacity: 0.7;">
+            <span class="visually-hidden">Memuat...</span>
+          </div>
+          <img src="/src/assets/logo versi warna.png" alt="Logo SLB Dharma Asih" class="loading-logo position-absolute" style="width: 70px; z-index: 2;">
+        </div>
+        
+        <h5 class="fw-bold text-dark mb-1">Sistem Absensi</h5>
+        <small class="text-muted">Memuat<span class="animated-dots"></span></small>
+      </div>
+    </div>
+  </transition>
+
+  <div v-show="!isPageLoading">
   <div class="app-wrapper">
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg bg-white fixed-top shadow-sm py-3" style="z-index: 1050;">
@@ -25,7 +42,7 @@
       <section class="hero-section bg-light-blue py-5">
         <div class="container py-5">
           <div class="row align-items-center">
-            <div class="col-lg-6 mb-5 mb-lg-0 fade-in-up">
+            <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
               <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill mb-3 fw-bold">Transformasi Digital Sekolah</span>
               <h1 class="fw-extrabold text-dark display-4 mb-4" style="line-height: 1.2;">
                 Absensi Cerdas <br><span class="text-primary">& Validasi Akurat</span>
@@ -37,9 +54,21 @@
                 Mulai Akses Sistem
               </button>
             </div>
-            <div class="col-lg-6 text-center position-relative fade-in-up" style="animation-delay: 0.2s;">
+            <div class="col-lg-6 text-center position-relative" style="animation-delay: 0.2s;" data-aos="fade-down" data-aos-delay="200">
               <div class="hero-image-wrapper p-2 bg-white rounded-4 shadow-lg mx-auto position-relative" style="max-width: 500px;">
-                 <img src="/foto guru.jpg" alt="Guru" class="img-fluid rounded-3" style="height: 350px; object-fit: cover; width: 100%;">
+                <div id="heroCarousel" class="carousel slide carousel-fade rounded-3 overflow-hidden" data-bs-ride="carousel" data-bs-interval="3000">
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <img src="/foto guru1.jpg" class="d-block w-100" style="object-fit: cover; aspect-ratio: 4/3;" alt="Foto Guru 1">
+                    </div>
+                    <div class="carousel-item">
+                      <img src="/foto guru2.jpg" class="d-block w-100" style="object-fit: cover; aspect-ratio: 4/3;" alt="Foto Guru 2">
+                    </div>
+                    <div class="carousel-item">
+                      <img src="/foto guru3.jpg" class="d-block w-100" style="object-fit: cover; aspect-ratio: 4/3;" alt="Foto Guru 3">
+                    </div>
+                  </div>
+                </div>
                  <div class="floating-card shadow-sm bg-white rounded-4 p-3 position-absolute d-flex align-items-center" style="bottom: -20px; left: -20px;">
                     <div class="bg-success rounded-circle p-2 text-white me-3"><i class="fas fa-check"></i></div>
                     <div><h6 class="mb-0 fw-bold">Wajah Terdeteksi</h6><small class="text-muted">Akurasi 99.8%</small></div>
@@ -51,7 +80,7 @@
       </section>
 
       <!-- Fitur Unggulan Section -->
-      <section class="features-section py-5 bg-white">
+      <section class="features-section py-5 bg-white" data-aos="fade-up">
         <div class="container py-5">
           <div class="text-center mb-5">
             <h2 class="fw-bold text-dark">Program & Fitur Unggulan</h2>
@@ -90,7 +119,7 @@
       </section>
 
       <!-- ================= SECTION PANDUAN PENGGUNAAN ================= -->
-      <div class="container py-5 my-5">
+      <div class="container py-5 my-5" data-aos="fade-up">
         <div class="text-center mb-5">
           <h3 class="fw-bold text-dark">Cara Melakukan Presensi</h3>
           <p class="text-muted">Tiga langkah mudah untuk mencatat kehadiran Anda setiap hari.</p>
@@ -135,7 +164,7 @@
           <div class="row g-4">
             
             <!-- Kolom 1: Brand & Deskripsi -->
-            <div class="col-lg-6 col-md-12 mb-4 mb-lg-0">
+            <div class="col-lg-6 col-md-12 mb-4 mb-lg-0" data-aos="fade-right">
               <h5 class="fw-bold mb-3 d-flex align-items-center">
                 <img src="/logo.png" class="rounded me-2 d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;" /> 
                 SLB Dharma Asih Kraksaan
@@ -146,7 +175,7 @@
             </div>
 
             <!-- Kolom 2: Tautan -->
-            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+            <div class="col-lg-3 col-md-6 mb-4 mb-md-0" data-aos="fade-down">
               <h6 class="text-uppercase fw-bold mb-3 text-light">Menu Utama</h6>
               <ul class="list-unstyled mb-0 small">
                 <li class="mb-2"><a href="#" @click.prevent="currentView = 'landing'" class="text-white-50 text-decoration-none custom-link">Beranda</a></li>
@@ -155,7 +184,7 @@
             </div>
 
             <!-- Kolom 3: Kontak -->
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-3 col-md-6" data-aos="fade-left">
               <h6 class="text-uppercase fw-bold mb-3 text-light">Hubungi Kami</h6>
               <ul class="list-unstyled mb-0 small text-white-50">
                 <li class="mb-2"><i class="fas fa-map-marker-alt me-2 text-success"></i> Jl. Mayjen Sutoyo No. 56, Patokan, Kecamatan Kraksaan, Kabupaten Probolinggo, Jawa Timur</li>
@@ -169,7 +198,7 @@
           <hr class="my-4 border-secondary">
           
           <!-- Copyright & Sosial Media -->
-          <div class="d-flex justify-content-between align-items-center flex-wrap">
+          <div class="d-flex justify-content-between align-items-center flex-wrap fade-in-up">
             <p class="mb-0 text-white-50 small">
               &copy; 2026 SLB Dharma Asih Kraksaan. Hak Cipta Dilindungi.
             </p>
@@ -712,6 +741,7 @@
     </div>
 
     </div>
+    </div>
 
   </div>
 </template>
@@ -725,6 +755,8 @@ import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import Swal from 'sweetalert2';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const apiBase = 'https://absensi-backend-production-7eda.up.railway.app/api'; 
 
@@ -746,6 +778,7 @@ const statusIcon = ref('fas fa-info-circle');
 const currentUser = ref({});
 const loginData = ref({ username: '', password: '' });
 const videoElUser = ref(null);
+const isPageLoading = ref(true);
 
 const currentDate = computed(() => {
   return new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -842,6 +875,21 @@ onMounted(async () => {
     }
 
     await muatModelAI();
+
+    window.scrollTo(0, 0);
+
+  setTimeout(() => {
+    isPageLoading.value = false;
+    nextTick(() => {
+      AOS.init({
+        duration: 800,
+        offset: 100,
+        once: false,
+        mirror: true
+      });
+      AOS.refresh();
+    });
+  }, 1200);
 });
 
 const handleLogin = async () => {
@@ -1866,6 +1914,50 @@ body { font-family: 'Nunito', sans-serif; background-color: #f8fdf9; color: #333
 .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
+
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Animasi ukuran logo membesar-mengecil (denyut) */
+.loading-logo {
+  width: 90px;
+  animation: pulseLogo 1.5s infinite ease-in-out;
+}
+
+@keyframes pulseLogo {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.8; }
+}
+
+/* Efek transisi halus saat loading screen menghilang */
+.fade-loading-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-loading-leave-to {
+  opacity: 0;
+}
+
+.animated-dots::after {
+  content: '';
+  animation: typingDots 1.5s infinite;
+}
+
+@keyframes typingDots {
+  0% { content: ''; }
+  25% { content: '.'; }
+  50% { content: '..'; }
+  75%, 100% { content: '...'; }
+}
 
 /* =========================================
    RESPONSIVE SISTEM ABSENSI
