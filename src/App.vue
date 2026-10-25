@@ -1398,75 +1398,113 @@ const bukaModalUser = (guru) => {
 };
 const handleFileBaru = (event) => formUser.value.fileFoto = event.target.files[0];
 
-const simpanUser = async () => {
 
+
+
+const simpanUser = async () => {
   if (isSavingUser.value) return;
+
+  const nama = String(formUser.value.nama || '').trim();
+  const username = String(formUser.value.username || '').trim();
+  const password = String(formUser.value.password || '');
+  const sedangEdit = !!formUser.value.id_user;
+
+  if (sedangEdit && (!nama || !username)) {
+    await Swal.fire({
+      icon: 'warning',
+      title: 'Form Belum Lengkap!',
+      text: 'Silakan isi nama lengkap dan username.',
+      confirmButtonText: 'Mengerti',
+      confirmButtonColor: '#008751'
+    });
+    return;
+  }
+
+  if (!sedangEdit && (!nama || !username || !password.trim())) {
+    await Swal.fire({
+      icon: 'warning',
+      title: 'Form Belum Lengkap!',
+      text: 'Silakan lengkapi nama lengkap, username, dan password.',
+      confirmButtonText: 'Mengerti',
+      confirmButtonColor: '#008751'
+    });
+    return;
+  }
 
   isSavingUser.value = true;
 
   try {
-
-    if (formUser.value.id_user) {
-
+    if (sedangEdit) {
       await axios.put(
         `${apiBase}/users/${formUser.value.id_user}`,
         {
-          nama: formUser.value.nama,
-          username: formUser.value.username,
-          password: formUser.value.password
-        }
+          nama,
+          username,
+          password
+        },
+        { timeout: 15000 }
       );
-
-      showToast(
-        'success',
-        'Data karyawan berhasil diperbarui!'
-      );
-
     } else {
-
       const res = await axios.post(
         `${apiBase}/users`,
         {
-          nama: formUser.value.nama,
-          username: formUser.value.username,
-          password: formUser.value.password,
+          nama,
+          username,
+          password,
           role: 'user'
-        }
+        },
+        { timeout: 15000 }
       );
 
       if (formUser.value.fileFoto) {
-
         await prosesEkstrakDanUpload(
           formUser.value.fileFoto,
           res.data.id_user
         );
-
-      } else {
-
-        showToast(
-          'success',
-          'Karyawan ditambahkan tanpa sampel foto.'
-        );
-
       }
     }
 
+    // Tutup modal setelah proses penyimpanan berhasil
     showModalUser.value = false;
 
-    await fetchUsers();
-
-  } catch (err) {
-
-    Swal.fire(
-      'Gagal!',
-      err.response?.data?.error || err.message,
-      'error'
+    showToast(
+      'success',
+      sedangEdit
+        ? 'Data karyawan berhasil diperbarui!'
+        : 'Karyawan berhasil ditambahkan!'
     );
 
+    // Muat ulang daftar secara terpisah
+    try {
+      await fetchUsers();
+    } catch (refreshError) {
+      console.error(
+        'Gagal memuat ulang daftar karyawan:',
+        refreshError
+      );
+
+      showToast(
+        'warning',
+        'Data tersimpan, tetapi daftar karyawan gagal diperbarui. Silakan muat ulang.'
+      );
+    }
+
+  } catch (err) {
+    console.error('Gagal menyimpan karyawan:', err);
+
+    Swal.fire({
+      icon: 'error',
+      title: 'Gagal Menyimpan!',
+      text: err.code === 'ECONNABORTED'
+        ? 'Server terlalu lama merespons. Silakan coba lagi.'
+        : err.response?.data?.error ||
+          err.message ||
+          'Terjadi kesalahan saat menyimpan data.',
+      confirmButtonColor: '#008751'
+    });
+
   } finally {
-
     isSavingUser.value = false;
-
   }
 };
 
