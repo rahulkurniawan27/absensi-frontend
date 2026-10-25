@@ -435,40 +435,86 @@
                   Menampilkan {{ laporanTersaring.length }} data riwayat
                 </h6>
                 
-                <div class="dropdown">
-                  <button class="btn btn-outline-success btn-sm dropdown-toggle rounded-pill px-3" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                
+                <div class="position-relative">
+                  <button
+                    type="button"
+                    class="btn btn-outline-success btn-sm rounded-pill px-3"
+                    @click="showFilterMenu = !showFilterMenu"
+                    :aria-expanded="showFilterMenu"
+                  >
                     <i class="fas fa-filter me-1"></i>
+                    <i
+                      :class="showFilterMenu
+                        ? 'fas fa-chevron-up ms-1'
+                        : 'fas fa-chevron-down ms-1'"
+                    ></i>
                   </button>
-                  
-                  <!-- Menu Dropdown (Berisi Checkbox) -->
-                  <div class="dropdown-menu dropdown-menu-end p-3 shadow-lg border-0" style="min-width: 280px; max-height: 400px; overflow-y: auto;">
-                    
-                    <!-- Filter Tanggal -->
-                    <h6 class="dropdown-header px-0 text-dark fw-bold border-bottom pb-1 mb-2">Pilih Tanggal</h6>
-                    <div v-for="tgl in uniqueTanggal" :key="'tgl-'+tgl" class="form-check">
-                      <input class="form-check-input" type="checkbox" :value="tgl" v-model="filterTanggal" :id="'tgl-'+tgl">
-                      <label class="form-check-label small" :for="'tgl-'+tgl">{{ tgl }}</label>
-                    </div>
-                    <div v-if="uniqueTanggal.length === 0" class="text-muted small">Belum ada data</div>
 
-                    <!-- Filter Hari -->
-                    <h6 class="dropdown-header px-0 text-dark fw-bold border-bottom pb-1 mb-2 mt-3">Pilih Hari</h6>
-                    <div v-for="hari in uniqueHari" :key="'hari-'+hari" class="form-check">
-                      <input class="form-check-input" type="checkbox" :value="hari" v-model="filterHari" :id="'hari-'+hari">
-                      <label class="form-check-label small" :for="'hari-'+hari">{{ hari }}</label>
+                  <div
+                    v-if="showFilterMenu"
+                    class="filter-panel p-3 shadow-lg border rounded-3 bg-white"
+                    @click.stop
+                  >
+                    <h6 class="fw-bold border-bottom pb-2">Pilih Tanggal</h6>
+
+                    <div
+                      v-for="tgl in uniqueTanggal"
+                      :key="'filter-tgl-' + tgl"
+                      class="form-check"
+                    >
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        :id="'filter-tgl-' + tgl"
+                        :value="tgl"
+                        v-model="filterTanggal"
+                      />
+                      <label
+                        class="form-check-label small"
+                        :for="'filter-tgl-' + tgl"
+                      >{{ tgl }}</label>
                     </div>
 
-                    <!-- Filter Jam -->
-                    <h6 class="dropdown-header px-0 text-dark fw-bold border-bottom pb-1 mb-2 mt-3">Pilih Jam (Rentang)</h6>
-                    <div v-for="jam in uniqueJam" :key="'jam-'+jam" class="form-check">
-                      <input class="form-check-input" type="checkbox" :value="jam" v-model="filterJam" :id="'jam-'+jam">
-                      <label class="form-check-label small" :for="'jam-'+jam">Pukul {{ jam }}:xx</label>
+                    <div v-if="uniqueTanggal.length === 0" class="small text-muted">
+                      Belum ada data tanggal.
                     </div>
 
-                    <!-- Tombol Reset -->
-                    <div class="mt-3 pt-2 border-top">
-                      <button class="btn btn-sm btn-danger w-100" @click="resetFilter">Batalkan Semua Filter</button>
+                    <h6 class="fw-bold border-bottom pb-2 mt-3">Pilih Jam Masuk</h6>
+
+                    <div
+                      v-for="jam in uniqueJam"
+                      :key="'filter-jam-' + jam"
+                      class="form-check"
+                    >
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        :id="'filter-jam-' + jam"
+                        :value="jam"
+                        v-model="filterJam"
+                      />
+                      <label
+                        class="form-check-label small"
+                        :for="'filter-jam-' + jam"
+                      >Pukul {{ jam }}:xx</label>
                     </div>
+
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-danger w-100 mt-3"
+                      @click="resetFilter"
+                    >
+                      Reset Filter
+                    </button>
+
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-outline-secondary w-100 mt-2"
+                      @click="showFilterMenu = false"
+                    >
+                      Tutup
+                    </button>
                   </div>
                 </div>
               </div>
@@ -780,6 +826,7 @@ const currentUser = ref({});
 const loginData = ref({ username: '', password: '' });
 const videoElUser = ref(null);
 const isPageLoading = ref(true);
+const showFilterMenu = ref(false);
 
 const currentDate = computed(() => {
   return new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -1070,7 +1117,19 @@ const fetchUsers = async () => {
   try {
     const res = await axios.get(`${apiBase}/users`);
     listGuru.value = res.data;
-  } catch (err) { console.error(err); }
+  } catch (err) {
+    if (err.code === 'ERR_CANCELED' ||
+        err.message === 'Request aborted') {
+      console.warn('Permintaan users dibatalkan.');
+      return;
+    }
+
+    console.error(
+      'Gagal mengambil data users:',
+      err.response?.status,
+      err.message
+    );
+  }
 };
 const fetchLaporan = async () => {
   try {
@@ -1867,37 +1926,52 @@ const exportExcel = () => {
 
 // ================= VARIABEL FILTER CHECKBOX =================
 const filterTanggal = ref([]);
-const filterHari = ref([]);
 const filterJam = ref([]); // Menyimpan awalan jam, misal: '07', '08'
 
-// Fungsi bantuan untuk mendapatkan nama hari
-const getNamaHari = (dateStr) => {
-  const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-  const d = new Date(dateStr);
-  return days[d.getDay()];
-};
+const uniqueTanggal = computed(() =>
+  [...new Set(
+    laporanAbsensi.value
+      .map(item => item.tanggal
+        ? String(item.tanggal).slice(0, 10)
+        : '')
+      .filter(Boolean)
+  )].sort()
+);
 
-// Mengambil daftar unik (tidak duplikat) dari database untuk dijadikan pilihan checkbox
-const uniqueTanggal = computed(() => [...new Set(laporanAbsensi.value.map(i => i.tanggal).filter(Boolean))].sort());
-const uniqueHari = computed(() => [...new Set(laporanAbsensi.value.map(i => i.tanggal ? getNamaHari(i.tanggal) : null).filter(Boolean))]);
-const uniqueJam = computed(() => [...new Set(laporanAbsensi.value.map(i => i.jam_masuk ? i.jam_masuk.substring(0, 2) : null).filter(Boolean))].sort());
+const uniqueJam = computed(() =>
+  [...new Set(
+    laporanAbsensi.value
+      .map(item => item.jam_masuk
+        ? String(item.jam_masuk).substring(0, 2)
+        : '')
+      .filter(Boolean)
+  )].sort()
+);
 
-// Fungsi reset checkbox
 const resetFilter = () => {
   filterTanggal.value = [];
-  filterHari.value = [];
   filterJam.value = [];
 };
 
-// Menyaring data berdasarkan checkbox yang dicentang
 const laporanTersaring = computed(() => {
   return laporanAbsensi.value.filter(item => {
-    // Jika tidak ada yang dicentang, anggap true (tampilkan semua)
-    const matchTanggal = filterTanggal.value.length === 0 || filterTanggal.value.includes(item.tanggal);
-    const matchHari = filterHari.value.length === 0 || (item.tanggal && filterHari.value.includes(getNamaHari(item.tanggal)));
-    const matchJam = filterJam.value.length === 0 || (item.jam_masuk && filterJam.value.includes(item.jam_masuk.substring(0, 2)));
+    const tanggal = item.tanggal
+      ? String(item.tanggal).slice(0, 10)
+      : '';
 
-    return matchTanggal && matchHari && matchJam;
+    const jamMasuk = item.jam_masuk
+      ? String(item.jam_masuk).substring(0, 2)
+      : '';
+
+    const matchTanggal =
+      filterTanggal.value.length === 0 ||
+      filterTanggal.value.includes(tanggal);
+
+    const matchJam =
+      filterJam.value.length === 0 ||
+      filterJam.value.includes(jamMasuk);
+
+    return matchTanggal && matchJam;
   });
 });
 </script>
@@ -1995,6 +2069,23 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
 }
+
+
+.filter-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 290px;
+  max-width: calc(100vw - 32px);
+  max-height: 420px;
+  overflow-y: auto;
+  z-index: 2000;
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+}
+
 
 /* =========================================
    NAVBAR
