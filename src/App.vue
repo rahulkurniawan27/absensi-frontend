@@ -2,815 +2,1404 @@
   <transition name="fade-loading">
     <div v-if="isPageLoading" class="loading-screen bg-white">
       <div class="text-center d-flex flex-column align-items-center">
-        <div class="position-relative d-flex justify-content-center align-items-center mb-4" style="width: 120px; height: 120px;">
-          <div class="spinner-border text-success position-absolute" role="status" style="width: 100%; height: 100%; border-width: 4px; opacity: 0.7;">
+        <div
+          class="position-relative d-flex justify-content-center align-items-center mb-4"
+          style="width: 120px; height: 120px"
+        >
+          <div
+            class="spinner-border text-success position-absolute"
+            role="status"
+            style="width: 100%; height: 100%; border-width: 4px; opacity: 0.7"
+          >
             <span class="visually-hidden">Memuat...</span>
           </div>
-          <img src="/logo.png" alt="Logo SLB Dharma Asih" class="loading-logo position-absolute" style="width: 70px; z-index: 2;">
+          <img
+            src="/logo.png"
+            alt="Logo SLB Dharma Asih"
+            class="loading-logo position-absolute"
+            style="width: 70px; z-index: 2"
+          />
         </div>
-        
+
         <h5 class="fw-bold text-dark mb-1">Sistem Absensi</h5>
-        <small class="text-muted">Memuat<span class="animated-dots"></span></small>
+        <small class="text-muted"
+          >Memuat<span class="animated-dots"></span
+        ></small>
       </div>
     </div>
   </transition>
 
   <div v-show="!isPageLoading">
-  <div class="app-wrapper">
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg bg-white fixed-top shadow-sm py-3" style="z-index: 1050;">
-      <div class="container">
-        <a class="navbar-brand fw-bold d-flex align-items-center" href="#" @click.prevent="currentView = 'landing'">
-          <img src="/src/assets/logo versi warna.png" class="rounded me-2 d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;" />
-          <span class="text-dark fs-4">Sistem <span class="text-primary">Absensi</span></span>
-        </a>
-        <div class="d-flex align-items-center ms-auto">
-          <button v-if="currentView === 'dashboard'" class="btn btn-outline-danger btn-sm rounded-pill px-4 fw-bold" @click="logout">
-            <i class="fas fa-sign-out-alt me-1"></i> Keluar
-          </button>
-          <button v-if="currentView === 'landing'" class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm" @click="currentView = 'login'">
-            Masuk Portal <i class="fas fa-arrow-right ms-2"></i>
-          </button>
-        </div>
-      </div>
-    </nav>
-
-    <div style="margin-top: 30px;">
-    <!-- 1. LANDING PAGE -->
-    <div v-if="currentView === 'landing'" class="landing-page">
-      <!-- (Konten Landing Page Tetap Sama Seperti Sebelumnya) -->
-      <section class="hero-section bg-light-blue py-5">
-        <div class="container py-5">
-          <div class="row align-items-center">
-            <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
-              <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill mb-3 fw-bold">Transformasi Digital Sekolah</span>
-              <h1 class="fw-extrabold text-dark display-4 mb-4" style="line-height: 1.2;">
-                Absensi Cerdas <br><span class="text-primary">& Validasi Akurat</span>
-              </h1>
-              <p class="lead text-secondary mb-5" style="font-size: 1.1rem;">
-                Sistem presensi terpadu untuk guru menggunakan teknologi Face Recognition dan Geotagging lokasi. Mencegah manipulasi data secara real-time.
-              </p>
-              <button class="btn btn-primary btn-lg rounded-pill px-5 py-3 fw-bold shadow-lg" @click="currentView = 'login'">
-                Mulai Akses Sistem
-              </button>
-            </div>
-            <div class="col-lg-6 text-center position-relative" style="animation-delay: 0.2s;" data-aos="fade-down" data-aos-delay="200">
-              <div class="hero-image-wrapper p-2 bg-white rounded-4 shadow-lg mx-auto position-relative" style="max-width: 500px;">
-                <div id="heroCarousel" class="carousel slide carousel-fade rounded-3 overflow-hidden" data-bs-ride="carousel" data-bs-interval="3000">
-                  <div class="carousel-inner">
-                    <div class="carousel-item active">
-                      <img src="/foto guru1.jpg" class="d-block w-100" style="object-fit: cover; aspect-ratio: 4/3;" alt="Foto Guru 1">
-                    </div>
-                    <div class="carousel-item">
-                      <img src="/foto guru2.jpg" class="d-block w-100" style="object-fit: cover; aspect-ratio: 4/3;" alt="Foto Guru 2">
-                    </div>
-                    <div class="carousel-item">
-                      <img src="/foto guru3.jpg" class="d-block w-100" style="object-fit: cover; aspect-ratio: 4/3;" alt="Foto Guru 3">
-                    </div>
-                  </div>
-                </div>
-                 <div class="floating-card shadow-sm bg-white rounded-4 p-3 position-absolute d-flex align-items-center" style="bottom: -20px; left: -20px;">
-                    <div class="bg-success rounded-circle p-2 text-white me-3"><i class="fas fa-check"></i></div>
-                    <div><h6 class="mb-0 fw-bold">Wajah Terdeteksi</h6><small class="text-muted">Akurasi 99.8%</small></div>
-                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Fitur Unggulan Section -->
-      <section class="features-section py-5 bg-white" data-aos="fade-up">
-        <div class="container py-5">
-          <div class="text-center mb-5">
-            <h2 class="fw-bold text-dark">Program & Fitur Unggulan</h2>
-            <p class="text-muted">Teknologi modern untuk administrasi yang lebih baik</p>
-          </div>
-          <div class="row g-4">
-            <div class="col-md-4 fade-in-up">
-              <div class="card h-100 border-0 shadow-sm feature-card p-4 transition-hover">
-                <div class="icon-box bg-primary-subtle text-primary rounded-3 mb-4 d-inline-flex justify-content-center align-items-center" style="width: 60px; height: 60px;">
-                  <i class="fas fa-user-shield fs-3"></i>
-                </div>
-                <h5 class="fw-bold">Anti-Titip Absen</h5>
-                <p class="text-muted mb-0">Validasi biometrik wajah memastikan hanya guru yang bersangkutan yang dapat melakukan presensi kehadiran.</p>
-              </div>
-            </div>
-            <div class="col-md-4 fade-in-up" style="animation-delay: 0.1s;">
-              <div class="card h-100 border-0 shadow-sm feature-card p-4 transition-hover">
-                <div class="icon-box bg-success-subtle text-success rounded-3 mb-4 d-inline-flex justify-content-center align-items-center" style="width: 60px; height: 60px;">
-                  <i class="fas fa-map-marker-alt fs-3"></i>
-                </div>
-                <h5 class="fw-bold">Geofencing GPS</h5>
-                <p class="text-muted mb-0">Absensi dikunci berdasarkan radius koordinat sekolah. Memastikan kehadiran fisik di lingkungan kerja.</p>
-              </div>
-            </div>
-            <div class="col-md-4 fade-in-up" style="animation-delay: 0.2s;">
-              <div class="card h-100 border-0 shadow-sm feature-card p-4 transition-hover">
-                <div class="icon-box bg-warning-subtle text-warning rounded-3 mb-4 d-inline-flex justify-content-center align-items-center" style="width: 60px; height: 60px;">
-                  <i class="fas fa-bolt fs-3"></i>
-                </div>
-                <h5 class="fw-bold">Manajemen Real-time</h5>
-                <p class="text-muted mb-0">Admin dapat memantau data kehadiran, keterlambatan, dan rekapitulasi harian secara instan.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= SECTION PANDUAN PENGGUNAAN ================= -->
-      <div class="container py-5 my-5" data-aos="fade-up">
-        <div class="text-center mb-5">
-          <h3 class="fw-bold text-dark">Cara Melakukan Presensi</h3>
-          <p class="text-muted">Tiga langkah mudah untuk mencatat kehadiran Anda setiap hari.</p>
-        </div>
-        <div class="row text-center g-4">
-          <!-- Langkah 1 -->
-          <div class="col-md-4">
-            <div class="p-4 shadow-sm rounded-4 bg-white h-100 border border-light transition-hover">
-              <div class="bg-primary-subtle text-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                <i class="fas fa-sign-in-alt fs-4"></i>
-              </div>
-              <h5 class="fw-bold">1. Login Sistem</h5>
-              <p class="text-muted small">Masuk menggunakan kredensial username yang telah didaftarkan oleh admin sekolah.</p>
-            </div>
-          </div>
-          <!-- Langkah 2 -->
-          <div class="col-md-4">
-            <div class="p-4 shadow-sm rounded-4 bg-white h-100 border border-light transition-hover">
-              <div class="bg-success-subtle text-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                <i class="fas fa-camera fs-4"></i>
-              </div>
-              <h5 class="fw-bold">2. Scan Wajah</h5>
-              <p class="text-muted small">Arahkan wajah ke kamera untuk verifikasi biometrik yang memastikan keaslian presensi Anda. Sistem akan melacak koordinat GPS secara otomatis untuk memastikan Anda berada di lingkungan SLB.</p>
-            </div>
-          </div>
-          <!-- Langkah 3 -->
-          <div class="col-md-4">
-            <div class="p-4 shadow-sm rounded-4 bg-white h-100 border border-light transition-hover">
-              <div class="bg-warning-subtle text-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                <i class="fas fa-map-marked-alt fs-4"></i>
-              </div>
-              <h5 class="fw-bold">3. Riwayat Kehadiran</h5>
-              <p class="text-muted small">Sistem akan mencatat presensi hadir dan pulang Anda secara realtime.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ================= FOOTER SLB DHARMA ASIH ================= -->
-      <footer class="bg-dark text-white py-5 mt-auto w-100">
+    <div class="app-wrapper">
+      <!-- NAVBAR -->
+      <nav
+        class="navbar navbar-expand-lg bg-white fixed-top shadow-sm py-3"
+        style="z-index: 1050"
+      >
         <div class="container">
-          <div class="row g-4">
-            
-            <!-- Kolom 1: Brand & Deskripsi -->
-            <div class="col-lg-6 col-md-12 mb-4 mb-lg-0" data-aos="fade-right">
-              <h5 class="fw-bold mb-3 d-flex align-items-center">
-                <img src="/logo.png" class="rounded me-2 d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;" /> 
-                SLB Dharma Asih Kraksaan
-              </h5>
-              <p class="text-white-50 small pe-lg-5">
-                Sistem Informasi Presensi Cerdas berbasis pemindaian biometrik wajah dan geolokasi lokasi, dirancang khusus untuk meningkatkan kedisiplinan dan kemudahan administrasi tenaga pendidik.
+          <a
+            class="navbar-brand fw-bold d-flex align-items-center"
+            href="#"
+            @click.prevent="currentView = 'landing'"
+          >
+            <img
+              src="/src/assets/logo versi warna.png"
+              class="rounded me-2 d-flex justify-content-center align-items-center"
+              style="width: 40px; height: 40px"
+            />
+            <span class="text-dark fs-4"
+              >Sistem <span class="text-primary">Absensi</span></span
+            >
+          </a>
+          <div class="d-flex align-items-center ms-auto">
+            <button
+              v-if="currentView === 'dashboard'"
+              class="btn btn-outline-danger btn-sm rounded-pill px-4 fw-bold"
+              @click="logout"
+            >
+              <i class="fas fa-sign-out-alt me-1"></i> Keluar
+            </button>
+            <button
+              v-if="currentView === 'landing'"
+              class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm"
+              @click="currentView = 'login'"
+            >
+              Masuk Portal <i class="fas fa-arrow-right ms-2"></i>
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <div style="margin-top: 30px">
+        <!-- 1. LANDING PAGE -->
+        <div v-if="currentView === 'landing'" class="landing-page">
+          <!-- (Konten Landing Page Tetap Sama Seperti Sebelumnya) -->
+          <section class="hero-section bg-light-blue py-5">
+            <div class="container py-5">
+              <div class="row align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
+                  <span
+                    class="badge bg-success-subtle text-success px-3 py-2 rounded-pill mb-3 fw-bold"
+                    >Transformasi Digital Sekolah</span
+                  >
+                  <h1
+                    class="fw-extrabold text-dark display-4 mb-4"
+                    style="line-height: 1.2"
+                  >
+                    Absensi Cerdas <br /><span class="text-primary"
+                      >& Validasi Akurat</span
+                    >
+                  </h1>
+                  <p class="lead text-secondary mb-5" style="font-size: 1.1rem">
+                    Sistem presensi terpadu untuk guru menggunakan teknologi
+                    Face Recognition dan Geotagging lokasi. Mencegah manipulasi
+                    data secara real-time.
+                  </p>
+                  <button
+                    class="btn btn-primary btn-lg rounded-pill px-5 py-3 fw-bold shadow-lg"
+                    @click="currentView = 'login'"
+                  >
+                    Mulai Akses Sistem
+                  </button>
+                </div>
+                <div
+                  class="col-lg-6 text-center position-relative"
+                  style="animation-delay: 0.2s"
+                  data-aos="fade-down"
+                  data-aos-delay="200"
+                >
+                  <div
+                    class="hero-image-wrapper p-2 bg-white rounded-4 shadow-lg mx-auto position-relative"
+                    style="max-width: 500px"
+                  >
+                    <div
+                      id="heroCarousel"
+                      class="carousel slide carousel-fade rounded-3 overflow-hidden"
+                      data-bs-ride="carousel"
+                      data-bs-interval="3000"
+                    >
+                      <div class="carousel-inner">
+                        <div class="carousel-item active">
+                          <img
+                            src="/foto guru1.jpg"
+                            class="d-block w-100"
+                            style="object-fit: cover; aspect-ratio: 4/3"
+                            alt="Foto Guru 1"
+                          />
+                        </div>
+                        <div class="carousel-item">
+                          <img
+                            src="/foto guru2.jpg"
+                            class="d-block w-100"
+                            style="object-fit: cover; aspect-ratio: 4/3"
+                            alt="Foto Guru 2"
+                          />
+                        </div>
+                        <div class="carousel-item">
+                          <img
+                            src="/foto guru3.jpg"
+                            class="d-block w-100"
+                            style="object-fit: cover; aspect-ratio: 4/3"
+                            alt="Foto Guru 3"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="floating-card shadow-sm bg-white rounded-4 p-3 position-absolute d-flex align-items-center"
+                      style="bottom: -20px; left: -20px"
+                    >
+                      <div
+                        class="bg-success rounded-circle p-2 text-white me-3"
+                      >
+                        <i class="fas fa-check"></i>
+                      </div>
+                      <div>
+                        <h6 class="mb-0 fw-bold">Wajah Terdeteksi</h6>
+                        <small class="text-muted">Akurasi 99.8%</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Fitur Unggulan Section -->
+          <section class="features-section py-5 bg-white" data-aos="fade-up">
+            <div class="container py-5">
+              <div class="text-center mb-5">
+                <h2 class="fw-bold text-dark">Program & Fitur Unggulan</h2>
+                <p class="text-muted">
+                  Teknologi modern untuk administrasi yang lebih baik
+                </p>
+              </div>
+              <div class="row g-4">
+                <div class="col-md-4 fade-in-up">
+                  <div
+                    class="card h-100 border-0 shadow-sm feature-card p-4 transition-hover"
+                  >
+                    <div
+                      class="icon-box bg-primary-subtle text-primary rounded-3 mb-4 d-inline-flex justify-content-center align-items-center"
+                      style="width: 60px; height: 60px"
+                    >
+                      <i class="fas fa-user-shield fs-3"></i>
+                    </div>
+                    <h5 class="fw-bold">Anti-Titip Absen</h5>
+                    <p class="text-muted mb-0">
+                      Validasi biometrik wajah memastikan hanya guru yang
+                      bersangkutan yang dapat melakukan presensi kehadiran.
+                    </p>
+                  </div>
+                </div>
+                <div class="col-md-4 fade-in-up" style="animation-delay: 0.1s">
+                  <div
+                    class="card h-100 border-0 shadow-sm feature-card p-4 transition-hover"
+                  >
+                    <div
+                      class="icon-box bg-success-subtle text-success rounded-3 mb-4 d-inline-flex justify-content-center align-items-center"
+                      style="width: 60px; height: 60px"
+                    >
+                      <i class="fas fa-map-marker-alt fs-3"></i>
+                    </div>
+                    <h5 class="fw-bold">Geofencing GPS</h5>
+                    <p class="text-muted mb-0">
+                      Absensi dikunci berdasarkan radius koordinat sekolah.
+                      Memastikan kehadiran fisik di lingkungan kerja.
+                    </p>
+                  </div>
+                </div>
+                <div class="col-md-4 fade-in-up" style="animation-delay: 0.2s">
+                  <div
+                    class="card h-100 border-0 shadow-sm feature-card p-4 transition-hover"
+                  >
+                    <div
+                      class="icon-box bg-warning-subtle text-warning rounded-3 mb-4 d-inline-flex justify-content-center align-items-center"
+                      style="width: 60px; height: 60px"
+                    >
+                      <i class="fas fa-bolt fs-3"></i>
+                    </div>
+                    <h5 class="fw-bold">Manajemen Real-time</h5>
+                    <p class="text-muted mb-0">
+                      Admin dapat memantau data kehadiran, keterlambatan, dan
+                      rekapitulasi harian secara instan.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= SECTION PANDUAN PENGGUNAAN ================= -->
+          <div class="container py-5 my-5" data-aos="fade-up">
+            <div class="text-center mb-5">
+              <h3 class="fw-bold text-dark">Cara Melakukan Presensi</h3>
+              <p class="text-muted">
+                Tiga langkah mudah untuk mencatat kehadiran Anda setiap hari.
               </p>
             </div>
-
-            <!-- Kolom 2: Tautan -->
-            <div class="col-lg-3 col-md-6 mb-4 mb-md-0" data-aos="fade-down">
-              <h6 class="text-uppercase fw-bold mb-3 text-light">Menu Utama</h6>
-              <ul class="list-unstyled mb-0 small">
-                <li class="mb-2"><a href="#" @click.prevent="currentView = 'landing'" class="text-white-50 text-decoration-none custom-link">Beranda</a></li>
-                <li class="mb-2"><a href="#" @click.prevent="currentView = 'login'" class="text-white-50 text-decoration-none custom-link">Masuk Portal</a></li>
-              </ul>
-            </div>
-
-            <!-- Kolom 3: Kontak -->
-            <div class="col-lg-3 col-md-6" data-aos="fade-left">
-              <h6 class="text-uppercase fw-bold mb-3 text-light">Hubungi Kami</h6>
-              <ul class="list-unstyled mb-0 small text-white-50">
-                <li class="mb-2"><i class="fas fa-map-marker-alt me-2 text-success"></i> Jl. Mayjen Sutoyo No. 56, Patokan, Kecamatan Kraksaan, Kabupaten Probolinggo, Jawa Timur</li>
-                <li class="mb-2"><i class="fas fa-envelope me-2 text-success"></i> sdlbbcdharmaasihkraksaan@gmail.com</li>
-                <li><i class="fas fa-phone me-2 text-success"></i> (+62) 81234282371</li>
-              </ul>
-            </div>
-          </div>
-          
-          <!-- Garis Pemisah -->
-          <hr class="my-4 border-secondary">
-          
-          <!-- Copyright & Sosial Media -->
-          <div class="d-flex justify-content-between align-items-center flex-wrap fade-in-up">
-            <p class="mb-0 text-white-50 small">
-              &copy; 2026 SLB Dharma Asih Kraksaan. Hak Cipta Dilindungi.
-            </p>
-            <div class="d-flex">
-              <a href="https://www.facebook.com/pages/SLB%20Darma%20Asih%20Kraksaan/1403540146642218/" class="text-white-50 me-3 custom-link"><i class="fab fa-facebook-f"></i></a>
-              <a href="https://www.instagram.com/slbdharmaasihkraksaan/" class="text-white-50 me-3 custom-link"><i class="fab fa-instagram"></i></a>
-              <a href="https://www.youtube.com/@SLBDHARMAASIHKRAKSAAN" class="text-white-50 custom-link"><i class="fab fa-youtube"></i></a>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </div>
-
-    <!-- 2. PORTAL LOGIN -->
-    <div v-else-if="currentView === 'login'" class="login-page bg-light-blue d-flex align-items-center w-100" style="min-height: 100vh; padding-top: 100px; padding-bottom: 60px;">
-      <div class="container">
-        <div class="row justify-content-center fade-in-up">
-          <div class="col-12 col-sm-10 col-md-8 col-lg-5">
-            <div class="card border-0 shadow-lg rounded-4 overflow-hidden mx-auto" style="max-width: 400px; width: 100%; border-radius: 20px;">
-              <div class="card-header bg-primary text-white text-center py-4 border-0">
-                <h4 class="fw-bold mb-0">Login Sistem</h4>
-                <p class="small mb-0 text-white-50">Silakan masuk dengan akun Anda</p>
-              </div>
-              <div class="card-body p-4 p-md-5 bg-white">
-                <form @submit.prevent="handleLogin">
-                  <div class="mb-4">
-                    <label class="form-label fw-bold text-dark small">USERNAME</label>
-                    <div class="input-group">
-                      <span class="input-group-text bg-light border-end-0"><i class="fas fa-user text-muted"></i></span>
-                      <input type="text" v-model="loginData.username" class="form-control bg-light border-start-0 ps-0 py-2" placeholder="Masukkan username" required>
-                    </div>
-                  </div>
-                  <div class="mb-4">
-                    <label class="form-label fw-bold text-dark small">PASSWORD</label>
-                    <div class="input-group">
-                      <span class="input-group-text bg-light border-end-0"><i class="fas fa-lock text-muted"></i></span>
-                      <input type="password" v-model="loginData.password" class="form-control bg-light border-start-0 ps-0 py-2" placeholder="Masukkan password" required>
-                    </div>
-                  </div>
-                  <button type="submit" class="btn btn-primary w-100 py-3 rounded-3 fw-bold shadow-sm" :disabled="isLoading">
-                    {{ isLoading ? 'Memeriksa Kredensial...' : 'Masuk Sekarang' }}
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 3. DASHBOARD -->
-    <div v-else-if="currentView === 'dashboard'" class="dashboard-page bg-light w-100" style="min-height: calc(100vh - 80px); padding-top: 30px;">
-      <div class="container py-4 py-md-5 fade-in-up">
-        
-        <!-- Header Profil -->
-        <div class="bg-white rounded-4 shadow-sm p-4 mb-4 d-flex justify-content-between align-items-center border-start border-5 border-primary">
-          <div class="d-flex align-items-center">
-            <div class="bg-primary-subtle text-primary rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 50px; height: 50px;">
-              <img
-                v-if="currentUser.foto"
-                :src="currentUser.foto"
-                :alt="currentUser.nama"
-                class="rounded-circle border"
-                style="
-                    width: 45px;
-                    height: 50px;
-                    object-fit: fill;
-                "
-            >
-
-            <div
-                v-else
-                class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
-                style="
-                    width: 42px;
-                    height: 42px;
-                "
-            >
-                <i class="fas fa-user"></i>
-            </div>
-            </div>
-            <div>
-              <h5 class="mb-0 fw-bold text-dark">{{ currentUser.nama }}</h5>
-              <small class="text-muted">Login sebagai: <span class="badge bg-secondary text-uppercase">{{ currentUser.role }}</span></small>
-            </div>
-          </div>
-          <div class="text-end d-none d-md-block">
-            <p class="mb-0 fw-bold text-dark">{{ currentDate }}</p>
-          </div>
-        </div>
-
-        <!-- ================= DASHBOARD ADMIN ================= -->
-        <div v-if="currentUser.role === 'admin'" class="card border-0 shadow-sm rounded-4">
-          <div class="card-header bg-white border-bottom-0 pt-4 pb-2 px-4">
-            <ul class="nav nav-pills nav-fill gap-2 mobile-scroll-nav mb-4">
-              <li class="nav-item">
-                <a class="nav-link fw-bold rounded-pill" :class="{ 'active bg-primary': adminTab === 'users' }" href="#" @click.prevent="adminTab = 'users'">
-                  <i class="fas fa-users-cog me-1"></i> Kelola User & Data
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link fw-bold rounded-pill text-dark" :class="{ 'active bg-primary text-white': adminTab === 'jadwal' }" href="#" @click.prevent="adminTab = 'jadwal'">
-                  <i class="fas fa-calendar-alt me-1"></i> Jadwal Absensi
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link fw-bold rounded-pill text-dark" :class="{ 'active bg-primary text-white': adminTab === 'laporan' }" href="#" @click.prevent="adminTab = 'laporan'">
-                  <i class="fas fa-chart-bar me-1"></i> Laporan & Export
-                </a>
-              </li>
-            </ul>
-          </div>
-          
-          <div class="card-body p-4 border-top">
-            <!-- ADMIN TAB 1: Kelola User & Tambah Data -->
-            <div v-if="adminTab === 'users'">
-              <div class="row align-items-center mb-4">
-                <div class="col-md-6 mb-3 mb-md-0">
-                  <!-- Fitur Fuzzy Search -->
-                  <div class="input-group shadow-sm rounded-pill overflow-hidden">
-                    <span class="input-group-text bg-white border-0 ps-3"><i class="fas fa-search text-muted"></i></span>
-                    <input type="text" v-model="searchQuery" class="form-control border-0 py-2" placeholder="Cari nama atau username...">
-                  </div>
-                </div>
-                <div class="col-md-6 text-md-end">
-                  <button class="btn btn-primary rounded-pill fw-bold px-4 shadow-sm" @click="bukaModalUser(null)">
-                    <i class="fas fa-user-plus me-1"></i> Tambah Karyawan
-                  </button>
-                </div>
-              </div>
-              
-              <div v-if="isProcessingPhoto" class="text-center py-5">
-                <div class="spinner-grow text-primary mb-3" style="width: 3rem; height: 3rem;"></div>
-                <h6 class="fw-bold text-dark">{{ statusMessage }}</h6>
-              </div>
-
-              <div class="table-responsive table-wrapper border p-2" v-show="!isProcessingPhoto">
-                <table class="table table-hover align-middle mb-0">
-                  <thead class="table-light text-muted small">
-                    <tr>
-                      <th class="py-3">NAMA LENGKAP</th>
-                      <th class="py-3">USERNAME</th>
-                      <th class="py-3">STATUS BIOMETRIK</th>
-                      <th class="py-3 text-end">TINDAKAN (CRUD)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="guru in filteredGuru" :key="guru.id_user">
-                      <td class="fw-bold text-dark py-3">{{ guru.nama }}</td>
-                      <td class="text-muted py-3">@{{ guru.username }}</td>
-                      <td class="py-3">
-                        <span :class="['badge rounded-pill px-3 py-2', guru.status_wajah === 'Sudah' ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger']">
-                          <i :class="guru.status_wajah === 'Sudah' ? 'fas fa-check-circle me-1' : 'fas fa-times-circle me-1'"></i>
-                          {{ guru.status_wajah }} Terdaftar
-                        </span>
-                      </td>
-                      <td class="text-end py-3">
-                        <!-- Upload Foto Langsung -->
-                        <input type="file" accept="image/jpeg, image/png" class="d-none" :id="'upload-' + guru.id_user" @change="(e) => prosesUploadFoto(e, guru.id_user)">
-                        <label :for="'upload-' + guru.id_user" class="btn btn-outline-primary btn-sm rounded-pill fw-bold px-3 cursor-pointer mb-0 me-1" title="Upload Wajah">
-                          <i class="fas fa-camera"></i>
-                        </label>
-                        <!-- Edit & Delete -->
-                        <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 me-1" @click="bukaModalUser(guru)" title="Edit Profil">
-                          <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-outline-danger btn-sm rounded-pill px-3" @click="hapusUser(guru.id_user)" title="Hapus Karyawan">
-                          <i class="fas fa-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <!-- ADMIN TAB 2: Kelola Jadwal -->
-            <div v-if="adminTab === 'jadwal'">
-              <div class="d-flex justify-content-between align-items-center mb-4">
-
-                <h5 class="fw-bold mb-0 text-dark">
-                    Pengaturan Jadwal Kerja
-                </h5>
-
-                <button
-                    class="btn btn-primary rounded-pill px-4 fw-bold"
-                    @click="bukaModalJadwalBaru"
+            <div class="row text-center g-4">
+              <!-- Langkah 1 -->
+              <div class="col-md-4">
+                <div
+                  class="p-4 shadow-sm rounded-4 bg-white h-100 border border-light transition-hover"
                 >
-                    <i class="fas fa-plus me-2"></i>
-                    Tambah Jadwal
-                </button>
-
-            </div>
-               <div class="table-responsive table-wrapper border p-2">
-                 <table class="table table-bordered align-middle">
-                   <thead class="table-light">
-                     <tr><th>Hari Kerja</th><th>Jam Masuk</th><th>Batas Keterlambatan</th><th>Jam Pulang</th><th>Aksi</th></tr>
-                   </thead>
-                   <tbody>
-                     <tr v-for="jadwal in daftarJadwal" :key="jadwal.id">
-                       <td class="fw-bold">{{ jadwal.hari }}</td>
-                       <td>{{ jadwal.masuk }}</td>
-                       <td>{{ jadwal.batas }}</td>
-                       <td>{{ jadwal.pulang }}</td>
-                       <td class="d-flex gap-2">
-                         <button class="btn btn-sm btn-outline-primary rounded-pill px-3" @click="bukaModalJadwal(jadwal)">
-                           <i class="fas fa-edit me-1"></i> Edit Jadwal
-                         </button>
-                         <button class="btn btn-sm btn-outline-danger rounded-pill px-3" @click="hapusJadwal(jadwal.id)">
-                              <i class="fas fa-trash me-1"></i> Hapus
-                          </button>
-                       </td>
-                     </tr>
-                   </tbody>
-                 </table>
-               </div>
-            </div>
-
-            <!-- ADMIN TAB 3: Laporan & Export -->
-            <div v-if="adminTab === 'laporan'">
-              <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3">
-                <h5 class="fw-bold mb-0 text-dark">Laporan Absensi</h5>
-                <div>
-                  <button class="btn btn-outline-danger btn-sm rounded-pill fw-bold px-3 me-2" @click="exportPDF">
-                    <i class="fas fa-file-pdf me-1"></i> Export PDF
-                  </button>
-                  <button class="btn btn-success btn-sm rounded-pill fw-bold px-3 shadow-sm" @click="exportExcel">
-                    <i class="fas fa-file-excel me-1"></i> Export Excel
-                  </button>
+                  <div
+                    class="bg-primary-subtle text-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                    style="width: 60px; height: 60px"
+                  >
+                    <i class="fas fa-sign-in-alt fs-4"></i>
+                  </div>
+                  <h5 class="fw-bold">1. Login Sistem</h5>
+                  <p class="text-muted small">
+                    Masuk menggunakan kredensial username yang telah didaftarkan
+                    oleh admin sekolah.
+                  </p>
                 </div>
               </div>
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="mb-0 text-secondary">
-                  Menampilkan {{ laporanTersaring.length }} data riwayat
-                </h6>
-                
-                
-                <div class="position-relative">
-                  <button
-                    type="button"
-                    class="btn btn-outline-success btn-sm rounded-pill px-3"
-                    @click="showFilterMenu = !showFilterMenu"
-                    :aria-expanded="showFilterMenu"
+              <!-- Langkah 2 -->
+              <div class="col-md-4">
+                <div
+                  class="p-4 shadow-sm rounded-4 bg-white h-100 border border-light transition-hover"
+                >
+                  <div
+                    class="bg-success-subtle text-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                    style="width: 60px; height: 60px"
                   >
-                    <i class="fas fa-filter me-1"></i>
-                    <i
-                      :class="showFilterMenu
-                        ? 'fas fa-chevron-up ms-1'
-                        : 'fas fa-chevron-down ms-1'"
-                    ></i>
-                  </button>
+                    <i class="fas fa-camera fs-4"></i>
+                  </div>
+                  <h5 class="fw-bold">2. Scan Wajah</h5>
+                  <p class="text-muted small">
+                    Arahkan wajah ke kamera untuk verifikasi biometrik yang
+                    memastikan keaslian presensi Anda. Sistem akan melacak
+                    koordinat GPS secara otomatis untuk memastikan Anda berada
+                    di lingkungan SLB.
+                  </p>
+                </div>
+              </div>
+              <!-- Langkah 3 -->
+              <div class="col-md-4">
+                <div
+                  class="p-4 shadow-sm rounded-4 bg-white h-100 border border-light transition-hover"
+                >
+                  <div
+                    class="bg-warning-subtle text-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                    style="width: 60px; height: 60px"
+                  >
+                    <i class="fas fa-map-marked-alt fs-4"></i>
+                  </div>
+                  <h5 class="fw-bold">3. Riwayat Kehadiran</h5>
+                  <p class="text-muted small">
+                    Sistem akan mencatat presensi hadir dan pulang Anda secara
+                    realtime.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= FOOTER SLB DHARMA ASIH ================= -->
+          <footer class="bg-dark text-white py-5 mt-auto w-100">
+            <div class="container">
+              <div class="row g-4">
+                <!-- Kolom 1: Brand & Deskripsi -->
+                <div
+                  class="col-lg-6 col-md-12 mb-4 mb-lg-0"
+                  data-aos="fade-right"
+                >
+                  <h5 class="fw-bold mb-3 d-flex align-items-center">
+                    <img
+                      src="/logo.png"
+                      class="rounded me-2 d-flex justify-content-center align-items-center"
+                      style="width: 40px; height: 40px"
+                    />
+                    SLB Dharma Asih Kraksaan
+                  </h5>
+                  <p class="text-white-50 small pe-lg-5">
+                    Sistem Informasi Presensi Cerdas berbasis pemindaian
+                    biometrik wajah dan geolokasi lokasi, dirancang khusus untuk
+                    meningkatkan kedisiplinan dan kemudahan administrasi tenaga
+                    pendidik.
+                  </p>
+                </div>
+
+                <!-- Kolom 2: Tautan -->
+                <div
+                  class="col-lg-3 col-md-6 mb-4 mb-md-0"
+                  data-aos="fade-down"
+                >
+                  <h6 class="text-uppercase fw-bold mb-3 text-light">
+                    Menu Utama
+                  </h6>
+                  <ul class="list-unstyled mb-0 small">
+                    <li class="mb-2">
+                      <a
+                        href="#"
+                        @click.prevent="currentView = 'landing'"
+                        class="text-white-50 text-decoration-none custom-link"
+                        >Beranda</a
+                      >
+                    </li>
+                    <li class="mb-2">
+                      <a
+                        href="#"
+                        @click.prevent="currentView = 'login'"
+                        class="text-white-50 text-decoration-none custom-link"
+                        >Masuk Portal</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- Kolom 3: Kontak -->
+                <div class="col-lg-3 col-md-6" data-aos="fade-left">
+                  <h6 class="text-uppercase fw-bold mb-3 text-light">
+                    Hubungi Kami
+                  </h6>
+                  <ul class="list-unstyled mb-0 small text-white-50">
+                    <li class="mb-2">
+                      <i class="fas fa-map-marker-alt me-2 text-success"></i>
+                      Jl. Mayjen Sutoyo No. 56, Patokan, Kecamatan Kraksaan,
+                      Kabupaten Probolinggo, Jawa Timur
+                    </li>
+                    <li class="mb-2">
+                      <i class="fas fa-envelope me-2 text-success"></i>
+                      sdlbbcdharmaasihkraksaan@gmail.com
+                    </li>
+                    <li>
+                      <i class="fas fa-phone me-2 text-success"></i> (+62)
+                      81234282371
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Garis Pemisah -->
+              <hr class="my-4 border-secondary" />
+
+              <!-- Copyright & Sosial Media -->
+              <div
+                class="d-flex justify-content-between align-items-center flex-wrap fade-in-up"
+              >
+                <p class="mb-0 text-white-50 small">
+                  &copy; 2026 SLB Dharma Asih Kraksaan. Hak Cipta Dilindungi.
+                </p>
+                <div class="d-flex">
+                  <a
+                    href="https://www.facebook.com/pages/SLB%20Darma%20Asih%20Kraksaan/1403540146642218/"
+                    class="text-white-50 me-3 custom-link"
+                    ><i class="fab fa-facebook-f"></i
+                  ></a>
+                  <a
+                    href="https://www.instagram.com/slbdharmaasihkraksaan/"
+                    class="text-white-50 me-3 custom-link"
+                    ><i class="fab fa-instagram"></i
+                  ></a>
+                  <a
+                    href="https://www.youtube.com/@SLBDHARMAASIHKRAKSAAN"
+                    class="text-white-50 custom-link"
+                    ><i class="fab fa-youtube"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+          </footer>
+        </div>
+
+        <!-- 2. PORTAL LOGIN -->
+        <div
+          v-else-if="currentView === 'login'"
+          class="login-page bg-light-blue d-flex align-items-center w-100"
+          style="min-height: 100vh; padding-top: 100px; padding-bottom: 60px"
+        >
+          <div class="container">
+            <div class="row justify-content-center fade-in-up">
+              <div class="col-12 col-sm-10 col-md-8 col-lg-5">
+                <div
+                  class="card border-0 shadow-lg rounded-4 overflow-hidden mx-auto"
+                  style="max-width: 400px; width: 100%; border-radius: 20px"
+                >
+                  <div
+                    class="card-header bg-primary text-white text-center py-4 border-0"
+                  >
+                    <h4 class="fw-bold mb-0">Login Sistem</h4>
+                    <p class="small mb-0 text-white-50">
+                      Silakan masuk dengan akun Anda
+                    </p>
+                  </div>
+                  <div class="card-body p-4 p-md-5 bg-white">
+                    <form @submit.prevent="handleLogin">
+                      <div class="mb-4">
+                        <label class="form-label fw-bold text-dark small"
+                          >USERNAME</label
+                        >
+                        <div class="input-group">
+                          <span class="input-group-text bg-light border-end-0"
+                            ><i class="fas fa-user text-muted"></i
+                          ></span>
+                          <input
+                            type="text"
+                            v-model="loginData.username"
+                            class="form-control bg-light border-start-0 ps-0 py-2"
+                            placeholder="Masukkan username"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div class="mb-4">
+                        <label class="form-label fw-bold text-dark small"
+                          >PASSWORD</label
+                        >
+                        <div class="input-group">
+                          <span class="input-group-text bg-light border-end-0"
+                            ><i class="fas fa-lock text-muted"></i
+                          ></span>
+                          <input
+                            type="password"
+                            v-model="loginData.password"
+                            class="form-control bg-light border-start-0 ps-0 py-2"
+                            placeholder="Masukkan password"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <button
+                        type="submit"
+                        class="btn btn-primary w-100 py-3 rounded-3 fw-bold shadow-sm"
+                        :disabled="isLoading"
+                      >
+                        {{
+                          isLoading
+                            ? "Memeriksa Kredensial..."
+                            : "Masuk Sekarang"
+                        }}
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. DASHBOARD -->
+        <div
+          v-else-if="currentView === 'dashboard'"
+          class="dashboard-page bg-light w-100"
+          style="min-height: calc(100vh - 80px); padding-top: 30px"
+        >
+          <div class="container py-4 py-md-5 fade-in-up">
+            <!-- Header Profil -->
+            <div
+              class="bg-white rounded-4 shadow-sm p-4 mb-4 d-flex justify-content-between align-items-center border-start border-5 border-primary"
+            >
+              <div class="d-flex align-items-center">
+                <div
+                  class="bg-primary-subtle text-primary rounded-circle d-flex justify-content-center align-items-center me-3"
+                  style="width: 50px; height: 50px"
+                >
+                  <img
+                    v-if="currentUser.foto"
+                    :src="currentUser.foto"
+                    :alt="currentUser.nama"
+                    class="rounded-circle border"
+                    style="width: 45px; height: 50px; object-fit: fill"
+                  />
 
                   <div
-                    v-if="showFilterMenu"
-                    class="filter-panel p-3 shadow-lg border rounded-3 bg-white"
-                    @click.stop
+                    v-else
+                    class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
+                    style="width: 42px; height: 42px"
                   >
-                    <h6 class="fw-bold border-bottom pb-2">Pilih Tanggal</h6>
+                    <i class="fas fa-user"></i>
+                  </div>
+                </div>
+                <div>
+                  <h5 class="mb-0 fw-bold text-dark">{{ currentUser.nama }}</h5>
+                  <small class="text-muted"
+                    >Login sebagai:
+                    <span class="badge bg-secondary text-uppercase">{{
+                      currentUser.role
+                    }}</span></small
+                  >
+                </div>
+              </div>
+              <div class="text-end d-none d-md-block">
+                <p class="mb-0 fw-bold text-dark">{{ currentDate }}</p>
+              </div>
+            </div>
 
-                    <div
-                      v-for="tgl in uniqueTanggal"
-                      :key="'filter-tgl-' + tgl"
-                      class="form-check"
+            <!-- ================= DASHBOARD ADMIN ================= -->
+            <div
+              v-if="currentUser.role === 'admin'"
+              class="card border-0 shadow-sm rounded-4"
+            >
+              <div class="card-header bg-white border-bottom-0 pt-4 pb-2 px-4">
+                <ul class="nav nav-pills nav-fill gap-2 mobile-scroll-nav mb-4">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link fw-bold rounded-pill"
+                      :class="{ 'active bg-primary': adminTab === 'users' }"
+                      href="#"
+                      @click.prevent="adminTab = 'users'"
                     >
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        :id="'filter-tgl-' + tgl"
-                        :value="tgl"
-                        v-model="filterTanggal"
-                      />
-                      <label
-                        class="form-check-label small"
-                        :for="'filter-tgl-' + tgl"
-                      >{{ tgl }}</label>
-                    </div>
-
-                    <div v-if="uniqueTanggal.length === 0" class="small text-muted">
-                      Belum ada data tanggal.
-                    </div>
-
-                    <h6 class="fw-bold border-bottom pb-2 mt-3">Pilih Jam Masuk</h6>
-
-                    <div
-                      v-for="jam in uniqueJam"
-                      :key="'filter-jam-' + jam"
-                      class="form-check"
+                      <i class="fas fa-users-cog me-1"></i> Kelola User & Data
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link fw-bold rounded-pill text-dark"
+                      :class="{
+                        'active bg-primary text-white': adminTab === 'jadwal',
+                      }"
+                      href="#"
+                      @click.prevent="adminTab = 'jadwal'"
                     >
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        :id="'filter-jam-' + jam"
-                        :value="jam"
-                        v-model="filterJam"
-                      />
-                      <label
-                        class="form-check-label small"
-                        :for="'filter-jam-' + jam"
-                      >Pukul {{ jam }}:xx</label>
+                      <i class="fas fa-calendar-alt me-1"></i> Jadwal Absensi
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link fw-bold rounded-pill text-dark"
+                      :class="{
+                        'active bg-primary text-white': adminTab === 'laporan',
+                      }"
+                      href="#"
+                      @click.prevent="adminTab = 'laporan'"
+                    >
+                      <i class="fas fa-chart-bar me-1"></i> Laporan & Export
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="card-body p-4 border-top">
+                <!-- ADMIN TAB 1: Kelola User & Tambah Data -->
+                <div v-if="adminTab === 'users'">
+                  <div class="row align-items-center mb-4">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                      <!-- Fitur Fuzzy Search -->
+                      <div
+                        class="input-group shadow-sm rounded-pill overflow-hidden"
+                      >
+                        <span class="input-group-text bg-white border-0 ps-3"
+                          ><i class="fas fa-search text-muted"></i
+                        ></span>
+                        <input
+                          type="text"
+                          v-model="searchQuery"
+                          class="form-control border-0 py-2"
+                          placeholder="Cari nama atau username..."
+                        />
+                      </div>
                     </div>
+                    <div class="col-md-6 text-md-end">
+                      <button
+                        class="btn btn-primary rounded-pill fw-bold px-4 shadow-sm"
+                        @click="bukaModalUser(null)"
+                      >
+                        <i class="fas fa-user-plus me-1"></i> Tambah Karyawan
+                      </button>
+                    </div>
+                  </div>
+
+                  <div v-if="isProcessingPhoto" class="text-center py-5">
+                    <div
+                      class="spinner-grow text-primary mb-3"
+                      style="width: 3rem; height: 3rem"
+                    ></div>
+                    <h6 class="fw-bold text-dark">{{ statusMessage }}</h6>
+                  </div>
+
+                  <div
+                    class="table-responsive table-wrapper border p-2"
+                    v-show="!isProcessingPhoto"
+                  >
+                    <table class="table table-hover align-middle mb-0">
+                      <thead class="table-light text-muted small">
+                        <tr>
+                          <th class="py-3">NAMA LENGKAP</th>
+                          <th class="py-3">USERNAME</th>
+                          <th class="py-3">STATUS BIOMETRIK</th>
+                          <th class="py-3 text-end">TINDAKAN (CRUD)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="guru in filteredGuru" :key="guru.id_user">
+                          <td class="fw-bold text-dark py-3">
+                            {{ guru.nama }}
+                          </td>
+                          <td class="text-muted py-3">@{{ guru.username }}</td>
+                          <td class="py-3">
+                            <span
+                              :class="[
+                                'badge rounded-pill px-3 py-2',
+                                guru.status_wajah === 'Sudah'
+                                  ? 'bg-success-subtle text-success'
+                                  : 'bg-danger-subtle text-danger',
+                              ]"
+                            >
+                              <i
+                                :class="
+                                  guru.status_wajah === 'Sudah'
+                                    ? 'fas fa-check-circle me-1'
+                                    : 'fas fa-times-circle me-1'
+                                "
+                              ></i>
+                              {{ guru.status_wajah }} Terdaftar
+                            </span>
+                          </td>
+                          <td class="text-end py-3">
+                            <!-- Upload Foto Langsung -->
+                            <input
+                              type="file"
+                              accept="image/jpeg, image/png"
+                              class="d-none"
+                              :id="'upload-' + guru.id_user"
+                              @change="(e) => prosesUploadFoto(e, guru.id_user)"
+                            />
+                            <label
+                              :for="'upload-' + guru.id_user"
+                              class="btn btn-outline-primary btn-sm rounded-pill fw-bold px-3 cursor-pointer mb-0 me-1"
+                              title="Upload Wajah"
+                            >
+                              <i class="fas fa-camera"></i>
+                            </label>
+                            <!-- Edit & Delete -->
+                            <button
+                              class="btn btn-outline-secondary btn-sm rounded-pill px-3 me-1"
+                              @click="bukaModalUser(guru)"
+                              title="Edit Profil"
+                            >
+                              <i class="fas fa-edit"></i>
+                            </button>
+                            <button
+                              class="btn btn-outline-danger btn-sm rounded-pill px-3"
+                              @click="hapusUser(guru.id_user)"
+                              title="Hapus Karyawan"
+                            >
+                              <i class="fas fa-trash"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- ADMIN TAB 2: Kelola Jadwal -->
+                <div v-if="adminTab === 'jadwal'">
+                  <div
+                    class="d-flex justify-content-between align-items-center mb-4"
+                  >
+                    <h5 class="fw-bold mb-0 text-dark">
+                      Pengaturan Jadwal Kerja
+                    </h5>
 
                     <button
-                      type="button"
-                      class="btn btn-sm btn-danger w-100 mt-3"
-                      @click="resetFilter"
+                      class="btn btn-primary rounded-pill px-4 fw-bold"
+                      @click="bukaModalJadwalBaru"
                     >
-                      Reset Filter
+                      <i class="fas fa-plus me-2"></i>
+                      Tambah Jadwal
                     </button>
+                  </div>
+                  <div class="table-responsive table-wrapper border p-2">
+                    <table class="table table-bordered align-middle">
+                      <thead class="table-light">
+                        <tr>
+                          <th>Hari Kerja</th>
+                          <th>Jam Masuk</th>
+                          <th>Batas Keterlambatan</th>
+                          <th>Jam Pulang</th>
+                          <th>Aksi</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="jadwal in daftarJadwal" :key="jadwal.id">
+                          <td class="fw-bold">{{ jadwal.hari }}</td>
+                          <td>{{ jadwal.masuk }}</td>
+                          <td>{{ jadwal.batas }}</td>
+                          <td>{{ jadwal.pulang }}</td>
+                          <td class="d-flex gap-2">
+                            <button
+                              class="btn btn-sm btn-outline-primary rounded-pill px-3"
+                              @click="bukaModalJadwal(jadwal)"
+                            >
+                              <i class="fas fa-edit me-1"></i> Edit Jadwal
+                            </button>
+                            <button
+                              class="btn btn-sm btn-outline-danger rounded-pill px-3"
+                              @click="hapusJadwal(jadwal.id)"
+                            >
+                              <i class="fas fa-trash me-1"></i> Hapus
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
 
-                    <button
-                      type="button"
-                      class="btn btn-sm btn-outline-secondary w-100 mt-2"
-                      @click="showFilterMenu = false"
+                <!-- ADMIN TAB 3: Laporan & Export -->
+                <div v-if="adminTab === 'laporan'">
+                  <div
+                    class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3"
+                  >
+                    <h5 class="fw-bold mb-0 text-dark">Laporan Absensi</h5>
+                    <div>
+                      <button
+                        class="btn btn-outline-danger btn-sm rounded-pill fw-bold px-3 me-2"
+                        @click="exportPDF"
+                      >
+                        <i class="fas fa-file-pdf me-1"></i> Export PDF
+                      </button>
+                      <button
+                        class="btn btn-success btn-sm rounded-pill fw-bold px-3 shadow-sm"
+                        @click="exportExcel"
+                      >
+                        <i class="fas fa-file-excel me-1"></i> Export Excel
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    class="d-flex justify-content-between align-items-center mb-3"
+                  >
+                    <h6 class="mb-0 text-secondary">
+                      Menampilkan {{ laporanTersaring.length }} data riwayat
+                    </h6>
+
+                    <div class="position-relative">
+                      <button
+                        type="button"
+                        class="btn btn-outline-success btn-sm rounded-pill px-3"
+                        @click="showFilterMenu = !showFilterMenu"
+                        :aria-expanded="showFilterMenu"
+                      >
+                        <i class="fas fa-filter me-1"></i>
+                        <i
+                          :class="
+                            showFilterMenu
+                              ? 'fas fa-chevron-up ms-1'
+                              : 'fas fa-chevron-down ms-1'
+                          "
+                        ></i>
+                      </button>
+
+                      <div
+                        v-if="showFilterMenu"
+                        class="filter-panel p-3 shadow-lg border rounded-3 bg-white"
+                        @click.stop
+                      >
+                        <h6 class="fw-bold border-bottom pb-2">
+                          Pilih Tanggal
+                        </h6>
+
+                        <div
+                          v-for="tgl in uniqueTanggal"
+                          :key="'filter-tgl-' + tgl"
+                          class="form-check"
+                        >
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            :id="'filter-tgl-' + tgl"
+                            :value="tgl"
+                            v-model="filterTanggal"
+                          />
+                          <label
+                            class="form-check-label small"
+                            :for="'filter-tgl-' + tgl"
+                            >{{ tgl }}</label
+                          >
+                        </div>
+
+                        <div
+                          v-if="uniqueTanggal.length === 0"
+                          class="small text-muted"
+                        >
+                          Belum ada data tanggal.
+                        </div>
+
+                        <h6 class="fw-bold border-bottom pb-2 mt-3">
+                          Pilih Jam Masuk
+                        </h6>
+
+                        <div
+                          v-for="jam in uniqueJam"
+                          :key="'filter-jam-' + jam"
+                          class="form-check"
+                        >
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            :id="'filter-jam-' + jam"
+                            :value="jam"
+                            v-model="filterJam"
+                          />
+                          <label
+                            class="form-check-label small"
+                            :for="'filter-jam-' + jam"
+                            >Pukul {{ jam }}:xx</label
+                          >
+                        </div>
+
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-danger w-100 mt-3"
+                          @click="resetFilter"
+                        >
+                          Reset Filter
+                        </button>
+
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-outline-secondary w-100 mt-2"
+                          @click="showFilterMenu = false"
+                        >
+                          Tutup
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="table-responsive table-wrapper border p-2">
+                    <table
+                      class="table table-hover align-middle table-bordered table-absensi"
                     >
-                      Tutup
-                    </button>
+                      <thead class="table-dark">
+                        <tr>
+                          <th>Tanggal</th>
+                          <th>Nama Guru</th>
+                          <th>Jam Masuk</th>
+                          <th>Jam Pulang</th>
+                          <th class="kolom-status">Status Kehadiran</th>
+                          <th class="kolom-lokasi">Lokasi</th>
+                          <th class="kolom-aksi">Aksi</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="absen in laporanTersaring" :key="absen.id">
+                          <td>{{ absen.tanggal }}</td>
+                          <td class="fw-bold">{{ absen.nama }}</td>
+                          <td>{{ absen.jam_masuk }}</td>
+                          <td>{{ absen.jam_keluar }}</td>
+                          <td class="kolom-status">
+                            <span
+                              :class="[
+                                'badge',
+                                absen.status === 'Hadir'
+                                  ? 'bg-success'
+                                  : absen.status === 'Terlambat'
+                                    ? 'bg-warning text-dark'
+                                    : 'bg-danger',
+                              ]"
+                            >
+                              {{ absen.status }}
+                            </span>
+                          </td>
+                          <td
+                            class="kolom-lokasi"
+                            style="
+                              font-size: 0.9em;
+                              max-width: 200px;
+                              word-wrap: break-word;
+                            "
+                          >
+                            <!-- Jika sedang proses melacak alamat -->
+                            <span v-if="absen.alamat === 'Melacak...'">
+                              <i
+                                class="fas fa-spinner fa-spin me-1 text-primary"
+                              ></i>
+                              Menerjemahkan GPS...
+                            </span>
+                            <!-- Jika alamat berhasil didapatkan -->
+                            <span v-else-if="absen.alamat">
+                              <i
+                                class="fas fa-map-marker-alt me-1 text-danger"
+                              ></i>
+                              {{ absen.alamat }}
+                            </span>
+                            <!-- Jika gagal/tidak ada alamat, tampilkan angka asli -->
+                            <span v-else-if="absen.latitude && absen.longitude">
+                              <i class="fas fa-map-pin me-1"></i>
+                              {{ absen.latitude }}, {{ absen.longitude }}
+                            </span>
+                            <!-- Jika absen tanpa GPS -->
+                            <span v-else class="text-danger fst-italic"
+                              >Tidak terdata</span
+                            >
+                          </td>
+                          <td class="kolom-aksi">
+                            <button
+                              class="btn btn-sm btn-outline-secondary rounded-pill"
+                              @click="bukaModalLaporan(absen)"
+                            >
+                              <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button
+                              class="btn btn-sm btn-outline-danger"
+                              @click="hapusLaporan(absen.id)"
+                            >
+                              <i class="fas fa-trash-alt"></i> Hapus
+                            </button>
+                          </td>
+                        </tr>
+                        <tr v-if="laporanTersaring.length === 0">
+                          <td colspan="7" class="text-center text-muted py-4">
+                            Belum ada data laporan absensi.
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
-              <div class="table-responsive table-wrapper border p-2">
-                 <table class="table table-hover align-middle table-bordered table-absensi">
-                   <thead class="table-dark">
-                     <tr><th>Tanggal</th><th>Nama Guru</th><th>Jam Masuk</th><th>Jam Pulang</th><th class="kolom-status">Status Kehadiran</th><th class="kolom-lokasi">Lokasi</th><th class="kolom-aksi">Aksi</th></tr>
-                   </thead>
-                   <tbody>
-                     <tr v-for="absen in laporanTersaring" :key="absen.id">
-                       <td>{{ absen.tanggal }}</td>
-                       <td class="fw-bold">{{ absen.nama }}</td>
-                       <td>{{ absen.jam_masuk }}</td>
-                       <td>{{ absen.jam_keluar }}</td>
-                       <td class="kolom-status">
-                         <span :class="['badge', absen.status === 'Hadir' ? 'bg-success' : (absen.status === 'Terlambat' ? 'bg-warning text-dark' : 'bg-danger')]">
-                           {{ absen.status }}
-                         </span>
-                       </td>
-                       <td class="kolom-lokasi" style="font-size: 0.9em; max-width: 200px; word-wrap: break-word;">
-                          <!-- Jika sedang proses melacak alamat -->
-                          <span v-if="absen.alamat === 'Melacak...'">
-                            <i class="fas fa-spinner fa-spin me-1 text-primary"></i> Menerjemahkan GPS...
-                          </span>
-                          <!-- Jika alamat berhasil didapatkan -->
-                          <span v-else-if="absen.alamat">
-                            <i class="fas fa-map-marker-alt me-1 text-danger"></i> {{ absen.alamat }}
-                          </span>
-                          <!-- Jika gagal/tidak ada alamat, tampilkan angka asli -->
-                          <span v-else-if="absen.latitude && absen.longitude">
-                            <i class="fas fa-map-pin me-1"></i> {{ absen.latitude }}, {{ absen.longitude }}
-                          </span>
-                          <!-- Jika absen tanpa GPS -->
-                          <span v-else class="text-danger fst-italic">Tidak terdata</span>
-                        </td>
-                       <td class="kolom-aksi">
-                         <button class="btn btn-sm btn-outline-secondary rounded-pill" @click="bukaModalLaporan(absen)">
-                           <i class="fas fa-edit"></i> Edit
-                         </button>
-                         <button class="btn btn-sm btn-outline-danger" @click="hapusLaporan(absen.id)">
-                            <i class="fas fa-trash-alt"></i> Hapus
-                         </button>
-                       </td>
-                     </tr>
-                     <tr v-if="laporanTersaring.length === 0">
-                        <td colspan="7" class="text-center text-muted py-4">Belum ada data laporan absensi.</td>
-                      </tr>
-                   </tbody>
-                 </table>
-               </div>
             </div>
-          </div>
-        </div>
 
-        <!-- ================= DASHBOARD USER ================= -->
-        <!-- (Konten Dashboard User Tetap Sama Seperti Sebelumnya) -->
-        <div v-if="currentUser.role === 'user'" class="card border-0 shadow-sm rounded-4 overflow-hidden">
-          <div class="card-header bg-white border-bottom-0 pt-4 pb-2 px-4">
-            <ul class="nav nav-pills nav-fill gap-2 mobile-scroll-nav mb-4">
-              <li class="nav-item">
-                <a class="nav-link fw-bold rounded-pill" :class="{ 'active bg-primary': userTab === 'absen' }" href="#" @click.prevent="userTab = 'absen'">
-                  <i class="fas fa-camera me-1"></i> Absen Wajah
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link fw-bold rounded-pill text-dark" :class="{ 'active bg-primary text-white': userTab === 'riwayat' }" href="#" @click.prevent="userTab = 'riwayat'">
-                  <i class="fas fa-history me-1"></i> Riwayat Absensi
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div class="card-body p-0 border-top">
-            <div v-if="userTab === 'absen'" class="p-4 p-md-5 bg-light-blue text-center">
-              <h5 class="fw-bold text-dark mb-4">Pindai Wajah & Lokasi</h5>
-              <div :class="['alert py-3 fw-bold rounded-3 mb-4 shadow-sm border-0 text-start d-flex align-items-center', statusColor]">
-                <i :class="['fs-4 me-3', statusIcon]"></i>{{ statusMessage }}
+            <!-- ================= DASHBOARD USER ================= -->
+            <!-- (Konten Dashboard User Tetap Sama Seperti Sebelumnya) -->
+            <div
+              v-if="currentUser.role === 'user'"
+              class="card border-0 shadow-sm rounded-4 overflow-hidden"
+            >
+              <div class="card-header bg-white border-bottom-0 pt-4 pb-2 px-4">
+                <ul class="nav nav-pills nav-fill gap-2 mobile-scroll-nav mb-4">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link fw-bold rounded-pill"
+                      :class="{ 'active bg-primary': userTab === 'absen' }"
+                      href="#"
+                      @click.prevent="userTab = 'absen'"
+                    >
+                      <i class="fas fa-camera me-1"></i> Absen Wajah
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link fw-bold rounded-pill text-dark"
+                      :class="{
+                        'active bg-primary text-white': userTab === 'riwayat',
+                      }"
+                      href="#"
+                      @click.prevent="userTab = 'riwayat'"
+                    >
+                      <i class="fas fa-history me-1"></i> Riwayat Absensi
+                    </a>
+                  </li>
+                </ul>
               </div>
-              <div class="camera-container ratio ratio-4x3 bg-dark rounded-4 overflow-hidden shadow-lg mx-auto position-relative border border-4 border-white mb-4" style="max-width: 500px;">
-                <video ref="videoElUser" autoplay muted playsinline class="camera-video w-100 h-100 object-fit-cover"></video>
-                <div class="scan-line" v-if="isLoading"></div>
-              </div>
-              <div class="row g-2 mx-auto" style="max-width: 500px;">
-                <div class="col-6">
-                  <button class="btn btn-sm btn-primary btn-lg w-100 py-3 rounded-pill fw-bold shadow-sm" @click="prosesAbsensiUser('masuk')" :disabled="isLoading || !isCameraReady">
-                    <span v-if="isLoading" class="spinner-border spinner-border-sm"></span>
-                    <span v-else><i class="fas fa-sign-in-alt me-1"></i> Hadir</span>
-                  </button>
+              <div class="card-body p-0 border-top">
+                <div
+                  v-if="userTab === 'absen'"
+                  class="p-4 p-md-5 bg-light-blue text-center"
+                >
+                  <h5 class="fw-bold text-dark mb-4">Pindai Wajah & Lokasi</h5>
+                  <div
+                    :class="[
+                      'alert py-3 fw-bold rounded-3 mb-4 shadow-sm border-0 text-start d-flex align-items-center',
+                      statusColor,
+                    ]"
+                  >
+                    <i :class="['fs-4 me-3', statusIcon]"></i
+                    >{{ statusMessage }}
+                  </div>
+                  <div
+                    class="camera-container ratio ratio-4x3 bg-dark rounded-4 overflow-hidden shadow-lg mx-auto position-relative border border-4 border-white mb-4"
+                    style="max-width: 500px"
+                  >
+                    <video
+                      ref="videoElUser"
+                      autoplay
+                      muted
+                      playsinline
+                      class="camera-video w-100 h-100 object-fit-cover"
+                    ></video>
+                    <div class="scan-line" v-if="isLoading"></div>
+                  </div>
+                  <div class="row g-2 mx-auto" style="max-width: 500px">
+                    <div class="col-6">
+                      <button
+                        class="btn btn-sm btn-primary btn-lg w-100 py-3 rounded-pill fw-bold shadow-sm"
+                        @click="prosesAbsensiUser('masuk')"
+                        :disabled="isLoading || !isCameraReady"
+                      >
+                        <span
+                          v-if="isLoading"
+                          class="spinner-border spinner-border-sm"
+                        ></span>
+                        <span v-else
+                          ><i class="fas fa-sign-in-alt me-1"></i> Hadir</span
+                        >
+                      </button>
+                    </div>
+                    <div class="col-6">
+                      <button
+                        class="btn btn-outline-danger bg-red btn-white w-100 py-3 rounded-pill fw-bold shadow-sm"
+                        @click="prosesAbsensiUser('keluar')"
+                        :disabled="isLoading || !isCameraReady"
+                      >
+                        <span
+                          v-if="isLoading"
+                          class="spinner-border spinner-border-sm"
+                        ></span>
+                        <span v-else
+                          ><i class="fas fa-sign-out-alt me-1"></i> Pulang</span
+                        >
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <div class="col-6">
-                  <button class="btn btn-outline-danger bg-red btn-white w-100 py-3 rounded-pill fw-bold shadow-sm" @click="prosesAbsensiUser('keluar')" :disabled="isLoading || !isCameraReady">
-                    <span v-if="isLoading" class="spinner-border spinner-border-sm"></span>
-                    <span v-else><i class="fas fa-sign-out-alt me-1"></i> Pulang</span>
-                  </button>
+                <div v-if="userTab === 'riwayat'" class="p-4">
+                  <h5 class="fw-bold mb-4 text-dark">Riwayat Kehadiran Anda</h5>
+                  <div class="table-responsive table-wrapper border p-2">
+                    <table class="table table-hover align-middle border">
+                      <thead class="table-light">
+                        <tr>
+                          <th>Tanggal</th>
+                          <th>Jam Masuk</th>
+                          <th>Jam Pulang</th>
+                          <th>Status</th>
+                          <th class="text-center">Lokasi Map</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="riwayat in riwayatUser" :key="riwayat.id">
+                          <td>{{ riwayat.tanggal }}</td>
+                          <td class="fw-bold">
+                            {{ riwayat.jam_masuk || "-" }}
+                          </td>
+                          <td>{{ riwayat.jam_keluar || "-" }}</td>
+                          <td>
+                            <span
+                              :class="[
+                                'badge',
+                                riwayat.status === 'Hadir'
+                                  ? 'bg-success'
+                                  : riwayat.status === 'Terlambat'
+                                    ? 'bg-warning text-dark'
+                                    : 'bg-danger',
+                              ]"
+                            >
+                              {{ riwayat.status }}
+                            </span>
+                          </td>
+                          <td class="text-center">
+                            <!-- Tombol Lihat di Google Maps -->
+                            <a
+                              v-if="riwayat.latitude && riwayat.longitude"
+                              :href="
+                                'https://www.google.com/maps/search/?api=1&query=' +
+                                riwayat.latitude +
+                                ',' +
+                                riwayat.longitude
+                              "
+                              target="_blank"
+                              class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold"
+                            >
+                              <i class="fas fa-map-marker-alt me-1"></i> Buka
+                              Map
+                            </a>
+                            <span v-else class="badge bg-secondary rounded-pill"
+                              >Lokasi Tidak Terdata</span
+                            >
+                          </td>
+                        </tr>
+                        <tr v-if="riwayatUser.length === 0">
+                          <td colspan="5" class="text-center text-muted py-4">
+                            Belum ada riwayat kehadiran.
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
-            <div v-if="userTab === 'riwayat'" class="p-4">
-              <h5 class="fw-bold mb-4 text-dark">Riwayat Kehadiran Anda</h5>
-              <div class="table-responsive table-wrapper border p-2">
-                 <table class="table table-hover align-middle border">
-                   <thead class="table-light">
-                     <tr>
-                       <th>Tanggal</th>
-                       <th>Jam Masuk</th>
-                       <th>Jam Pulang</th>
-                       <th>Status</th>
-                       <th class="text-center">Lokasi Map</th>
-                     </tr>
-                   </thead>
-                   <tbody>
-                     <tr v-for="riwayat in riwayatUser" :key="riwayat.id">
-                       <td>{{ riwayat.tanggal }}</td>
-                       <td class="fw-bold">{{ riwayat.jam_masuk || '-' }}</td>
-                       <td>{{ riwayat.jam_keluar || '-' }}</td>
-                       <td>
-                         <span :class="['badge', riwayat.status === 'Hadir' ? 'bg-success' : (riwayat.status === 'Terlambat' ? 'bg-warning text-dark' : 'bg-danger')]">
-                           {{ riwayat.status }}
-                         </span>
-                       </td>
-                       <td class="text-center">
-                         <!-- Tombol Lihat di Google Maps -->
-                         <a v-if="riwayat.latitude && riwayat.longitude" 
-                            :href="'https://www.google.com/maps/search/?api=1&query=' + riwayat.latitude + ',' + riwayat.longitude" 
-                            target="_blank" 
-                            class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold">
-                           <i class="fas fa-map-marker-alt me-1"></i> Buka Map
-                         </a>
-                         <span v-else class="badge bg-secondary rounded-pill">Lokasi Tidak Terdata</span>
-                       </td>
-                     </tr>
-                     <tr v-if="riwayatUser.length === 0">
-                       <td colspan="5" class="text-center text-muted py-4">Belum ada riwayat kehadiran.</td>
-                     </tr>
-                   </tbody>
-                 </table>
-               </div>
+          </div>
+        </div>
+
+        <!-- ================= MODAL OVERLAYS ================= -->
+        <!-- Modal Tambah/Edit Karyawan -->
+        <div
+          v-if="showModalUser"
+          class="modal fade show custom-modal-overlay"
+          tabindex="-1"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+              <div
+                class="modal-header bg-primary text-white border-0 rounded-top-4"
+              >
+                <h5 class="modal-title fw-bold">
+                  {{
+                    formUser.id_user ? "Edit Karyawan" : "Tambah Karyawan Baru"
+                  }}
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close btn-close-white"
+                  @click="showModalUser = false"
+                ></button>
+              </div>
+              <div class="modal-body p-4">
+                <div class="mb-3">
+                  <label class="form-label fw-bold small">Nama Lengkap</label>
+                  <input
+                    type="text"
+                    v-model="formUser.nama"
+                    class="form-control bg-light"
+                    placeholder="Masukkan nama lengkap"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-bold small">Username</label>
+                  <input
+                    type="text"
+                    v-model="formUser.username"
+                    class="form-control bg-light"
+                    placeholder="Masukkan username"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-bold small">Password</label>
+                  <input
+                    type="password"
+                    v-model="formUser.password"
+                    class="form-control bg-light"
+                    :placeholder="
+                      formUser.id_user
+                        ? 'Kosongkan jika tidak ingin ganti'
+                        : 'Masukkan password'
+                    "
+                    required
+                  />
+                </div>
+                <div class="mb-4" v-if="!formUser.id_user">
+                  <label class="form-label fw-bold small"
+                    >Upload Sampel Foto (Wajah Depan)</label
+                  >
+                  <input
+                    type="file"
+                    class="form-control bg-light"
+                    accept="image/jpeg, image/png"
+                    @change="handleFileBaru"
+                  />
+                  <small class="text-muted"
+                    >Foto digunakan untuk registrasi awal Face
+                    Recognition.</small
+                  >
+                </div>
+              </div>
+              <div class="modal-footer border-0 bg-light rounded-bottom-4">
+                <button
+                  class="btn btn-secondary rounded-pill px-4"
+                  @click="showModalUser = false"
+                >
+                  Batal
+                </button>
+                <button
+                  class="btn btn-primary rounded-pill px-4 fw-bold"
+                  @click="simpanUser"
+                  :disabled="isSavingUser"
+                >
+                  <span
+                    v-if="isSavingUser"
+                    class="spinner-border spinner-border-sm me-2"
+                    role="status"
+                  ></span>
+
+                  {{ isSavingUser ? "Menyimpan..." : "Simpan Data" }}
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
-      </div>
-    </div>
+        <!-- Modal Edit Jadwal -->
+        <div
+          v-if="showModalJadwal"
+          class="modal fade show custom-modal-overlay"
+          tabindex="-1"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+              <div
+                class="modal-header bg-primary text-white border-0 rounded-top-4"
+              >
+                <h5 class="modal-title fw-bold">
+                  {{
+                    formJadwal.id
+                      ? "Edit Jadwal: " + formJadwal.hari
+                      : "Tambah Jadwal Baru"
+                  }}
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close btn-close-white"
+                  @click="showModalJadwal = false"
+                ></button>
+              </div>
+              <div class="modal-body p-4">
+                <div class="mb-3">
+                  <label class="form-label fw-bold small">Hari Kerja</label>
+                  <input
+                    type="text"
+                    v-model="formJadwal.hari"
+                    class="form-control bg-light"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-bold small">Jam Masuk</label>
+                  <input
+                    type="time"
+                    v-model="formJadwal.masuk"
+                    class="form-control bg-light"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-bold small"
+                    >Batas Keterlambatan</label
+                  >
+                  <input
+                    type="time"
+                    v-model="formJadwal.batas"
+                    class="form-control bg-light"
+                  />
+                </div>
+                <div class="mb-4">
+                  <label class="form-label fw-bold small">Jam Pulang</label>
+                  <input
+                    type="time"
+                    v-model="formJadwal.pulang"
+                    class="form-control bg-light"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer border-0 bg-light rounded-bottom-4">
+                <button
+                  class="btn btn-secondary rounded-pill px-4"
+                  @click="showModalJadwal = false"
+                >
+                  Batal
+                </button>
+                <button
+                  class="btn btn-primary rounded-pill px-4 fw-bold"
+                  @click="simpanJadwal"
+                  :disabled="isSavingJadwal"
+                >
+                  <span
+                    v-if="isSavingJadwal"
+                    class="spinner-border spinner-border-sm me-2"
+                  ></span>
 
-    <!-- ================= MODAL OVERLAYS ================= -->
-    <!-- Modal Tambah/Edit Karyawan -->
-    <div v-if="showModalUser" class="modal fade show custom-modal-overlay" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg rounded-4">
-          <div class="modal-header bg-primary text-white border-0 rounded-top-4">
-            <h5 class="modal-title fw-bold">{{ formUser.id_user ? 'Edit Karyawan' : 'Tambah Karyawan Baru' }}</h5>
-            <button type="button" class="btn-close btn-close-white" @click="showModalUser = false"></button>
-          </div>
-          <div class="modal-body p-4">
-            <div class="mb-3">
-              <label class="form-label fw-bold small">Nama Lengkap</label>
-              <input type="text" v-model="formUser.nama" class="form-control bg-light" placeholder="Masukkan nama lengkap" required>
-            </div>
-            <div class="mb-3">
-              <label class="form-label fw-bold small">Username</label>
-              <input type="text" v-model="formUser.username" class="form-control bg-light" placeholder="Masukkan username" required>
-            </div>
-            <div class="mb-3">
-              <label class="form-label fw-bold small">Password</label>
-              <input type="password" v-model="formUser.password" class="form-control bg-light" :placeholder="formUser.id_user ? 'Kosongkan jika tidak ingin ganti' : 'Masukkan password'" required>
-            </div>
-            <div class="mb-4" v-if="!formUser.id_user">
-              <label class="form-label fw-bold small">Upload Sampel Foto (Wajah Depan)</label>
-              <input type="file" class="form-control bg-light" accept="image/jpeg, image/png" @change="handleFileBaru">
-              <small class="text-muted">Foto digunakan untuk registrasi awal Face Recognition.</small>
+                  {{ isSavingJadwal ? "Menyimpan..." : "Simpan Jadwal" }}
+                </button>
+              </div>
             </div>
           </div>
-          <div class="modal-footer border-0 bg-light rounded-bottom-4">
-            <button class="btn btn-secondary rounded-pill px-4" @click="showModalUser = false">Batal</button>
-            <button class="btn btn-primary rounded-pill px-4 fw-bold" @click="simpanUser" :disabled="isSavingUser">
-              <span
-                  v-if="isSavingUser"
-                  class="spinner-border spinner-border-sm me-2"
-                  role="status"
-              ></span>
+        </div>
 
-              {{ isSavingUser ? 'Menyimpan...' : 'Simpan Data' }}
-            </button>
+        <!-- Modal Edit Laporan -->
+        <div
+          v-if="showModalLaporan"
+          class="modal fade show custom-modal-overlay"
+          tabindex="-1"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+              <div
+                class="modal-header bg-primary text-white border-0 rounded-top-4"
+              >
+                <h5 class="modal-title fw-bold">
+                  Edit Kehadiran: {{ formLaporan.nama }}
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close btn-close-white"
+                  @click="showModalLaporan = false"
+                ></button>
+              </div>
+              <div class="modal-body p-4">
+                <div class="mb-3">
+                  <label class="form-label fw-bold small">Jam Masuk</label>
+                  <input
+                    type="time"
+                    v-model="formLaporan.jam_masuk"
+                    class="form-control bg-light"
+                  />
+                </div>
+                <div class="mb-4">
+                  <label class="form-label fw-bold small"
+                    >Status Kehadiran</label
+                  >
+                  <select
+                    v-model="formLaporan.status"
+                    class="form-select bg-light"
+                    :class="{ 'is-invalid': statusLaporanError }"
+                    @change="statusLaporanError = false"
+                  >
+                    <option value="">-- Pilih Status Kehadiran --</option>
+                    <option value="Hadir">Hadir</option>
+                    <option value="Tidak hadir">Tidak Hadir</option>
+                    <option value="Terlambat">Terlambat</option>
+                    <option value="Izin">Izin</option>
+                    <option value="Alfa">Alfa</option>
+                    <option value="WFH">WFH</option>
+                  </select>
+                  <div v-if="statusLaporanError" class="invalid-feedback">
+                    Status kehadiran wajib dipilih.
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer border-0 bg-light rounded-bottom-4">
+                <button
+                  class="btn btn-secondary rounded-pill px-4"
+                  @click="showModalLaporan = false"
+                >
+                  Batal
+                </button>
+                <button
+                  class="btn btn-primary rounded-pill px-4 fw-bold"
+                  @click="simpanLaporan"
+                  :disabled="isSavingLaporan"
+                >
+                  <span
+                    v-if="isSavingLaporan"
+                    class="spinner-border spinner-border-sm me-2"
+                  ></span>
+
+                  {{ isSavingLaporan ? "Memperbarui..." : "Update Laporan" }}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Modal Edit Jadwal -->
-    <div v-if="showModalJadwal" class="modal fade show custom-modal-overlay" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg rounded-4">
-          <div class="modal-header bg-primary text-white border-0 rounded-top-4">
-            <h5 class="modal-title fw-bold">
-                {{ formJadwal.id
-                    ? 'Edit Jadwal: ' + formJadwal.hari
-                    : 'Tambah Jadwal Baru'
-                }}
-            </h5>
-            <button type="button" class="btn-close btn-close-white" @click="showModalJadwal = false"></button>
-          </div>
-          <div class="modal-body p-4">
-            <div class="mb-3">
-              <label class="form-label fw-bold small">Hari Kerja</label>
-              <input type="text" v-model="formJadwal.hari" class="form-control bg-light">
-            </div>
-            <div class="mb-3">
-              <label class="form-label fw-bold small">Jam Masuk</label>
-              <input type="time" v-model="formJadwal.masuk" class="form-control bg-light">
-            </div>
-            <div class="mb-3">
-              <label class="form-label fw-bold small">Batas Keterlambatan</label>
-              <input type="time" v-model="formJadwal.batas" class="form-control bg-light">
-            </div>
-            <div class="mb-4">
-              <label class="form-label fw-bold small">Jam Pulang</label>
-              <input type="time" v-model="formJadwal.pulang" class="form-control bg-light">
-            </div>
-          </div>
-          <div class="modal-footer border-0 bg-light rounded-bottom-4">
-            <button class="btn btn-secondary rounded-pill px-4" @click="showModalJadwal = false">Batal</button>
-            <button class="btn btn-primary rounded-pill px-4 fw-bold" @click="simpanJadwal" :disabled="isSavingJadwal">
-              <span
-                  v-if="isSavingJadwal"
-                  class="spinner-border spinner-border-sm me-2"
-              ></span>
-
-              {{ isSavingJadwal ? 'Menyimpan...' : 'Simpan Jadwal' }}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal Edit Laporan -->
-    <div v-if="showModalLaporan" class="modal fade show custom-modal-overlay" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg rounded-4">
-          <div class="modal-header bg-primary text-white border-0 rounded-top-4">
-            <h5 class="modal-title fw-bold">Edit Kehadiran: {{ formLaporan.nama }}</h5>
-            <button type="button" class="btn-close btn-close-white" @click="showModalLaporan = false"></button>
-          </div>
-          <div class="modal-body p-4">
-            <div class="mb-3">
-              <label class="form-label fw-bold small">Jam Masuk</label>
-              <input type="time" v-model="formLaporan.jam_masuk" class="form-control bg-light">
-            </div>
-            <div class="mb-4">
-              <label class="form-label fw-bold small">Status Kehadiran</label>
-              <select v-model="formLaporan.status" class="form-select bg-light">
-                <option value="Hadir">Hadir</option>
-                <option value="Terlambat">Terlambat</option>
-                <option value="Izin">Izin</option>
-                <option value="Alfa">Alfa</option>
-              </select>
-            </div>
-          </div>
-          <div class="modal-footer border-0 bg-light rounded-bottom-4">
-            <button class="btn btn-secondary rounded-pill px-4" @click="showModalLaporan = false">Batal</button>
-            <button class="btn btn-primary rounded-pill px-4 fw-bold" @click="simpanLaporan" :disabled="isSavingLaporan">
-              <span
-                  v-if="isSavingLaporan"
-                  class="spinner-border spinner-border-sm me-2"
-              ></span>
-
-              {{ isSavingLaporan ? 'Memperbarui...' : 'Update Laporan' }}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    </div>
-    </div>
-
   </div>
 </template>
 
 <script setup>
-import { ref, watch, nextTick, onMounted, computed } from 'vue';
-import axios from 'axios';
-import * as faceapi from 'face-api.js';
-import Fuse from 'fuse.js';
-import { jsPDF } from 'jspdf';
-import autoTable from 'jspdf-autotable';
-import * as XLSX from 'xlsx';
-import Swal from 'sweetalert2';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import * as bootstrap from 'bootstrap';
+import { ref, watch, nextTick, onMounted, computed } from "vue";
+import axios from "axios";
+import * as faceapi from "face-api.js";
+import Fuse from "fuse.js";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
+import * as XLSX from "xlsx";
+import Swal from "sweetalert2";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import * as bootstrap from "bootstrap";
 
-const apiBase = 'https://absensi-backend-production-7eda.up.railway.app/api'; 
+const apiBase = "https://absensi-backend-production-7eda.up.railway.app/api";
 
 // State Global & UI
-const currentView = ref('landing');
-const adminTab = ref('users');
-const userTab = ref('absen');
+const currentView = ref("landing");
+const adminTab = ref("users");
+const userTab = ref("absen");
 const isLoading = ref(false);
 const isProcessingPhoto = ref(false);
 const isCameraReady = ref(false);
@@ -819,82 +1408,102 @@ const isSavingJadwal = ref(false);
 const isSavingLaporan = ref(false);
 const isDeletingUser = ref(false);
 const isDeletingLaporan = ref(false);
-const statusMessage = ref('Sistem siap digunakan.');
-const statusColor = ref('bg-primary-subtle text-primary-emphasis');
-const statusIcon = ref('fas fa-info-circle');
+const statusMessage = ref("Sistem siap digunakan.");
+const statusColor = ref("bg-primary-subtle text-primary-emphasis");
+const statusIcon = ref("fas fa-info-circle");
 const currentUser = ref({});
-const loginData = ref({ username: '', password: '' });
+const loginData = ref({ username: "", password: "" });
 const videoElUser = ref(null);
 const isPageLoading = ref(true);
 const showFilterMenu = ref(false);
+const statusLaporanError = ref(false);
 
 const currentDate = computed(() => {
-  return new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  return new Date().toLocaleDateString("id-ID", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 });
 
 // ================= SESSION LOGIN =================
-const USER_KEY = 'currentUser';
-const VIEW_KEY = 'currentView';
-const SESSION_KEY = 'absensiSession';
-const BROWSER_SESSION_KEY = 'absensiBrowserSession';
+const USER_KEY = "currentUser";
+const VIEW_KEY = "currentView";
+const SESSION_KEY = "absensiSession";
+const BROWSER_SESSION_KEY = "absensiBrowserSession";
 
 const isSessionChecking = ref(false);
 
 // State Data
 const listGuru = ref([]);
-const searchQuery = ref('');
-const daftarJadwal = ref('');
+const searchQuery = ref("");
+const daftarJadwal = ref("");
 const laporanAbsensi = ref([]);
 const riwayatUser = ref([]);
 
 const filteredGuru = computed(() => {
   if (!searchQuery.value) return listGuru.value;
-  const fuse = new Fuse(listGuru.value, { keys: ['nama', 'username'], threshold: 0.3 });
-  return fuse.search(searchQuery.value).map(result => result.item);
+  const fuse = new Fuse(listGuru.value, {
+    keys: ["nama", "username"],
+    threshold: 0.3,
+  });
+  return fuse.search(searchQuery.value).map((result) => result.item);
 });
 
 // State Modals
 const showModalUser = ref(false);
 const showModalJadwal = ref(false);
 const showModalLaporan = ref(false);
-const formUser = ref({ id_user: null, nama: '', username: '', password: '', fileFoto: null });
-const formJadwal = ref({ id: null, hari: '', masuk: '', batas: '', pulang: '' });
-const formLaporan = ref({ id: null, nama: '', jam_masuk: '', status: '' });
+const formUser = ref({
+  id_user: null,
+  nama: "",
+  username: "",
+  password: "",
+  fileFoto: null,
+});
+const formJadwal = ref({
+  id: null,
+  hari: "",
+  masuk: "",
+  batas: "",
+  pulang: "",
+});
+const formLaporan = ref({ id: null, nama: "", jam_masuk: "", status: "" });
 
 // ================= SISTEM SESSION & LOAD AI =================
 const isModelLoaded = ref(false);
 const muatModelAI = async () => {
   if (isModelLoaded.value) return true;
   try {
-    statusMessage.value = 'Memuat AI Model dari Server Resmi...';
-    const MODEL_URL = 'https://justadudewhohacks.github.io/face-api.js/models';
+    statusMessage.value = "Memuat AI Model dari Server Resmi...";
+    const MODEL_URL = "https://justadudewhohacks.github.io/face-api.js/models";
     await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
     await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
     await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
     isModelLoaded.value = true;
-    statusMessage.value = 'Memuat Foto';
+    statusMessage.value = "Memuat Foto";
     return true;
   } catch (err) {
-    statusMessage.value = 'Error AI Model. Pastikan koneksi internet stabil.';
+    statusMessage.value = "Error AI Model. Pastikan koneksi internet stabil.";
     return false;
   }
 };
 
 watch(currentView, (newView) => {
-    localStorage.setItem(
-        VIEW_KEY,
-        newView
-    );
+  localStorage.setItem(VIEW_KEY, newView);
 
-    if (newView === 'landing') {
+  if (newView === "landing") {
     nextTick(() => {
       AOS.refresh();
-      const myCarousel = document.getElementById('heroCarousel');
+      const myCarousel = document.getElementById("heroCarousel");
       if (myCarousel) {
-        const carouselInstance = bootstrap.Carousel.getInstance(myCarousel) || new bootstrap.Carousel(myCarousel, {
-          interval: 3000,
-          ride: 'carousel'
-        });
+        const carouselInstance =
+          bootstrap.Carousel.getInstance(myCarousel) ||
+          new bootstrap.Carousel(myCarousel, {
+            interval: 3000,
+            ride: "carousel",
+          });
         carouselInstance.cycle();
       }
     });
@@ -902,43 +1511,33 @@ watch(currentView, (newView) => {
 });
 
 onMounted(async () => {
+  const validSession = checkSession();
 
-    const validSession = checkSession();
+  if (validSession) {
+    try {
+      const savedUser = localStorage.getItem(USER_KEY);
 
-    if (validSession) {
+      const user = JSON.parse(savedUser);
 
-        try {
+      currentUser.value = user;
 
-            const savedUser =
-                localStorage.getItem(USER_KEY);
+      currentView.value = "dashboard";
 
-            const user = JSON.parse(savedUser);
-
-            currentUser.value = user;
-
-            currentView.value = 'dashboard';
-
-            if (user.role === 'admin') {
-                await fetchUsers();
-                await fetchJadwal();
-            }
-
-        } catch (err) {
-
-            logout();
-
-        }
-
-    } else {
-
-        currentUser.value = {};
-        currentView.value = 'landing';
-
+      if (user.role === "admin") {
+        await fetchUsers();
+        await fetchJadwal();
+      }
+    } catch (err) {
+      logout();
     }
+  } else {
+    currentUser.value = {};
+    currentView.value = "landing";
+  }
 
-    await muatModelAI();
+  await muatModelAI();
 
-    window.scrollTo(0, 0);
+  window.scrollTo(0, 0);
 
   setTimeout(() => {
     isPageLoading.value = false;
@@ -947,7 +1546,7 @@ onMounted(async () => {
         duration: 800,
         offset: 100,
         once: false,
-        mirror: true
+        mirror: true,
       });
       AOS.refresh();
     });
@@ -955,161 +1554,121 @@ onMounted(async () => {
 });
 
 const handleLogin = async () => {
+  if (isLoading.value) return;
 
-    if (isLoading.value) return;
+  isLoading.value = true;
 
-    isLoading.value = true;
+  try {
+    const res = await axios.post(`${apiBase}/login`, loginData.value);
 
-    try {
+    // Ambil user dari response backend
+    const user = res.data.user;
 
-        const res = await axios.post(
-            `${apiBase}/login`,
-            loginData.value
-        );
-
-        // Ambil user dari response backend
-        const user = res.data.user;
-
-        if (!user) {
-
-            throw new Error(
-                'Data user tidak ditemukan dari server.'
-            );
-        }
-
-        // Simpan user
-        currentUser.value = user;
-
-        localStorage.setItem(
-            USER_KEY,
-            JSON.stringify(user)
-        );
-
-        // Buat session baru
-        createSession();
-
-        // Masuk dashboard
-        currentView.value = 'dashboard';
-
-        // Bersihkan form login
-        loginData.value = {
-            username: '',
-            password: ''
-        };
-
-        // Jika admin, ambil data admin
-        if (user.role === 'admin') {
-
-            await fetchUsers();
-            await fetchJadwal();
-
-        }
-
-    } catch (err) {
-
-        console.error(
-            'LOGIN ERROR:',
-            err
-        );
-
-        Swal.fire(
-            'Login Gagal!',
-            err.response?.data?.error ||
-            err.message ||
-            'Username atau password salah.',
-            'error'
-        );
-
-    } finally {
-
-        isLoading.value = false;
-
+    if (!user) {
+      throw new Error("Data user tidak ditemukan dari server.");
     }
+
+    // Simpan user
+    currentUser.value = user;
+
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+
+    // Buat session baru
+    createSession();
+
+    // Masuk dashboard
+    currentView.value = "dashboard";
+
+    // Bersihkan form login
+    loginData.value = {
+      username: "",
+      password: "",
+    };
+
+    // Jika admin, ambil data admin
+    if (user.role === "admin") {
+      await fetchUsers();
+      await fetchJadwal();
+    }
+  } catch (err) {
+    console.error("LOGIN ERROR:", err);
+
+    Swal.fire(
+      "Login Gagal!",
+      err.response?.data?.error ||
+        err.message ||
+        "Username atau password salah.",
+      "error",
+    );
+  } finally {
+    isLoading.value = false;
+  }
 };
 
 const logout = () => {
+  // Hapus data login
+  localStorage.removeItem(USER_KEY);
+  localStorage.removeItem(SESSION_KEY);
+  localStorage.removeItem(VIEW_KEY);
 
-    // Hapus data login
-    localStorage.removeItem(USER_KEY);
-    localStorage.removeItem(SESSION_KEY);
-    localStorage.removeItem(VIEW_KEY);
+  // Hapus session browser
+  sessionStorage.removeItem(BROWSER_SESSION_KEY);
 
-    // Hapus session browser
-    sessionStorage.removeItem(BROWSER_SESSION_KEY);
+  // Reset user
+  currentUser.value = {};
 
-    // Reset user
-    currentUser.value = {};
-
-    // Kembali ke landing
-    currentView.value = 'landing';
+  // Kembali ke landing
+  currentView.value = "landing";
 };
 
 const createSession = () => {
+  sessionStorage.setItem(BROWSER_SESSION_KEY, "active");
 
-    sessionStorage.setItem(
-        BROWSER_SESSION_KEY,
-        'active'
-    );
-
-    localStorage.setItem(
-        SESSION_KEY,
-        JSON.stringify({
-            loginTime: Date.now()
-        })
-    );
+  localStorage.setItem(
+    SESSION_KEY,
+    JSON.stringify({
+      loginTime: Date.now(),
+    }),
+  );
 };
 
 const checkSession = () => {
+  const savedUser = localStorage.getItem(USER_KEY);
 
-    const savedUser =
-        localStorage.getItem(USER_KEY);
+  const browserSession = sessionStorage.getItem(BROWSER_SESSION_KEY);
 
-    const browserSession =
-        sessionStorage.getItem(
-            BROWSER_SESSION_KEY
-        );
+  const savedSession = localStorage.getItem(SESSION_KEY);
 
-    const savedSession =
-        localStorage.getItem(SESSION_KEY);
+  // Tidak ada user
+  if (!savedUser) {
+    return false;
+  }
 
-    // Tidak ada user
-    if (!savedUser) {
-        return false;
-    }
+  // Browser session sudah tidak ada
+  if (!browserSession) {
+    logout();
 
-    // Browser session sudah tidak ada
-    if (!browserSession) {
+    return false;
+  }
 
-        logout();
+  // Tidak ada session
+  if (!savedSession) {
+    logout();
 
-        return false;
-    }
+    return false;
+  }
 
-    // Tidak ada session
-    if (!savedSession) {
+  try {
+    JSON.parse(savedSession);
 
-        logout();
+    return true;
+  } catch (err) {
+    console.error("Session tidak valid:", err);
 
-        return false;
-    }
+    logout();
 
-    try {
-
-        JSON.parse(savedSession);
-
-        return true;
-
-    } catch (err) {
-
-        console.error(
-            'Session tidak valid:',
-            err
-        );
-
-        logout();
-
-        return false;
-    }
+    return false;
+  }
 };
 
 // ================= FUNGSI FETCH DATA =================
@@ -1118,16 +1677,15 @@ const fetchUsers = async () => {
     const res = await axios.get(`${apiBase}/users`);
     listGuru.value = res.data;
   } catch (err) {
-    if (err.code === 'ERR_CANCELED' ||
-        err.message === 'Request aborted') {
-      console.warn('Permintaan users dibatalkan.');
+    if (err.code === "ERR_CANCELED" || err.message === "Request aborted") {
+      console.warn("Permintaan users dibatalkan.");
       return;
     }
 
     console.error(
-      'Gagal mengambil data users:',
+      "Gagal mengambil data users:",
       err.response?.status,
-      err.message
+      err.message,
     );
   }
 };
@@ -1142,47 +1700,48 @@ const fetchLaporan = async () => {
 
       // Jika kolom alamat dari database kosong TAPI ada data koordinatnya
       if (!item.alamat && item.latitude && item.longitude) {
-        
-        item.alamat = 'Mencari nama tempat...'; 
-        
+        item.alamat = "Mencari nama tempat...";
+
         // Jeda 1.5 detik per baris untuk menghindari pemblokiran server peta (OpenStreetMap)
         setTimeout(async () => {
           try {
             const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${item.latitude}&lon=${item.longitude}&zoom=18`;
-            const mapRes = await axios.get(url, { headers: { 'Accept-Language': 'id-ID' } });
-            
+            const mapRes = await axios.get(url, {
+              headers: { "Accept-Language": "id-ID" },
+            });
+
             let alamatFinal = `${item.latitude}, ${item.longitude}`; // Default jika gagal menyusun teks
 
             if (mapRes.data && mapRes.data.address) {
               const a = mapRes.data.address;
-              const namaTempat = a.amenity || a.building || a.office || a.road || '';
-              const desa = a.village || a.suburb || a.neighbourhood || '';
-              const kec = a.city_district || a.county || '';
-              const kota = a.city || a.town || '';
-              
+              const namaTempat =
+                a.amenity || a.building || a.office || a.road || "";
+              const desa = a.village || a.suburb || a.neighbourhood || "";
+              const kec = a.city_district || a.county || "";
+              const kota = a.city || a.town || "";
+
               const arr = [];
               if (namaTempat) arr.push(namaTempat);
               if (desa && !arr.includes(desa)) arr.push(desa);
               if (kec && !arr.includes(kec)) arr.push(kec);
               if (kota && !arr.includes(kota)) arr.push(kota);
-              
-              if(arr.length > 0) {
-                 alamatFinal = arr.join(', ');
+
+              if (arr.length > 0) {
+                alamatFinal = arr.join(", ");
               }
             }
-            
+
             // 1. Tampilkan hasilnya langsung di tabel web (Vue)
             item.alamat = alamatFinal;
 
             // 2. SIMPAN HASILNYA KE DATABASE MYSQL SECARA PERMANEN
             await axios.put(`${apiBase}/laporan/update-alamat/${item.id}`, {
-              alamat: alamatFinal
+              alamat: alamatFinal,
             });
-
           } catch (err) {
             item.alamat = `${item.latitude}, ${item.longitude}`;
           }
-        }, i * 1500); 
+        }, i * 1500);
       }
     }
   } catch (err) {
@@ -1191,242 +1750,259 @@ const fetchLaporan = async () => {
 };
 const fetchRiwayatUser = async () => {
   try {
-    const res = await axios.get(`${apiBase}/riwayat/${currentUser.value.id_user}`);
+    const res = await axios.get(
+      `${apiBase}/riwayat/${currentUser.value.id_user}`,
+    );
     riwayatUser.value = res.data;
-  } catch (err) { console.error(err); }
+  } catch (err) {
+    console.error(err);
+  }
 };
 const fetchJadwal = async () => {
-    try {
-        const res = await axios.get(`${apiBase}/jadwal`);
+  try {
+    const res = await axios.get(`${apiBase}/jadwal`);
 
-        // Backend bisa mengembalikan array atau object
-        const data = Array.isArray(res.data)
-            ? res.data
-            : (res.data && Object.keys(res.data).length > 0
-                ? [res.data]
-                : []);
+    // Backend bisa mengembalikan array atau object
+    const data = Array.isArray(res.data)
+      ? res.data
+      : res.data && Object.keys(res.data).length > 0
+        ? [res.data]
+        : [];
 
-        daftarJadwal.value = data.map(jadwal => ({
-            id: jadwal.id,
-            hari: jadwal.hari,
-            masuk: jadwal.masuk
-                ? jadwal.masuk.slice(0, 5)
-                : '',
-            batas: jadwal.batas
-                ? jadwal.batas.slice(0, 5)
-                : '',
-            pulang: jadwal.pulang
-                ? jadwal.pulang.slice(0, 5)
-                : ''
-        }));
+    daftarJadwal.value = data.map((jadwal) => ({
+      id: jadwal.id,
+      hari: jadwal.hari,
+      masuk: jadwal.masuk ? jadwal.masuk.slice(0, 5) : "",
+      batas: jadwal.batas ? jadwal.batas.slice(0, 5) : "",
+      pulang: jadwal.pulang ? jadwal.pulang.slice(0, 5) : "",
+    }));
+  } catch (err) {
+    console.error("Gagal mengambil jadwal:", err);
 
-    } catch (err) {
-
-        console.error(
-            'Gagal mengambil jadwal:',
-            err
-        );
-
-        daftarJadwal.value = [];
-    }
+    daftarJadwal.value = [];
+  }
 };
 
 // ================= FUNGSI JADWAL =================
 
 const bukaModalJadwal = (jadwal) => {
   // Salin data dari tabel ke dalam form modal
-  formJadwal.value = { 
-    id: jadwal.id, 
-    hari: jadwal.hari, 
-    masuk: jadwal.masuk, 
-    batas: jadwal.batas, 
-    pulang: jadwal.pulang 
+  formJadwal.value = {
+    id: jadwal.id,
+    hari: jadwal.hari,
+    masuk: jadwal.masuk,
+    batas: jadwal.batas,
+    pulang: jadwal.pulang,
   };
   // Tampilkan modal
   showModalJadwal.value = true;
 };
 
 const bukaModalJadwalBaru = () => {
+  formJadwal.value = {
+    id: null,
+    hari: "",
+    masuk: "",
+    batas: "",
+    pulang: "",
+  };
 
-    formJadwal.value = {
-        id: null,
-        hari: '',
-        masuk: '',
-        batas: '',
-        pulang: ''
-    };
-
-    showModalJadwal.value = true;
+  showModalJadwal.value = true;
 };
 
 const simpanJadwal = async () => {
+  if (isSavingJadwal.value) return;
 
-    if (isSavingJadwal.value) return;
+  const hari = String(formJadwal.value.hari || "").trim();
+  const masuk = String(formJadwal.value.masuk || "").trim();
+  const batas = String(formJadwal.value.batas || "").trim();
+  const pulang = String(formJadwal.value.pulang || "").trim();
 
-    isSavingJadwal.value = true;
+  const sedangEdit = !!formJadwal.value.id;
 
-    const sedangEdit = !!formJadwal.value.id;
+  // 1. Validasi kolom wajib
+  if (!hari || !masuk || !batas || !pulang) {
+    await Swal.fire({
+      icon: "warning",
+      title: "Form Belum Lengkap!",
+      text: "Silakan isi hari, jam masuk, batas waktu masuk, dan jam pulang.",
+      confirmButtonText: "Mengerti",
+      confirmButtonColor: "#008751",
+    });
+    return;
+  }
 
-    try {
+  // 2. Validasi format waktu
+  const polaWaktu = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
-        if (sedangEdit) {
+  if (
+    !polaWaktu.test(masuk) ||
+    !polaWaktu.test(batas) ||
+    !polaWaktu.test(pulang)
+  ) {
+    await Swal.fire({
+      icon: "warning",
+      title: "Format Waktu Tidak Valid!",
+      text: "Pastikan jam masuk, batas waktu masuk, dan jam pulang menggunakan format HH:mm.",
+      confirmButtonText: "Mengerti",
+      confirmButtonColor: "#008751",
+    });
+    return;
+  }
 
-            await axios.put(
-                `${apiBase}/jadwal/${formJadwal.value.id}`,
-                {
-                    hari: formJadwal.value.hari,
-                    masuk: formJadwal.value.masuk,
-                    batas: formJadwal.value.batas,
-                    pulang: formJadwal.value.pulang
-                }
-            );
+  // 3. Jam pulang harus setelah jam masuk
+  if (pulang <= masuk) {
+    await Swal.fire({
+      icon: "warning",
+      title: "Urutan Waktu Tidak Valid!",
+      text: "Jam pulang harus lebih akhir daripada jam masuk. Silakan periksa kembali jadwal.",
+      confirmButtonText: "Mengerti",
+      confirmButtonColor: "#008751",
+    });
+    return;
+  }
 
-        } else {
+  // 4. Simpan hanya jika seluruh validasi lolos
+  isSavingJadwal.value = true;
 
-            await axios.post(
-                `${apiBase}/jadwal`,
-                {
-                    hari: formJadwal.value.hari,
-                    masuk: formJadwal.value.masuk,
-                    batas: formJadwal.value.batas,
-                    pulang: formJadwal.value.pulang
-                }
-            );
-        }
+  try {
+    const dataJadwal = {
+      hari,
+      masuk,
+      batas,
+      pulang,
+    };
 
-        showModalJadwal.value = false;
-
-        await fetchJadwal();
-
-        showToast(
-            'success',
-            sedangEdit
-                ? 'Jadwal berhasil diperbarui!'
-                : 'Jadwal berhasil ditambahkan!'
-        );
-
-    } catch (err) {
-
-        Swal.fire(
-            'Gagal!',
-            err.response?.data?.error ||
-            'Terjadi kesalahan saat menyimpan jadwal.',
-            'error'
-        );
-
-    } finally {
-
-        isSavingJadwal.value = false;
-
+    if (sedangEdit) {
+      await axios.put(`${apiBase}/jadwal/${formJadwal.value.id}`, dataJadwal);
+    } else {
+      await axios.post(`${apiBase}/jadwal`, dataJadwal);
     }
+
+    showModalJadwal.value = false;
+
+    await fetchJadwal();
+
+    showToast(
+      "success",
+      sedangEdit
+        ? "Jadwal berhasil diperbarui!"
+        : "Jadwal berhasil ditambahkan!",
+    );
+  } catch (err) {
+    console.error("Gagal menyimpan jadwal:", err);
+
+    Swal.fire({
+      icon: "error",
+      title: "Gagal!",
+      text:
+        err.response?.data?.error || "Terjadi kesalahan saat menyimpan jadwal.",
+      confirmButtonColor: "#008751",
+    });
+  } finally {
+    isSavingJadwal.value = false;
+  }
 };
 
 const hapusJadwal = async (id) => {
+  const result = await Swal.fire({
+    title: "Hapus Jadwal?",
+    text: "Jadwal yang dihapus tidak dapat dikembalikan.",
+    icon: "warning",
 
-    const result = await Swal.fire({
-        title: 'Hapus Jadwal?',
-        text: 'Jadwal yang dihapus tidak dapat dikembalikan.',
-        icon: 'warning',
+    showCancelButton: true,
 
-        showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#6c757d",
 
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#6c757d',
+    confirmButtonText: "Ya, Hapus!",
+    cancelButtonText: "Batal",
+  });
 
-        confirmButtonText: 'Ya, Hapus!',
-        cancelButtonText: 'Batal'
-    });
+  if (!result.isConfirmed) return;
 
-    if (!result.isConfirmed) return;
+  Swal.fire({
+    title: "Menghapus...",
+    text: "Sedang menghapus jadwal.",
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    showConfirmButton: false,
+
+    didOpen: () => {
+      Swal.showLoading();
+    },
+  });
+
+  try {
+    await axios.delete(`${apiBase}/jadwal/${id}`);
+
+    await fetchJadwal();
 
     Swal.fire({
-        title: 'Menghapus...',
-        text: 'Sedang menghapus jadwal.',
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        showConfirmButton: false,
-
-        didOpen: () => {
-            Swal.showLoading();
-        }
+      icon: "success",
+      title: "Berhasil!",
+      text: "Jadwal berhasil dihapus.",
+      timer: 1800,
+      showConfirmButton: false,
     });
-
-    try {
-
-        await axios.delete(
-            `${apiBase}/jadwal/${id}`
-        );
-
-        await fetchJadwal();
-
-        Swal.fire({
-            icon: 'success',
-            title: 'Berhasil!',
-            text: 'Jadwal berhasil dihapus.',
-            timer: 1800,
-            showConfirmButton: false
-        });
-
-    } catch (err) {
-
-        Swal.fire(
-            'Gagal!',
-            err.response?.data?.error ||
-            'Gagal menghapus jadwal.',
-            'error'
-        );
-    }
+  } catch (err) {
+    Swal.fire(
+      "Gagal!",
+      err.response?.data?.error || "Gagal menghapus jadwal.",
+      "error",
+    );
+  }
 };
 
 // ================= FUNGSI NOTIFIKASI MODERN (SWEETALERT2) =================
 const showToast = (icon, title) => {
   Swal.fire({
     toast: true,
-    position: 'top-end',
+    position: "top-end",
     icon: icon,
     title: title,
     showConfirmButton: false,
     timer: 3000,
-    timerProgressBar: true
+    timerProgressBar: true,
   });
 };
 
 // ================= FUNGSI CRUD & UPLOAD ADMIN =================
 const bukaModalUser = (guru) => {
-  formUser.value = guru ? { ...guru, password: '', fileFoto: null } : { id_user: null, nama: '', username: '', password: '', fileFoto: null };
+  formUser.value = guru
+    ? { ...guru, password: "", fileFoto: null }
+    : { id_user: null, nama: "", username: "", password: "", fileFoto: null };
   showModalUser.value = true;
 };
-const handleFileBaru = (event) => formUser.value.fileFoto = event.target.files[0];
-
-
-
+const handleFileBaru = (event) =>
+  (formUser.value.fileFoto = event.target.files[0]);
 
 const simpanUser = async () => {
   if (isSavingUser.value) return;
 
-  const nama = String(formUser.value.nama || '').trim();
-  const username = String(formUser.value.username || '').trim();
-  const password = String(formUser.value.password || '');
+  const nama = String(formUser.value.nama || "").trim();
+  const username = String(formUser.value.username || "").trim();
+  const password = String(formUser.value.password || "");
   const sedangEdit = !!formUser.value.id_user;
 
   if (sedangEdit && (!nama || !username)) {
     await Swal.fire({
-      icon: 'warning',
-      title: 'Form Belum Lengkap!',
-      text: 'Silakan isi nama lengkap dan username.',
-      confirmButtonText: 'Mengerti',
-      confirmButtonColor: '#008751'
+      icon: "warning",
+      title: "Form Belum Lengkap!",
+      text: "Silakan isi nama lengkap dan username.",
+      confirmButtonText: "Mengerti",
+      confirmButtonColor: "#008751",
     });
     return;
   }
 
   if (!sedangEdit && (!nama || !username || !password.trim())) {
     await Swal.fire({
-      icon: 'warning',
-      title: 'Form Belum Lengkap!',
-      text: 'Silakan lengkapi nama lengkap, username, dan password.',
-      confirmButtonText: 'Mengerti',
-      confirmButtonColor: '#008751'
+      icon: "warning",
+      title: "Form Belum Lengkap!",
+      text: "Silakan lengkapi nama lengkap, username, dan password.",
+      confirmButtonText: "Mengerti",
+      confirmButtonColor: "#008751",
     });
     return;
   }
@@ -1440,9 +2016,9 @@ const simpanUser = async () => {
         {
           nama,
           username,
-          password
+          password,
         },
-        { timeout: 15000 }
+        { timeout: 15000 },
       );
     } else {
       const res = await axios.post(
@@ -1451,16 +2027,13 @@ const simpanUser = async () => {
           nama,
           username,
           password,
-          role: 'user'
+          role: "user",
         },
-        { timeout: 15000 }
+        { timeout: 15000 },
       );
 
       if (formUser.value.fileFoto) {
-        await prosesEkstrakDanUpload(
-          formUser.value.fileFoto,
-          res.data.id_user
-        );
+        await prosesEkstrakDanUpload(formUser.value.fileFoto, res.data.id_user);
       }
     }
 
@@ -1468,62 +2041,57 @@ const simpanUser = async () => {
     showModalUser.value = false;
 
     showToast(
-      'success',
+      "success",
       sedangEdit
-        ? 'Data karyawan berhasil diperbarui!'
-        : 'Karyawan berhasil ditambahkan!'
+        ? "Data karyawan berhasil diperbarui!"
+        : "Karyawan berhasil ditambahkan!",
     );
 
     // Muat ulang daftar secara terpisah
     try {
       await fetchUsers();
     } catch (refreshError) {
-      console.error(
-        'Gagal memuat ulang daftar karyawan:',
-        refreshError
-      );
+      console.error("Gagal memuat ulang daftar karyawan:", refreshError);
 
       showToast(
-        'warning',
-        'Data tersimpan, tetapi daftar karyawan gagal diperbarui. Silakan muat ulang.'
+        "warning",
+        "Data tersimpan, tetapi daftar karyawan gagal diperbarui. Silakan muat ulang.",
       );
     }
-
   } catch (err) {
-    console.error('Gagal menyimpan karyawan:', err);
+    console.error("Gagal menyimpan karyawan:", err);
 
     Swal.fire({
-      icon: 'error',
-      title: 'Gagal Menyimpan!',
-      text: err.code === 'ECONNABORTED'
-        ? 'Server terlalu lama merespons. Silakan coba lagi.'
-        : err.response?.data?.error ||
-          err.message ||
-          'Terjadi kesalahan saat menyimpan data.',
-      confirmButtonColor: '#008751'
+      icon: "error",
+      title: "Gagal Menyimpan!",
+      text:
+        err.code === "ECONNABORTED"
+          ? "Server terlalu lama merespons. Silakan coba lagi."
+          : err.response?.data?.error ||
+            err.message ||
+            "Terjadi kesalahan saat menyimpan data.",
+      confirmButtonColor: "#008751",
     });
-
   } finally {
     isSavingUser.value = false;
   }
 };
 
 const hapusUser = async (id) => {
-
   if (isDeletingUser.value) return;
 
   const result = await Swal.fire({
-    title: 'Hapus Karyawan?',
-    text: 'Data karyawan beserta sampel biometrik wajahnya akan dihapus permanen dari sistem.',
-    icon: 'warning',
+    title: "Hapus Karyawan?",
+    text: "Data karyawan beserta sampel biometrik wajahnya akan dihapus permanen dari sistem.",
+    icon: "warning",
 
     showCancelButton: true,
 
-    confirmButtonColor: '#d33',
-    cancelButtonColor: '#6c757d',
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#6c757d",
 
-    confirmButtonText: 'Ya, Hapus!',
-    cancelButtonText: 'Batal'
+    confirmButtonText: "Ya, Hapus!",
+    cancelButtonText: "Batal",
   });
 
   if (!result.isConfirmed) return;
@@ -1532,46 +2100,37 @@ const hapusUser = async (id) => {
 
   // Tampilkan loading
   Swal.fire({
-    title: 'Menghapus...',
-    text: 'Sedang menghapus data karyawan.',
+    title: "Menghapus...",
+    text: "Sedang menghapus data karyawan.",
     allowOutsideClick: false,
     allowEscapeKey: false,
     showConfirmButton: false,
 
     didOpen: () => {
       Swal.showLoading();
-    }
+    },
   });
 
   try {
-
-    await axios.delete(
-      `${apiBase}/users/${id}`
-    );
+    await axios.delete(`${apiBase}/users/${id}`);
 
     await fetchUsers();
 
     Swal.fire({
-      icon: 'success',
-      title: 'Berhasil!',
-      text: 'Karyawan berhasil dihapus.',
+      icon: "success",
+      title: "Berhasil!",
+      text: "Karyawan berhasil dihapus.",
       timer: 1800,
-      showConfirmButton: false
+      showConfirmButton: false,
     });
-
   } catch (err) {
-
     Swal.fire(
-      'Gagal!',
-      err.response?.data?.error ||
-      'Gagal menghapus data karyawan.',
-      'error'
+      "Gagal!",
+      err.response?.data?.error || "Gagal menghapus data karyawan.",
+      "error",
     );
-
   } finally {
-
     isDeletingUser.value = false;
-
   }
 };
 
@@ -1579,13 +2138,13 @@ const prosesUploadFoto = async (event, id_user) => {
   const file = event.target.files[0];
   if (!file) return;
   await prosesEkstrakDanUpload(file, id_user);
-  event.target.value = ''; 
+  event.target.value = "";
 };
 
 const prosesEkstrakDanUpload = async (file, id_user) => {
   if (!isModelLoaded.value) await muatModelAI();
   isProcessingPhoto.value = true;
-  
+
   return new Promise((resolve) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -1594,28 +2153,37 @@ const prosesEkstrakDanUpload = async (file, id_user) => {
       img.src = e.target.result;
       img.onload = async () => {
         try {
-          const canvas = document.createElement('canvas');
+          const canvas = document.createElement("canvas");
           canvas.width = img.width;
           canvas.height = img.height;
-          canvas.getContext('2d').drawImage(img, 0, 0);
+          canvas.getContext("2d").drawImage(img, 0, 0);
 
-          const detections = await faceapi.detectSingleFace(canvas, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor();
+          const detections = await faceapi
+            .detectSingleFace(canvas, new faceapi.TinyFaceDetectorOptions())
+            .withFaceLandmarks()
+            .withFaceDescriptor();
           if (!detections) {
-            Swal.fire('Wajah Tidak Terdeteksi', 'Pastikan foto menghadap depan, terang, dan tidak buram.', 'warning');
+            Swal.fire(
+              "Wajah Tidak Terdeteksi",
+              "Pastikan foto menghadap depan, terang, dan tidak buram.",
+              "warning",
+            );
             isProcessingPhoto.value = false;
             return resolve(false);
           }
 
-          const fotoBase64 = canvas.toDataURL('image/jpeg', 0.8);
+          const fotoBase64 = canvas.toDataURL("image/jpeg", 0.8);
           await axios.post(`${apiBase}/register-face`, {
-            id_user: id_user, face_descriptor: Array.from(detections.descriptor), foto_base64: fotoBase64
+            id_user: id_user,
+            face_descriptor: Array.from(detections.descriptor),
+            foto_base64: fotoBase64,
           });
-          showToast('success', 'Biometrik wajah berhasil didaftarkan!');
+          showToast("success", "Biometrik wajah berhasil didaftarkan!");
           fetchUsers();
           isProcessingPhoto.value = false;
           resolve(true);
         } catch (err) {
-          Swal.fire('Error AI', err.message, 'error');
+          Swal.fire("Error AI", err.message, "error");
           isProcessingPhoto.value = false;
           resolve(false);
         }
@@ -1627,40 +2195,46 @@ const prosesEkstrakDanUpload = async (file, id_user) => {
 // ================= FUNGSI ABSENSI USER (KAMERA & GPS) =================
 const startKameraUser = async () => {
   if (!videoElUser.value) return;
-  statusMessage.value = 'Menghubungkan kamera...';
+  statusMessage.value = "Menghubungkan kamera...";
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: "user" },
+    });
     videoElUser.value.srcObject = stream;
     videoElUser.value.onloadedmetadata = () => {
-      statusMessage.value = 'Kamera aktif. Posisikan wajah Anda.';
+      statusMessage.value = "Kamera aktif. Posisikan wajah Anda.";
       isCameraReady.value = true;
     };
   } catch (err) {
-    statusMessage.value = 'Kamera ditolak.';
+    statusMessage.value = "Kamera ditolak.";
     isCameraReady.value = false;
   }
 };
 const stopKamera = () => {
   if (videoElUser.value && videoElUser.value.srcObject) {
-    videoElUser.value.srcObject.getTracks().forEach(track => track.stop());
+    videoElUser.value.srcObject.getTracks().forEach((track) => track.stop());
     isCameraReady.value = false;
   }
 };
 
 const dapatkanGPS = () => {
   return new Promise((resolve, reject) => {
-    if (!navigator.geolocation) return reject('GPS tidak didukung.');
+    if (!navigator.geolocation) return reject("GPS tidak didukung.");
     navigator.geolocation.getCurrentPosition(
-      (pos) => resolve({ latitude: pos.coords.latitude, longitude: pos.coords.longitude }),
-      (err) => reject('Akses Lokasi (GPS) ditolak/Timeout!'),
-      { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+      (pos) =>
+        resolve({
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
+        }),
+      (err) => reject("Akses Lokasi (GPS) ditolak/Timeout!"),
+      { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 },
     );
   });
 };
 
 const KOORDINAT_SEKOLAH = {
-  latitude: -7.759335,   // Lat SLB Dharma Asih Kraksaan
-  longitude: 113.4138725  // Long SLB Dharma Asih Kraksaan
+  latitude: -7.759335, // Lat SLB Dharma Asih Kraksaan
+  longitude: 113.4138725, // Long SLB Dharma Asih Kraksaan
 };
 
 const BATAS_RADIUS_METER = 150; // Jarak toleransi absen di area sekolah (meter)
@@ -1668,47 +2242,61 @@ const BATAS_RADIUS_METER = 150; // Jarak toleransi absen di area sekolah (meter)
 // Rumus akurat menghitung jarak dua titik GPS di bumi
 const hitungJarakMeter = (lat1, lon1, lat2, lon2) => {
   const R = 6371e3; // Jari-jari bumi dalam meter
-  const p1 = lat1 * Math.PI / 180;
-  const p2 = lat2 * Math.PI / 180;
-  const dp = (lat2 - lat1) * Math.PI / 180;
-  const dl = (lon2 - lon1) * Math.PI / 180;
+  const p1 = (lat1 * Math.PI) / 180;
+  const p2 = (lat2 * Math.PI) / 180;
+  const dp = ((lat2 - lat1) * Math.PI) / 180;
+  const dl = ((lon2 - lon1) * Math.PI) / 180;
 
-  const a = Math.sin(dp / 2) * Math.sin(dp / 2) +
-            Math.cos(p1) * Math.cos(p2) *
-            Math.sin(dl / 2) * Math.sin(dl / 2);
+  const a =
+    Math.sin(dp / 2) * Math.sin(dp / 2) +
+    Math.cos(p1) * Math.cos(p2) * Math.sin(dl / 2) * Math.sin(dl / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  
+
   return R * c; // Hasil dalam meter
 };
 
 const dapatkanAlamatDariGPS = async (lat, lon) => {
   try {
     // 1. CEK RADIUS SEKOLAH TERLEBIH DAHULU
-    const jarakKeSekolah = hitungJarakMeter(lat, lon, KOORDINAT_SEKOLAH.latitude, KOORDINAT_SEKOLAH.longitude);
-    
+    const jarakKeSekolah = hitungJarakMeter(
+      lat,
+      lon,
+      KOORDINAT_SEKOLAH.latitude,
+      KOORDINAT_SEKOLAH.longitude,
+    );
+
     // Jika jarak kurang dari batas radius (misal 150 meter), paksa nama menjadi nama Sekolah
     if (jarakKeSekolah <= BATAS_RADIUS_METER) {
-      return "SLB Dharma Asih Kraksaan"; 
+      return "SLB Dharma Asih Kraksaan";
     }
 
     // 2. JIKA DINAS LUAR (Di luar radius), baru lacak nama jalan/tempat pakai Peta
     const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&zoom=18`;
-    const res = await axios.get(url, { headers: { 'Accept-Language': 'id-ID' } });
-    
+    const res = await axios.get(url, {
+      headers: { "Accept-Language": "id-ID" },
+    });
+
     if (res.data && res.data.address) {
       const a = res.data.address;
-      const namaTempat = a.amenity || a.building || a.office || a.tourism || a.shop || a.road || '';
-      const desa = a.village || a.suburb || a.neighbourhood || '';
-      const kec = a.city_district || a.county || '';
-      const kota = a.city || a.town || '';
-      
+      const namaTempat =
+        a.amenity ||
+        a.building ||
+        a.office ||
+        a.tourism ||
+        a.shop ||
+        a.road ||
+        "";
+      const desa = a.village || a.suburb || a.neighbourhood || "";
+      const kec = a.city_district || a.county || "";
+      const kota = a.city || a.town || "";
+
       const arrayAlamat = [];
       if (namaTempat) arrayAlamat.push(namaTempat);
       if (desa && !arrayAlamat.includes(desa)) arrayAlamat.push(desa);
       if (kec && !arrayAlamat.includes(kec)) arrayAlamat.push(kec);
       if (kota && !arrayAlamat.includes(kota)) arrayAlamat.push(kota);
-      
-      return arrayAlamat.filter(Boolean).join(', ') || "Lokasi tidak diketahui";
+
+      return arrayAlamat.filter(Boolean).join(", ") || "Lokasi tidak diketahui";
     }
     return `${lat}, ${lon}`;
   } catch (err) {
@@ -1718,46 +2306,68 @@ const dapatkanAlamatDariGPS = async (lat, lon) => {
 
 const prosesAbsensiUser = async (jenis) => {
   isLoading.value = true;
-  const teksJenis = jenis === 'masuk' ? 'MASUK' : 'PULANG';
+  const teksJenis = jenis === "masuk" ? "MASUK" : "PULANG";
   statusMessage.value = `Validasi wajah untuk absen ${teksJenis}...`;
-  
+
   try {
-    const resRef = await axios.get(`${apiBase}/face-descriptor/${currentUser.value.id_user}`);
-    const dbDescriptorFloat32 = new Float32Array(JSON.parse(resRef.data.descriptor));
+    const resRef = await axios.get(
+      `${apiBase}/face-descriptor/${currentUser.value.id_user}`,
+    );
+    const dbDescriptorFloat32 = new Float32Array(
+      JSON.parse(resRef.data.descriptor),
+    );
 
-    const detections = await faceapi.detectSingleFace(videoElUser.value, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor();
-    if (!detections) throw 'Wajah tidak terdeteksi. Posisikan ke tengah.';
+    const detections = await faceapi
+      .detectSingleFace(
+        videoElUser.value,
+        new faceapi.TinyFaceDetectorOptions(),
+      )
+      .withFaceLandmarks()
+      .withFaceDescriptor();
+    if (!detections) throw "Wajah tidak terdeteksi. Posisikan ke tengah.";
 
-    const distance = faceapi.euclideanDistance(detections.descriptor, dbDescriptorFloat32);
-    if (distance > 0.5) throw 'Wajah TIDAK COCOK dengan referensi!';
+    const distance = faceapi.euclideanDistance(
+      detections.descriptor,
+      dbDescriptorFloat32,
+    );
+    if (distance > 0.5) throw "Wajah TIDAK COCOK dengan referensi!";
 
-    statusMessage.value = 'Wajah Cocok! Mengambil koordinat GPS...';
+    statusMessage.value = "Wajah Cocok! Mengambil koordinat GPS...";
     const lokasi = await dapatkanGPS();
 
-    const alamatLengkap = await dapatkanAlamatDariGPS(lokasi.latitude, lokasi.longitude);
+    const alamatLengkap = await dapatkanAlamatDariGPS(
+      lokasi.latitude,
+      lokasi.longitude,
+    );
 
-    const canvas = document.createElement('canvas');
+    const canvas = document.createElement("canvas");
     canvas.width = videoElUser.value.videoWidth;
     canvas.height = videoElUser.value.videoHeight;
-    canvas.getContext('2d', { willReadFrequently: true }).drawImage(videoElUser.value, 0, 0, canvas.width, canvas.height);
+    canvas
+      .getContext("2d", { willReadFrequently: true })
+      .drawImage(videoElUser.value, 0, 0, canvas.width, canvas.height);
 
-    const absRes = await axios.post(`${apiBase}/absen`, { 
-      id_user: currentUser.value.id_user, 
-      latitude: lokasi.latitude, longitude: lokasi.longitude,
-      foto_absensi: canvas.toDataURL('image/jpeg', 0.8),
+    const absRes = await axios.post(`${apiBase}/absen`, {
+      id_user: currentUser.value.id_user,
+      latitude: lokasi.latitude,
+      longitude: lokasi.longitude,
+      foto_absensi: canvas.toDataURL("image/jpeg", 0.8),
       confidence: Math.round((1 - distance) * 100),
-      jenis_absen: jenis
+      jenis_absen: jenis,
     });
-    
-    statusMessage.value = 'SUKSES: ' + (absRes.data.message || `Absen ${teksJenis} direkam!`);
-    statusColor.value = 'bg-success text-white shadow';
-    statusIcon.value = 'fas fa-check-circle';
-    fetchRiwayatUser();
 
+    statusMessage.value =
+      "SUKSES: " + (absRes.data.message || `Absen ${teksJenis} direkam!`);
+    statusColor.value = "bg-success text-white shadow";
+    statusIcon.value = "fas fa-check-circle";
+    fetchRiwayatUser();
   } catch (err) {
-    statusMessage.value = err.response?.status === 404 ? 'GAGAL: Anda belum mendaftarkan wajah di Admin!' : 'GAGAL: ' + (err.response?.data?.error || err);
-    statusColor.value = 'bg-danger-subtle text-danger-emphasis';
-    statusIcon.value = 'fas fa-exclamation-circle';
+    statusMessage.value =
+      err.response?.status === 404
+        ? "GAGAL: Anda belum mendaftarkan wajah di Admin!"
+        : "GAGAL: " + (err.response?.data?.error || err);
+    statusColor.value = "bg-danger-subtle text-danger-emphasis";
+    statusIcon.value = "fas fa-exclamation-circle";
   } finally {
     isLoading.value = false;
   }
@@ -1766,74 +2376,91 @@ const prosesAbsensiUser = async (jenis) => {
 // ================= FUNGSI EDIT & HAPUS LAPORAN ABSENSI =================
 
 const bukaModalLaporan = (absen) => {
-  // Masukkan data dari baris tabel yang diklik ke dalam form modal
-  formLaporan.value = { 
-    id: absen.id, 
-    nama: absen.nama, 
-    jam_masuk: absen.jam_masuk || '', 
-    jam_keluar: absen.jam_keluar || '', 
-    status: absen.status 
+  formLaporan.value = {
+    id: absen.id,
+    nama: absen.nama,
+    jam_masuk: absen.jam_masuk || "",
+    jam_keluar: absen.jam_keluar || "",
+    status: "",
+    statusAwal: String(absen.status || "").trim(),
   };
-  showModalLaporan.value = true; // Tampilkan pop-up modal
+
+  statusLaporanError.value = false;
+  showModalLaporan.value = true;
 };
 
 const simpanLaporan = async () => {
-
   if (isSavingLaporan.value) return;
+
+  const status = String(formLaporan.value.status || "").trim();
+
+  if (!status) {
+    statusLaporanError.value = true;
+    return;
+  }
+
+  const statusAwal = String(formLaporan.value.statusAwal || "").trim();
+
+  if (status === statusAwal) {
+    showModalLaporan.value = false;
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "info",
+      title: "Tidak ada perubahan status kehadiran.",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+    });
+
+    return;
+  }
 
   isSavingLaporan.value = true;
 
   try {
-
-    await axios.put(
-      `${apiBase}/laporan/${formLaporan.value.id}`,
-      {
-        jam_masuk: formLaporan.value.jam_masuk,
-        jam_keluar: formLaporan.value.jam_keluar,
-        status: formLaporan.value.status
-      }
-    );
+    await axios.put(`${apiBase}/laporan/${formLaporan.value.id}`, {
+      jam_masuk: formLaporan.value.jam_masuk,
+      jam_keluar: formLaporan.value.jam_keluar,
+      status,
+    });
 
     showModalLaporan.value = false;
 
     await fetchLaporan();
 
-    showToast(
-      'success',
-      'Data absensi berhasil diperbarui.'
-    );
-
+    showToast("success", "Data absensi berhasil diperbarui.");
   } catch (err) {
+    console.error("Gagal menyimpan laporan:", err);
 
-    Swal.fire(
-      'Gagal!',
-      err.response?.data?.error || err.message,
-      'error'
-    );
-
+    Swal.fire({
+      icon: "error",
+      title: "Gagal Menyimpan!",
+      text:
+        err.response?.data?.error ||
+        "Terjadi kesalahan saat memperbarui data absensi.",
+      confirmButtonColor: "#008751",
+    });
   } finally {
-
     isSavingLaporan.value = false;
-
   }
 };
 
 const hapusLaporan = async (id) => {
-
   if (isDeletingLaporan.value) return;
 
   const result = await Swal.fire({
-    title: 'Hapus Riwayat Absensi?',
-    text: 'Data kehadiran ini akan dihapus secara permanen.',
-    icon: 'warning',
+    title: "Hapus Riwayat Absensi?",
+    text: "Data kehadiran ini akan dihapus secara permanen.",
+    icon: "warning",
 
     showCancelButton: true,
 
-    confirmButtonColor: '#d33',
-    cancelButtonColor: '#6c757d',
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#6c757d",
 
-    confirmButtonText: 'Ya, Hapus!',
-    cancelButtonText: 'Batal'
+    confirmButtonText: "Ya, Hapus!",
+    cancelButtonText: "Batal",
   });
 
   if (!result.isConfirmed) return;
@@ -1842,64 +2469,55 @@ const hapusLaporan = async (id) => {
 
   // Tampilkan loading
   Swal.fire({
-    title: 'Menghapus...',
-    text: 'Sedang menghapus riwayat absensi.',
+    title: "Menghapus...",
+    text: "Sedang menghapus riwayat absensi.",
     allowOutsideClick: false,
     allowEscapeKey: false,
     showConfirmButton: false,
 
     didOpen: () => {
       Swal.showLoading();
-    }
+    },
   });
 
   try {
-
-    await axios.delete(
-      `${apiBase}/laporan/${id}`
-    );
+    await axios.delete(`${apiBase}/laporan/${id}`);
 
     await fetchLaporan();
 
     Swal.fire({
-      icon: 'success',
-      title: 'Berhasil!',
-      text: 'Riwayat absensi berhasil dihapus.',
+      icon: "success",
+      title: "Berhasil!",
+      text: "Riwayat absensi berhasil dihapus.",
       timer: 1800,
-      showConfirmButton: false
+      showConfirmButton: false,
     });
-
   } catch (err) {
-
     Swal.fire(
-      'Gagal!',
-      err.response?.data?.error ||
-      'Gagal menghapus riwayat absensi.',
-      'error'
+      "Gagal!",
+      err.response?.data?.error || "Gagal menghapus riwayat absensi.",
+      "error",
     );
-
   } finally {
-
     isDeletingLaporan.value = false;
-
   }
 };
 
 // ================= WATCHER & EXPORT =================
 watch([currentView, adminTab], ([newView, newTab]) => {
-  if (newView === 'dashboard' && currentUser.value.role === 'admin') {
-    if (newTab === 'users') fetchUsers();
-    if (newTab === 'laporan') fetchLaporan();
-    fetchJadwal(); 
+  if (newView === "dashboard" && currentUser.value.role === "admin") {
+    if (newTab === "users") fetchUsers();
+    if (newTab === "laporan") fetchLaporan();
+    fetchJadwal();
   }
 });
 watch([currentView, userTab], async ([newView, newTab]) => {
-  if (newView === 'dashboard' && currentUser.value.role === 'user') {
-    if (newTab === 'absen') {
+  if (newView === "dashboard" && currentUser.value.role === "user") {
+    if (newTab === "absen") {
       await nextTick();
-      await muatModelAI(); 
+      await muatModelAI();
       startKameraUser();
-    } else if (newTab === 'riwayat') {
+    } else if (newTab === "riwayat") {
       stopKamera();
       fetchRiwayatUser();
     }
@@ -1908,54 +2526,57 @@ watch([currentView, userTab], async ([newView, newTab]) => {
 
 const exportPDF = () => {
   const doc = new jsPDF();
-  doc.setFontSize(16); 
+  doc.setFontSize(16);
   doc.text("Laporan Kehadiran Karyawan / Guru", 14, 20);
-  
+
   autoTable(doc, {
-    head: [['Tanggal', 'Nama Lengkap', 'Masuk', 'Pulang', 'Status', 'Lokasi/Alamat']],
-    body: laporanAbsensi.value.map(i => [
-      i.tanggal, 
-      i.nama, 
-      i.jam_masuk || '-',
-      i.jam_keluar || '-',
+    head: [
+      ["Tanggal", "Nama Lengkap", "Masuk", "Pulang", "Status", "Lokasi/Alamat"],
+    ],
+    body: laporanAbsensi.value.map((i) => [
+      i.tanggal,
+      i.nama,
+      i.jam_masuk || "-",
+      i.jam_keluar || "-",
       i.status,
       // Masukkan alamat, jika masih proses atau gagal, tampilkan tidak terdata
-      i.alamat && !i.alamat.includes('Melacak') ? i.alamat : 'Tidak terdata' 
-    ]), 
+      i.alamat && !i.alamat.includes("Melacak") ? i.alamat : "Tidak terdata",
+    ]),
     startY: 30,
     styles: { fontSize: 9 }, // Perkecil font sedikit agar semua kolom muat
-    columnStyles: { 
-      5: { cellWidth: 60 } // Lebarkan khusus kolom alamat agar rapi
-    }
+    columnStyles: {
+      5: { cellWidth: 60 }, // Lebarkan khusus kolom alamat agar rapi
+    },
   });
-  
+
   doc.save("Laporan_Absensi.pdf");
 };
 
 const exportExcel = () => {
   // Mapping ulang array agar header tabel Excel menggunakan Bahasa Indonesia yang rapi
   // dan membuang kolom tidak penting (seperti ID atau koordinat mentah)
-  const dataExport = laporanAbsensi.value.map(i => ({
-    "Tanggal": i.tanggal,
+  const dataExport = laporanAbsensi.value.map((i) => ({
+    Tanggal: i.tanggal,
     "Nama Lengkap": i.nama,
-    "Jam Masuk": i.jam_masuk || '-',
-    "Jam Pulang": i.jam_keluar || '-',
-    "Status": i.status,
-    "Lokasi / Alamat": i.alamat && !i.alamat.includes('Melacak') ? i.alamat : 'Tidak terdata'
+    "Jam Masuk": i.jam_masuk || "-",
+    "Jam Pulang": i.jam_keluar || "-",
+    Status: i.status,
+    "Lokasi / Alamat":
+      i.alamat && !i.alamat.includes("Melacak") ? i.alamat : "Tidak terdata",
   }));
 
   const ws = XLSX.utils.json_to_sheet(dataExport);
-  
+
   // Mengatur kelebaran sel (kolom) di Excel agar tidak berantakan
   const wscols = [
-    {wch: 15}, // Tanggal (A)
-    {wch: 25}, // Nama (B)
-    {wch: 12}, // Jam Masuk (C)
-    {wch: 12}, // Jam Pulang (D)
-    {wch: 12}, // Status (E)
-    {wch: 50}  // Lokasi/Alamat (F)
+    { wch: 15 }, // Tanggal (A)
+    { wch: 25 }, // Nama (B)
+    { wch: 12 }, // Jam Masuk (C)
+    { wch: 12 }, // Jam Pulang (D)
+    { wch: 12 }, // Status (E)
+    { wch: 50 }, // Lokasi/Alamat (F)
   ];
-  ws['!cols'] = wscols;
+  ws["!cols"] = wscols;
 
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "Laporan Kehadiran");
@@ -1967,23 +2588,25 @@ const filterTanggal = ref([]);
 const filterJam = ref([]); // Menyimpan awalan jam, misal: '07', '08'
 
 const uniqueTanggal = computed(() =>
-  [...new Set(
-    laporanAbsensi.value
-      .map(item => item.tanggal
-        ? String(item.tanggal).slice(0, 10)
-        : '')
-      .filter(Boolean)
-  )].sort()
+  [
+    ...new Set(
+      laporanAbsensi.value
+        .map((item) => (item.tanggal ? String(item.tanggal).slice(0, 10) : ""))
+        .filter(Boolean),
+    ),
+  ].sort(),
 );
 
 const uniqueJam = computed(() =>
-  [...new Set(
-    laporanAbsensi.value
-      .map(item => item.jam_masuk
-        ? String(item.jam_masuk).substring(0, 2)
-        : '')
-      .filter(Boolean)
-  )].sort()
+  [
+    ...new Set(
+      laporanAbsensi.value
+        .map((item) =>
+          item.jam_masuk ? String(item.jam_masuk).substring(0, 2) : "",
+        )
+        .filter(Boolean),
+    ),
+  ].sort(),
 );
 
 const resetFilter = () => {
@@ -1992,22 +2615,18 @@ const resetFilter = () => {
 };
 
 const laporanTersaring = computed(() => {
-  return laporanAbsensi.value.filter(item => {
-    const tanggal = item.tanggal
-      ? String(item.tanggal).slice(0, 10)
-      : '';
+  return laporanAbsensi.value.filter((item) => {
+    const tanggal = item.tanggal ? String(item.tanggal).slice(0, 10) : "";
 
     const jamMasuk = item.jam_masuk
       ? String(item.jam_masuk).substring(0, 2)
-      : '';
+      : "";
 
     const matchTanggal =
-      filterTanggal.value.length === 0 ||
-      filterTanggal.value.includes(tanggal);
+      filterTanggal.value.length === 0 || filterTanggal.value.includes(tanggal);
 
     const matchJam =
-      filterJam.value.length === 0 ||
-      filterJam.value.includes(jamMasuk);
+      filterJam.value.length === 0 || filterJam.value.includes(jamMasuk);
 
     return matchTanggal && matchJam;
   });
@@ -2016,31 +2635,69 @@ const laporanTersaring = computed(() => {
 
 <style>
 /* Impor CDNs */
-@import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+@import url("https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap");
 
 :root {
-  --primary: #008751; 
+  --primary: #008751;
   --primary-hover: #00683c;
   --secondary: #f8f9fa;
-  --light-blue: #f0f7f4; 
+  --light-blue: #f0f7f4;
 }
 
-body { font-family: 'Nunito', sans-serif; background-color: #f8fdf9; color: #333; margin: 0; padding: 0; }
-.text-primary { color: var(--primary) !important; }
-.bg-primary { background-color: var(--primary) !important; }
-.btn-primary { background-color: var(--primary); border-color: var(--primary); }
-.btn-primary:hover { background-color: var(--primary-hover); border-color: var(--primary-hover); }
-.btn-outline-primary { color: var(--primary); border-color: var(--primary); }
-.btn-outline-primary:hover { background-color: var(--primary); color: white; }
-.bg-primary-subtle { background-color: #d1f0e1 !important; }
-.bg-light-blue { background-color: var(--light-blue); }
-.fw-extrabold { font-weight: 800; }
+body {
+  font-family: "Nunito", sans-serif;
+  background-color: #f8fdf9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+.text-primary {
+  color: var(--primary) !important;
+}
+.bg-primary {
+  background-color: var(--primary) !important;
+}
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+.btn-outline-primary {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+.btn-outline-primary:hover {
+  background-color: var(--primary);
+  color: white;
+}
+.bg-primary-subtle {
+  background-color: #d1f0e1 !important;
+}
+.bg-light-blue {
+  background-color: var(--light-blue);
+}
+.fw-extrabold {
+  font-weight: 800;
+}
 
-.fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
+.fade-in-up {
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 .loading-screen {
   position: fixed;
@@ -2061,9 +2718,18 @@ body { font-family: 'Nunito', sans-serif; background-color: #f8fdf9; color: #333
 }
 
 @keyframes pulseLogo {
-  0% { transform: scale(0.9); opacity: 0.8; }
-  50% { transform: scale(1.1); opacity: 1; }
-  100% { transform: scale(0.9); opacity: 0.8; }
+  0% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
 }
 
 /* Efek transisi halus saat loading screen menghilang */
@@ -2075,15 +2741,24 @@ body { font-family: 'Nunito', sans-serif; background-color: #f8fdf9; color: #333
 }
 
 .animated-dots::after {
-  content: '';
+  content: "";
   animation: typingDots 1.5s infinite;
 }
 
 @keyframes typingDots {
-  0% { content: ''; }
-  25% { content: '.'; }
-  50% { content: '..'; }
-  75%, 100% { content: '...'; }
+  0% {
+    content: "";
+  }
+  25% {
+    content: ".";
+  }
+  50% {
+    content: "..";
+  }
+  75%,
+  100% {
+    content: "...";
+  }
 }
 
 /* =========================================
@@ -2108,7 +2783,6 @@ body {
   overflow-x: hidden;
 }
 
-
 .filter-panel {
   position: absolute;
   top: calc(100% + 8px);
@@ -2123,7 +2797,6 @@ body {
   border-radius: 12px;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
 }
-
 
 /* =========================================
    NAVBAR
@@ -2192,59 +2865,59 @@ body {
 }
 
 .table-wrapper-absensi {
-    width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 .table-absensi {
-    width: 100%;
-    min-width: 1100px;
-    border-collapse: collapse;
-    table-layout: auto;
+  width: 100%;
+  min-width: 1100px;
+  border-collapse: collapse;
+  table-layout: auto;
 }
 
 /* Header */
 .table-absensi th {
-    white-space: nowrap;
-    vertical-align: middle;
-    padding: 12px 10px;
+  white-space: nowrap;
+  vertical-align: middle;
+  padding: 12px 10px;
 }
 
 /* Isi tabel */
 .table-absensi td {
-    vertical-align: middle;
-    padding: 10px;
+  vertical-align: middle;
+  padding: 10px;
 }
 
 /* Status */
 .table-absensi .kolom-status {
-    min-width: 130px;
-    white-space: nowrap;
+  min-width: 130px;
+  white-space: nowrap;
 }
 
 /* Lokasi */
 .table-absensi .kolom-lokasi {
-    min-width: 280px;
-    max-width: 350px;
-    white-space: normal;
-    overflow-wrap: break-word;
-    word-break: normal;
+  min-width: 280px;
+  max-width: 350px;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 /* Aksi */
 .table-absensi .kolom-aksi {
-    min-width: 170px;
-    width: 170px;
-    white-space: nowrap;
-    text-align: center;
+  min-width: 170px;
+  width: 170px;
+  white-space: nowrap;
+  text-align: center;
 }
 
 /* Tombol */
 .table-absensi .kolom-aksi .btn {
-    white-space: nowrap;
-    margin: 2px;
+  white-space: nowrap;
+  margin: 2px;
 }
 
 /* =========================================
@@ -2348,7 +3021,6 @@ footer a {
    ========================================= */
 
 @media (max-width: 991.98px) {
-
   .hero-section {
     padding-top: 3rem !important;
     padding-bottom: 3rem !important;
@@ -2393,7 +3065,6 @@ footer a {
    ========================================= */
 
 @media (max-width: 767.98px) {
-
   /* ---------- NAVBAR ---------- */
 
   .navbar {
@@ -2709,7 +3380,6 @@ footer a {
    ========================================= */
 
 @media (max-width: 400px) {
-
   .navbar-brand .fs-4 {
     font-size: 0.95rem !important;
   }
@@ -2763,7 +3433,6 @@ footer a {
    ========================================= */
 
 @media (max-width: 767.98px) and (orientation: landscape) {
-
   .hero-image-wrapper img {
     height: 220px !important;
   }
@@ -2779,13 +3448,39 @@ footer a {
 }
 .transition-hover:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
   transition: all 0.3s ease;
 }
 
-.nav-pills .nav-link { transition: all 0.3s ease; border: 1px solid transparent; }
-.nav-pills .nav-link.active { box-shadow: 0 4px 10px rgba(0, 135, 81, 0.2); }
-.cursor-pointer { cursor: pointer; }
-.scan-line { position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: rgba(0, 135, 81, 0.7); box-shadow: 0 0 10px rgba(0, 135, 81, 1); animation: scan 2s infinite linear; }
-@keyframes scan { 0% { top: 0%; } 50% { top: 100%; } 100% { top: 0%; } }
+.nav-pills .nav-link {
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+.nav-pills .nav-link.active {
+  box-shadow: 0 4px 10px rgba(0, 135, 81, 0.2);
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: rgba(0, 135, 81, 0.7);
+  box-shadow: 0 0 10px rgba(0, 135, 81, 1);
+  animation: scan 2s infinite linear;
+}
+@keyframes scan {
+  0% {
+    top: 0%;
+  }
+  50% {
+    top: 100%;
+  }
+  100% {
+    top: 0%;
+  }
+}
 </style>
