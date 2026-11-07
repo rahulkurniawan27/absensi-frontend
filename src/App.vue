@@ -1394,7 +1394,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import * as bootstrap from "bootstrap";
 
-const apiBase = "https://absensi-backend-production-7eda.up.railway.app/api";
+const apiBase = "https://absensi-backend-production-4013.up.railway.app/api";
 
 // State Global & UI
 const currentView = ref("landing");
